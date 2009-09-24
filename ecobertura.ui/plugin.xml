@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Cobertura"
+            id="net.sf.ecobertura.ui">
+      </category>
+      <view
+            name="Cobertura View"
+            icon="icons/sample.gif"
+            category="net.sf.ecobertura.ui"
+            class="ecobertura.ui.views.CoberturaView"
+            id="net.sf.ecobertura.ui.views.CoberturaView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="net.sf.ecobertura.ui.views.CoberturaView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="ecobertura.ui.annotation.coverageAnnotation"
+            colorPreferenceKey="coverage_color"
+            colorPreferenceValue="192,255,192"
+            contributesToHeader="false"
+            highlightPreferenceKey="coverage_highlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="false"
+            isGoToNextNavigationTargetKey="coverage_isGoToNextNavigationTargetKey"
+            isGoToPreviousNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="coverage_isGoToPreviousNavigationTargetKey"
+            label="%coverageAnnotation.label"
+            overviewRulerPreferenceKey="coverage_overview"
+            overviewRulerPreferenceValue="false"
+            presentationLayer="0"
+            showInNextPrevDropdownToolbarAction="false"
+            showInNextPrevDropdownToolbarActionKey="coverage_showInNextPrevDropdownToolbarAction"
+            textPreferenceKey="coverage_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="coverage_stylePreferences"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="coverage_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+   </extension>
+
+</plugin>
