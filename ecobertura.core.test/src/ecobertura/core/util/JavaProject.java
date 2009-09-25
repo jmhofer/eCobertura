@@ -1,17 +1,28 @@
 package ecobertura.core.util;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collections;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
+
+import ecobertura.core.CorePlugin;
 
 /**
  * Builder utility class for creating Java projects in an Eclipse workspace.
@@ -26,6 +37,7 @@ public class JavaProject {
 	
 	private IWorkspace workspace;
 	private IProject project;
+	private IFolder srcFolder;
 	private IJavaProject javaProject;
 	private IPath outputLocation;
 	private IClasspathEntry srcEntry;
@@ -41,7 +53,7 @@ public class JavaProject {
 		this.workspace = workspace;
 	}
 
-	public JavaProject named(String name) throws CoreException, JavaModelException {
+	public JavaProject named(String name) throws CoreException, JavaModelException, IOException {
 		if (unnamed) {
 			createWorkspaceProject(name);
 			addJavaNatureToWorkspaceProject();
@@ -64,21 +76,25 @@ public class JavaProject {
 		project.setDescription(desc, JavaProject.NO_MONITOR);
 	}
 
-	private void createAndConfigureJavaProject() throws JavaModelException {
+	private void createAndConfigureJavaProject() throws CoreException, IOException {
 		javaProject = JavaCore.create(project);
 		initializeOutputPath();
 		initializeSourcePath();
 		initializeJRE();
 		createClassPathFrom();
+		addSampleSourceFile();
 	}
 
-	private void initializeOutputPath() throws JavaModelException {
-		outputLocation = project.getFullPath().append(OUTPUT_PATH);
+	private void initializeOutputPath() throws CoreException {
+	    IFolder folder = project.getFolder(OUTPUT_PATH);
+	    folder.create(IResource.FORCE, true, NO_MONITOR);
+		outputLocation = folder.getFullPath();
 	}
 
-	private void initializeSourcePath() {
-		IPath srcPath = project.getFullPath().append(SOURCE_PATH);
-		srcEntry = JavaCore.newSourceEntry(srcPath);
+	private void initializeSourcePath() throws CoreException {
+	    srcFolder = project.getFolder(SOURCE_PATH);
+	    srcFolder.create(IResource.FORCE, true, NO_MONITOR);
+		srcEntry = JavaCore.newSourceEntry(srcFolder.getFullPath());
 	}
 
 	private void initializeJRE() {
@@ -92,5 +108,13 @@ public class JavaProject {
 		javaProject.setRawClasspath(
 				new IClasspathEntry[] { jreEntry, srcEntry }, 
 				outputLocation, JavaProject.NO_MONITOR);
+	}
+	
+	private void addSampleSourceFile() throws CoreException, IOException {
+		IPath srcFilePath = new Path(srcFolder.getFullPath() + "/Sample.java");
+		IFile srcFile = workspace.getRoot().getFile(srcFilePath);
+		URL url = FileLocator.find(Platform.getBundle(CorePlugin.PLUGIN_ID), new Path("resources/Sample.java"), Collections.EMPTY_MAP);
+		srcFile.create(url.openStream(), IFile.FORCE, NO_MONITOR);
+		JavaCore.create(srcFile);
 	}
 }

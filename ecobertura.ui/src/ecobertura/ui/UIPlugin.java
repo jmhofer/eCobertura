@@ -6,7 +6,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import ecobertura.core.log.Logger;
-import ecobertura.ui.annotation.EditorTracker;
+import ecobertura.ui.editors.EditorTracker;
 
 
 /**

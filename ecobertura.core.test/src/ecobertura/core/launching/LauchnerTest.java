@@ -2,6 +2,7 @@ package ecobertura.core.launching;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 
@@ -30,7 +31,7 @@ public class LauchnerTest {
 	}
 
 	@Test
-	public void testCreateProject() throws CoreException {
+	public void testCreateProject() throws CoreException, IOException {
 		JavaProject.createIn(workspace).named("HelloWorld");
 	}
 
