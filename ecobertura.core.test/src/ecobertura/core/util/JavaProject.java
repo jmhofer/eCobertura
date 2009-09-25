@@ -10,12 +10,16 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -53,7 +57,7 @@ public class JavaProject {
 		this.workspace = workspace;
 	}
 
-	public JavaProject named(String name) throws CoreException, JavaModelException, IOException {
+	public JavaProject named(String name) throws CoreException, JavaModelException, IOException, OperationCanceledException, InterruptedException {
 		if (unnamed) {
 			createWorkspaceProject(name);
 			addJavaNatureToWorkspaceProject();
@@ -76,13 +80,14 @@ public class JavaProject {
 		project.setDescription(desc, JavaProject.NO_MONITOR);
 	}
 
-	private void createAndConfigureJavaProject() throws CoreException, IOException {
+	private void createAndConfigureJavaProject() throws CoreException, IOException, OperationCanceledException, InterruptedException {
 		javaProject = JavaCore.create(project);
 		initializeOutputPath();
 		initializeSourcePath();
 		initializeJRE();
 		createClassPathFrom();
 		addSampleSourceFile();
+		waitForBuild();
 	}
 
 	private void initializeOutputPath() throws CoreException {
@@ -117,4 +122,9 @@ public class JavaProject {
 		srcFile.create(url.openStream(), IFile.FORCE, NO_MONITOR);
 		JavaCore.create(srcFile);
 	}
+	
+	private void waitForBuild() throws OperationCanceledException, InterruptedException {
+		Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, NO_MONITOR);
+	}
+	
 }

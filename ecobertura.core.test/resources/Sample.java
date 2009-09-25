@@ -8,4 +8,9 @@ public class Sample {
 	public void print() {
 		System.out.println(hello);
 	}
+
+	public static void main(String[] args) {
+		Sample sample = new Sample();
+		sample.print();
+	}
 }
