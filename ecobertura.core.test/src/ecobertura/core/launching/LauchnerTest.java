@@ -1,11 +1,7 @@
 package ecobertura.core.launching;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -40,18 +36,17 @@ public class LauchnerTest {
 
 	@Test
 	public void testCreateProject() throws CoreException, IOException, OperationCanceledException, InterruptedException {
-		JavaProject.createIn(workspace).named("HelloWorld");
+		JavaProject javaProject = JavaProject.createIn(workspace).named("HelloWorld");
 
 		// trying out launching...
 		ILaunchManager launchMgr = DebugPlugin.getDefault().getLaunchManager();
-		Set<String> modes = new HashSet<String>();
-		modes.add("ecobertura.core.coverageLaunchMode");
-		ILaunchConfigurationType javaLaunchType = launchMgr.getLaunchConfigurationType("org.eclipse.jdt.launching.localJavaApplication");
+		ILaunchConfigurationType javaLaunchType = launchMgr.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 		ILaunchConfigurationWorkingCopy configWC = javaLaunchType.newInstance(null, "myLaunchConfig");
-		System.out.println(configWC.getAttributes().toString());
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "Sample");
 		ILaunchConfiguration config = configWC.doSave();
 		config.launch("ecobertura.core.coverageLaunchMode", null);
+
+		javaProject.remove();
 	}
 
 	@Test
@@ -61,6 +56,7 @@ public class LauchnerTest {
 		System.out.println(Arrays.toString(projects));
 	}
 	
+	/*
 	@Test
 	public void testSetInitializationData() {
 		fail("Not yet implemented");
@@ -90,5 +86,5 @@ public class LauchnerTest {
 	public void testPreLaunchCheck() {
 		fail("Not yet implemented");
 	}
-
+	*/
 }

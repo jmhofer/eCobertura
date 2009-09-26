@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -57,6 +56,10 @@ public class JavaProject {
 		this.workspace = workspace;
 	}
 
+	public void remove() throws CoreException {
+		project.delete(IProject.FORCE, NO_MONITOR);
+	}
+	
 	public JavaProject named(String name) throws CoreException, JavaModelException, IOException, OperationCanceledException, InterruptedException {
 		if (unnamed) {
 			createWorkspaceProject(name);
@@ -87,7 +90,7 @@ public class JavaProject {
 		initializeJRE();
 		createClassPathFrom();
 		addSampleSourceFile();
-		waitForBuild();
+		waitUntilAutomaticBuildComplete();
 	}
 
 	private void initializeOutputPath() throws CoreException {
@@ -123,8 +126,7 @@ public class JavaProject {
 		JavaCore.create(srcFile);
 	}
 	
-	private void waitForBuild() throws OperationCanceledException, InterruptedException {
+	private void waitUntilAutomaticBuildComplete() throws OperationCanceledException, InterruptedException {
 		Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, NO_MONITOR);
 	}
-	
 }

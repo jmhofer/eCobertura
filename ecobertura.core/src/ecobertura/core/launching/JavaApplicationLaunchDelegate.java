@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 
 // TODO do something useful instead of just forwarding...
@@ -25,7 +26,7 @@ public class JavaApplicationLaunchDelegate implements
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		
 		// simply forward for now
-		delegateToExtend.launch(configuration, mode, launch, monitor);
+		delegateToExtend.launch(configuration, ILaunchManager.RUN_MODE, launch, monitor);
 	}
 
 	@Override
