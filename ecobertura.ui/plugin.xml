@@ -6,14 +6,14 @@
          point="org.eclipse.ui.views">
       <category
             name="Cobertura"
-            id="net.sf.ecobertura.ui">
+            id="ecobertura.ui">
       </category>
       <view
             name="Cobertura View"
             icon="icons/sample.gif"
-            category="net.sf.ecobertura.ui"
+            category="ecobertura.ui"
             class="ecobertura.ui.views.CoberturaView"
-            id="net.sf.ecobertura.ui.views.CoberturaView">
+            id="ecobertura.ui.views.CoberturaView">
       </view>
    </extension>
    <extension
@@ -24,7 +24,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="net.sf.ecobertura.ui.views.CoberturaView">
+               id="ecobertura.ui.views.CoberturaView">
          </view>
       </perspectiveExtension>
    </extension>
@@ -61,6 +61,17 @@
             verticalRulerPreferenceKey="coverage_verticalRuler"
             verticalRulerPreferenceValue="false">
       </specification>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchGroups">
+      <launchGroup
+            bannerImage="icons/full/wizban/run_coverage.png"
+            id="ecobertura.ui.coverageLaunchGroup"
+            image="icons/full/elcl16/run_coverage.gif"
+            label="Coverage"
+            mode="ecobertura.core.coverageLaunchMode"
+            title="Select or configure an application for coverage">
+      </launchGroup>
    </extension>
 
 </plugin>

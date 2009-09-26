@@ -1,6 +1,5 @@
 package ecobertura.core.log;
 
-
 import org.eclipse.core.runtime.Status;
 
 import ecobertura.core.CorePlugin;

@@ -13,6 +13,9 @@ public class Logger {
 	
 	public static void logFor(final ILog log) {
 		Logger.log = log;
+		// TODO Platform.getDebugOption(option) for setting threshold and 
+		// perhaps selecting packages to log for
+		// TODO log to stdout instead of the error log, perhaps
 	}
 	
 	public static void info(final String message) {
