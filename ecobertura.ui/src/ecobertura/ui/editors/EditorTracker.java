@@ -8,7 +8,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import ecobertura.core.log.Logger;
+import ecobertura.core.log.EclipseLogger;
 import ecobertura.ui.annotation.CoverageAnnotationModel;
 
 public class EditorTracker {
@@ -25,7 +25,7 @@ public class EditorTracker {
 		this.workbench = workbench;
 		addListenersToEditorWindows();
 		annotateAllEditors();
-		Logger.info("EditorTracker registered.");
+		EclipseLogger.info("EditorTracker registered."); //$NON-NLS-1$
 	}
 
 	private void addListenersToEditorWindows() {

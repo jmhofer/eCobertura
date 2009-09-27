@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.osgi.framework.Bundle;
 
 import ecobertura.core.CorePlugin;
-import ecobertura.core.log.Logger;
+import ecobertura.core.log.EclipseLogger;
 
 public class LoggerPDETest implements ILogListener {
 
@@ -38,55 +38,55 @@ public class LoggerPDETest implements ILogListener {
 	@Test
 	public void testInfoString() {
 		shouldLog(Status.INFO, "hello world", null);
-		Logger.info("hello world");
+		EclipseLogger.info("hello world");
 	}
 
 	@Test
 	public void testInfoStringThrowable() {
 		shouldLog(Status.INFO, "hello world", new Exception("hello"));
-		Logger.info("hello world", new Exception("hello"));
+		EclipseLogger.info("hello world", new Exception("hello"));
 	}
 
 	@Test
 	public void testInfoThrowable() {
 		shouldLog(Status.INFO, "hello", new Exception("hello"));
-		Logger.info(new Exception("hello"));
+		EclipseLogger.info(new Exception("hello"));
 	}
 
 	@Test
 	public void testWarnString() {
 		shouldLog(Status.WARNING, "hello", null);
-		Logger.warn("hello");
+		EclipseLogger.warn("hello");
 	}
 
 	@Test
 	public void testWarnThrowable() {
 		shouldLog(Status.WARNING, "helloExc", new Exception("helloExc"));
-		Logger.warn(new Exception("helloExc"));
+		EclipseLogger.warn(new Exception("helloExc"));
 	}
 
 	@Test
 	public void testWarnStringThrowable() {
 		shouldLog(Status.WARNING, "helloMsg", new Exception("helloExc"));
-		Logger.warn("helloMsg", new Exception("helloExc"));
+		EclipseLogger.warn("helloMsg", new Exception("helloExc"));
 	}
 
 	@Test
 	public void testErrorString() {
 		shouldLog(Status.ERROR, "", null);
-		Logger.error("");
+		EclipseLogger.error("");
 	}
 
 	@Test
 	public void testErrorThrowable() {
 		shouldLog(Status.ERROR, "rte", new RuntimeException("rte"));
-		Logger.error(new RuntimeException("rte"));
+		EclipseLogger.error(new RuntimeException("rte"));
 	}
 
 	@Test
 	public void testErrorStringThrowable() {
 		shouldLog(Status.ERROR, "rte msg", new RuntimeException("rte"));
-		Logger.error("rte msg", new RuntimeException("rte"));
+		EclipseLogger.error("rte msg", new RuntimeException("rte"));
 	}
 
 	public void shouldLog(int severity, String message, Throwable throwable) {

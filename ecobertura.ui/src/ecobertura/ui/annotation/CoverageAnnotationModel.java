@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -16,15 +17,13 @@ import org.eclipse.jface.text.source.IAnnotationModelListener;
 import org.eclipse.jface.text.source.IAnnotationModelListenerExtension;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import ecobertura.core.log.Logger;
-
-
 // TODO fire events to listeners
 // TODO react to document/editor changes 
 // TODO react to coverage changes
 
 public class CoverageAnnotationModel implements IAnnotationModel {
-	
+	private static final Logger logger = Logger.getLogger("ecobertura.ui.annotation"); //$NON-NLS-1$
+
 	static class Key {}
 	static final Key MODEL_ID = new Key();
 	
@@ -44,7 +43,7 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 	}
 	
 	private CoverageAnnotationModel(final ITextEditor editor, final IDocument document) {
-		Logger.info("CoverageAnnotationModel created.");
+		logger.fine("CoverageAnnotationModel created."); //$NON-NLS-1$
 		// TODO what about editor and document?
 		initializeAnnotations();
 	}
@@ -60,7 +59,7 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 	
 	@Override
 	public void connect(final IDocument document) {
-		Logger.info("CoverageAnnotationModel connected to " + document.get());
+		logger.fine("CoverageAnnotationModel connected to " + document.get()); //$NON-NLS-1$
 
 	    addAnnotationsTo(document);
 		// TODO connecting
@@ -71,7 +70,7 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 	        try {
 	        	document.addPosition(ann.getPosition());
 	        } catch (BadLocationException e) {
-	        	Logger.warn(e);
+	        	logger.log(Level.WARNING, "unable to add annotation to document", e); //$NON-NLS-1$
 	        }
 	      }
 	}
@@ -80,7 +79,7 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 	public void disconnect(final IDocument document) {
 		// TODO disconnecting
 		removeAnnotationsFrom(document);
-		Logger.info("CoverageAnnotationModel disconnected from " + document.get());
+		logger.fine("CoverageAnnotationModel disconnected from " + document.get()); //$NON-NLS-1$
 	}
 
 	private void removeAnnotationsFrom(IDocument document) {
@@ -106,13 +105,13 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 	@Override
 	public void addAnnotation(Annotation annotation, Position position) {
 		throw new UnsupportedOperationException(
-				"adding annotations externally is not supported");
+				"adding annotations externally is not supported"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void removeAnnotation(Annotation annotation) {
 		throw new UnsupportedOperationException(
-				"removing annotations externally is not supported");
+				"removing annotations externally is not supported"); //$NON-NLS-1$
 	}
 
 	@Override

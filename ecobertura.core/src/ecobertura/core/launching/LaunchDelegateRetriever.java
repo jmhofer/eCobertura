@@ -2,6 +2,7 @@ package ecobertura.core.launching;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 
 import org.eclipse.core.runtime.CoreException;
@@ -18,9 +19,10 @@ import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 
 import ecobertura.core.CorePlugin;
-import ecobertura.core.log.Logger;
 
 class LaunchDelegateRetriever {
+	private static final Logger logger = Logger.getLogger("ecobertura.core.launching"); //$NON-NLS-1$
+	
 	private IConfigurationElement config;
 	
 	static LaunchDelegateRetriever fromExtensionConfig(IConfigurationElement config) {
@@ -42,7 +44,7 @@ class LaunchDelegateRetriever {
 			DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType(launchTypeName);
 		if (type == null) {
 			throw new CoreException(new Status(Status.ERROR, CorePlugin.PLUGIN_ID, 
-					String.format("unknown launch configuration type %s", launchTypeName)));
+					String.format("unknown launch configuration type %s", launchTypeName))); //$NON-NLS-1$
 		}
 		return type;
 	}
@@ -52,10 +54,10 @@ class LaunchDelegateRetriever {
 				Arrays.asList(ILaunchManager.RUN_MODE)));
 		if (delegatesForType.length == 0) {
 			throw new CoreException(new Status(Status.ERROR, CorePlugin.PLUGIN_ID, 
-					String.format("no delegate for %s found", type.getName())));
+					String.format("no delegate for %s found", type.getName()))); //$NON-NLS-1$
 		}
 		if (delegatesForType.length > 1) {
-			Logger.warn(String.format("more than one launch delegate found for %s", 
+			logger.warning(String.format("more than one launch delegate found for %s",  //$NON-NLS-1$
 					type.getName()));
 		}
 		return convertToType2Delegate(delegatesForType[0].getDelegate());

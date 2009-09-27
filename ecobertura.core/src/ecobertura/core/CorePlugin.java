@@ -1,54 +1,34 @@
 package ecobertura.core;
 
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-import ecobertura.core.log.Logger;
+import ecobertura.core.log.EclipseLogger;
+import ecobertura.core.trace.Trace;
 
 /**
- * The activator class controls the plug-in life cycle
+ * Controls the plug-in life cycle of the eCobertura Core.
  */
 public class CorePlugin extends Plugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "ecobertura.core";
+	private static final Logger logger = Logger.getLogger(CorePlugin.PLUGIN_ID);
+	public static final String PLUGIN_ID = "ecobertura.core"; //$NON-NLS-1$
 
-	// The shared instance
-	private static CorePlugin plugin;
-	
-	/**
-	 * The constructor
-	 */
-	public CorePlugin() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		Logger.logFor(getLog());
-		plugin = this;
+		
+		Trace.configure();
+		EclipseLogger.logFor(getLog());
+		
+		logger.fine("plugin started"); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
 		super.stop(context);
+		logger.fine("plugin stopped"); //$NON-NLS-1$
 	}
-
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static CorePlugin getDefault() {
-		return plugin;
-	}
-
 }

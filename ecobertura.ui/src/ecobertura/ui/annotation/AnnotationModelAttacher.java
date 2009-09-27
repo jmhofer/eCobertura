@@ -1,5 +1,7 @@
 package ecobertura.ui.annotation;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IAnnotationModel;
@@ -7,10 +9,9 @@ import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import ecobertura.core.log.Logger;
-
-
 class AnnotationModelAttacher {
+	private static final Logger logger = Logger.getLogger("ecobertura.ui.annotation"); //$NON-NLS-1$
+	
 	private ITextEditor editor;
 	private IDocumentProvider provider;
 	private IAnnotationModelExtension modelToAttachTo;
@@ -20,7 +21,7 @@ class AnnotationModelAttacher {
 		try {
 			attachIfNecessary();
 		} catch(NoValidAnnotationModelException e) {
-			Logger.info(e);
+			logger.log(Level.WARNING, "unable to attach to editors", e); //$NON-NLS-1$
 		}
 	}
 	
@@ -35,7 +36,7 @@ class AnnotationModelAttacher {
 	private IDocumentProvider getProvider() {
 	    final IDocumentProvider provider = editor.getDocumentProvider();
 	    if (provider == null) {
-	    	throw new NoValidAnnotationModelException("no document provider found");
+	    	throw new NoValidAnnotationModelException("no document provider found"); //$NON-NLS-1$
 	    }
 	    return provider;
 	}
@@ -43,7 +44,7 @@ class AnnotationModelAttacher {
 	private IAnnotationModelExtension getAnnotationModel() {
 	    final IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
 	    if (!(model instanceof IAnnotationModelExtension)) {
-	    	throw new NoValidAnnotationModelException("unknown annotation model extension type: " 
+	    	throw new NoValidAnnotationModelException("unknown annotation model extension type: "  //$NON-NLS-1$
 	    			+ model.getClass().getName());
 	    }
 	    return (IAnnotationModelExtension) model;
@@ -58,6 +59,6 @@ class AnnotationModelAttacher {
 	    final CoverageAnnotationModel modelToAttach 
 	    	= CoverageAnnotationModel.createForEditorDocument(editor, document);
 	    modelToAttachTo.addAnnotationModel(CoverageAnnotationModel.MODEL_ID, modelToAttach);
-		Logger.info("CoverageAnnotationModel attached to " + editor.getTitle());
+	    logger.fine("CoverageAnnotationModel attached to " + editor.getTitle()); //$NON-NLS-1$
 	}
 }

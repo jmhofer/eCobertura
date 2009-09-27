@@ -1,55 +1,49 @@
 package ecobertura.ui;
 
+import java.util.logging.Logger;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import ecobertura.core.log.Logger;
+import ecobertura.core.log.EclipseLogger;
+import ecobertura.core.trace.Trace;
 import ecobertura.ui.editors.EditorTracker;
 
-
 /**
- * The activator class controls the plug-in life cycle
+ * Controls the plug-in life cycle of the eCobertura UI.
  */
 public class UIPlugin extends AbstractUIPlugin {
 
-	public static final String PLUGIN_ID = "ecobertura.ui";
+	private static final Logger logger = Logger.getLogger(UIPlugin.PLUGIN_ID);
+	
+	public static final String PLUGIN_ID = "ecobertura.ui"; //$NON-NLS-1$
 
 	private static UIPlugin plugin;
 	
 	private EditorTracker editorTracker; 
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		UIPlugin.plugin = this;
-		Logger.logFor(getLog());
-		Logger.info("Cobertura plugin started.");
+		
+		Trace.configure();
+		EclipseLogger.logFor(getLog());
+		logger.info("Cobertura plugin started."); //$NON-NLS-1$
+		
 		editorTracker = EditorTracker.trackEditorsOf(getWorkbench());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		UIPlugin.plugin = null;
 		editorTracker.dispose();
-		Logger.info("Cobertura plugin stopped.");
 		super.stop(context);
+		
+		logger.info("Cobertura plugin stopped."); //$NON-NLS-1$
 	}
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
 	public static UIPlugin getDefault() {
 		return plugin;
 	}
