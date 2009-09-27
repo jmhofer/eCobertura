@@ -1,5 +1,7 @@
 package ecobertura.ui.editors;
 
+import java.util.logging.Logger;
+
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -8,11 +10,12 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import ecobertura.core.log.EclipseLogger;
 import ecobertura.ui.annotation.CoverageAnnotationModel;
 
 public class EditorTracker {
 
+	private static final Logger logger = Logger.getLogger("ecobertura.ui.editors"); //$NON-NLS-1$
+	
 	private final IWorkbench workbench;
 
 	private final WindowListener windowListener = new WindowListener(this);
@@ -25,7 +28,7 @@ public class EditorTracker {
 		this.workbench = workbench;
 		addListenersToEditorWindows();
 		annotateAllEditors();
-		EclipseLogger.info("EditorTracker registered."); //$NON-NLS-1$
+		logger.fine("EditorTracker registered."); //$NON-NLS-1$
 	}
 
 	private void addListenersToEditorWindows() {

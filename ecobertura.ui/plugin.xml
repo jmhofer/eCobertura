@@ -67,11 +67,43 @@
       <launchGroup
             bannerImage="icons/full/wizban/run_coverage.png"
             id="ecobertura.ui.coverageLaunchGroup"
-            image="icons/full/elcl16/run_coverage.gif"
+            image="icons/full/etool16/run_coverage.gif"
             label="Coverage"
             mode="ecobertura.core.coverageLaunchMode"
             title="Select or configure an application for coverage">
       </launchGroup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="ecobertura.ui.actionSet"
+            label="Coverage LaunchGroup Action Set"
+            visible="true">
+         <action
+               class="ecobertura.ui.actions.CoverageLaunchToolbarAction"
+               disabledIcon="icons/full/dtool16/run_coverage.gif"
+               hoverIcon="icons/full/elcl16/run_coverage.gif"
+               icon="icons/full/etool16/run_coverage.gif"
+               id="ecobertura.ui.actions.LaunchAction"
+               label="Coverage Action"
+               style="pulldown"
+               toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"
+               tooltip="Cover (Cobertura)">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.jdt.debug.ui.localJavaShortcut"
+            icon="icons/full/etool16/java_launch.gif"
+            id="ecobertura.ui.launching.javaApplicationLaunchShortcut"
+            label="Java Application"
+            modes="ecobertura.core.coverageLaunchMode">
+         <contextualLaunch>
+            <enablement></enablement>
+         </contextualLaunch>
+      </shortcut>
    </extension>
 
 </plugin>
