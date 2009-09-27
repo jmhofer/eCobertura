@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-// TODO define handler for logger and check warnings
 public class AnnotationModelAttacherTest {
 
 	abstract class AnnotationModelImpl implements IAnnotationModel, IAnnotationModelExtension {};
