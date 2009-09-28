@@ -8,7 +8,7 @@ import org.osgi.framework.BundleContext;
 
 import ecobertura.core.log.EclipseLogger;
 import ecobertura.core.trace.Trace;
-import ecobertura.ui.editors.EditorTracker;
+import ecobertura.ui.editors.EditorsAnnotator;
 
 /**
  * Controls the plug-in life cycle of the eCobertura UI.
@@ -21,7 +21,7 @@ public class UIPlugin extends AbstractUIPlugin {
 
 	private static UIPlugin plugin;
 	
-	private EditorTracker editorTracker; 
+	private EditorsAnnotator editorTracker; 
 
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -32,7 +32,7 @@ public class UIPlugin extends AbstractUIPlugin {
 		EclipseLogger.logFor(getLog());
 		logger.info("Cobertura plugin started."); //$NON-NLS-1$
 		
-		editorTracker = EditorTracker.trackEditorsOf(getWorkbench());
+		editorTracker = EditorsAnnotator.trackEditorsOf(getWorkbench());
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class LaunchShortcutRetriever {
 				return getLaunchShortcutFromConfigurationElement(config);
 			}
 		}
-		logger.warning(String.format("No standard launch shortcut named '%s' found.")); //$NON-NLS-1$
+		logger.warning(String.format("No standard launch shortcut named '%s' found.", shortcutId)); //$NON-NLS-1$
 		return null;
 	}
 

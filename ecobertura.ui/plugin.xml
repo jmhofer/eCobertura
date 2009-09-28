@@ -105,5 +105,13 @@
          </contextualLaunch>
       </shortcut>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
+            id="ecobertura.ui.launching.config.JavaApplicationConfigurationTabGroup"
+            type="org.eclipse.jdt.launching.localJavaApplication">
+      </launchConfigurationTabGroup>
+   </extension>
 
 </plugin>

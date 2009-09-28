@@ -6,9 +6,9 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 
 final class WindowListener implements IWindowListener {
-	private EditorTracker editorTracker;
+	private EditorsAnnotator editorTracker;
 	
-	WindowListener(EditorTracker editorTracker) {
+	WindowListener(EditorsAnnotator editorTracker) {
 		this.editorTracker = editorTracker;
 	}
 	
