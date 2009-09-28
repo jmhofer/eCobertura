@@ -3,7 +3,6 @@ package ecobertura.ui.annotation;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,23 +11,17 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModelEvent;
-import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.jface.text.source.IAnnotationModelListener;
-import org.eclipse.jface.text.source.IAnnotationModelListenerExtension;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 // TODO fire events to listeners
 // TODO react to document/editor changes 
 // TODO react to coverage changes
 
-public class CoverageAnnotationModel implements IAnnotationModel {
+public class CoverageAnnotationModel extends AbstractAnnotationModel {
 	private static final Logger logger = Logger.getLogger("ecobertura.ui.annotation"); //$NON-NLS-1$
 
-	static class Key {}
+	static class Key { /* internal marker class */ }
 	static final Key MODEL_ID = new Key();
-	
-	private final List<IAnnotationModelListener> listeners = 
-		new CopyOnWriteArrayList<IAnnotationModelListener>();
 	
 	private final List<CoverageAnnotation> annotations =
 		new ArrayList<CoverageAnnotation>(64);
@@ -92,7 +85,7 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 	public Iterator<CoverageAnnotation> getAnnotationIterator() {
 		return annotations.iterator();
 	}
-
+	
 	@Override
 	public Position getPosition(Annotation annotation) {
 		if (annotation instanceof CoverageAnnotation) {
@@ -102,40 +95,4 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 		}
 	}
 
-	@Override
-	public void addAnnotation(Annotation annotation, Position position) {
-		throw new UnsupportedOperationException(
-				"adding annotations externally is not supported"); //$NON-NLS-1$
-	}
-
-	@Override
-	public void removeAnnotation(Annotation annotation) {
-		throw new UnsupportedOperationException(
-				"removing annotations externally is not supported"); //$NON-NLS-1$
-	}
-
-	@Override
-	public void addAnnotationModelListener(IAnnotationModelListener listener) {
-		listeners.add(listener);
-		fireModelChanged(new AnnotationModelEvent(this, true));
-	}
-
-	@Override
-	public void removeAnnotationModelListener(IAnnotationModelListener listener) {
-		listeners.remove(listener);
-	}
-	
-	private void fireModelChanged(final AnnotationModelEvent event) {
-		event.markSealed();
-		if (event.isEmpty()) {
-			return;
-		}
-		for (final IAnnotationModelListener listener : listeners) {
-	        if (listener instanceof IAnnotationModelListenerExtension) {
-	        	((IAnnotationModelListenerExtension) listener).modelChanged(event);
-	        } else {
-	        	listener.modelChanged(this);
-	        }
-		}
-	}
 }
