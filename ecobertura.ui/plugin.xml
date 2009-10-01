@@ -82,7 +82,7 @@
          <action
                class="ecobertura.ui.actions.CoverageLaunchToolbarAction"
                disabledIcon="icons/full/dtool16/run_coverage.gif"
-               hoverIcon="icons/full/elcl16/run_coverage.gif"
+               hoverIcon="icons/full/etool16/run_coverage.gif"
                icon="icons/full/etool16/run_coverage.gif"
                id="ecobertura.ui.actions.LaunchAction"
                label="Coverage Action"
@@ -103,7 +103,6 @@
                id="ecobertura.ui.actions.CoverAsAction"
                label="Cover As"
                menubarPath="org.eclipse.ui.run/coverageLaunchGroup"
-               pulldown="true"
                style="pulldown">
          </action>
       </actionSet>
@@ -117,7 +116,8 @@
             label="Java Application"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement></enablement></contextualLaunch>
+            <enablement></enablement>
+         </contextualLaunch>
       </shortcut>
    </extension>
    <extension
@@ -143,7 +143,7 @@
             id="ecobertura.ui.objectPopup"
             objectClass="java.lang.Object">
          <action
-               class="ecobertura.ui.actions.CoverAsPopupAction"
+               class="ecobertura.ui.actions.CoverAsContextualLaunchAction"
                enablesFor="+"
                id="ecobertura.ui.objectPopup.CoverAsAction"
                label="Cover As"

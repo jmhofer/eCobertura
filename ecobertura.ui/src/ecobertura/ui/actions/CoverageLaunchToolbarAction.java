@@ -4,6 +4,6 @@ import org.eclipse.debug.ui.actions.AbstractLaunchToolbarAction;
 
 public class CoverageLaunchToolbarAction extends AbstractLaunchToolbarAction {
 	public CoverageLaunchToolbarAction() {
-		super("ecobertura.ui.coverageLaunchGroup");
+		super("ecobertura.ui.coverageLaunchGroup"); //$NON-NLS-1$
 	}
 }
