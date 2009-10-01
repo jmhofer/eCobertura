@@ -90,6 +90,22 @@
                toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"
                tooltip="Cover (Cobertura)">
          </action>
+         <menu
+               id="org.eclipse.ui.run"
+               label="&amp;Run"
+               path="additions">
+            <separator
+                  name="coverageLaunchGroup">
+            </separator>
+         </menu>
+         <action
+               class="ecobertura.ui.actions.CoverAsAction"
+               id="ecobertura.ui.actions.CoverAsAction"
+               label="Cover As"
+               menubarPath="org.eclipse.ui.run/coverageLaunchGroup"
+               pulldown="true"
+               style="pulldown">
+         </action>
       </actionSet>
    </extension>
    <extension
@@ -101,8 +117,7 @@
             label="Java Application"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement></enablement>
-         </contextualLaunch>
+            <enablement></enablement></contextualLaunch>
       </shortcut>
    </extension>
    <extension
@@ -112,6 +127,30 @@
             id="ecobertura.ui.launching.config.JavaApplicationConfigurationTabGroup"
             type="org.eclipse.jdt.launching.localJavaApplication">
       </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="ecobertura.ui.launching.javaApplicationLaunchCommand"
+            name="Cover Java Application">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="ecobertura.ui.objectPopup"
+            objectClass="java.lang.Object">
+         <action
+               class="ecobertura.ui.actions.CoverAsPopupAction"
+               enablesFor="+"
+               id="ecobertura.ui.objectPopup.CoverAsAction"
+               label="Cover As"
+               menubarPath="additions"
+               style="pulldown">
+         </action>
+      </objectContribution>
    </extension>
 
 </plugin>
