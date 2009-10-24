@@ -8,8 +8,15 @@ Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
- org.eclipse.jdt.launching
+ org.eclipse.jdt.launching,
+ org.eclipse.jdt.core;bundle-version="3.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: ecobertura.core.log,
  ecobertura.core.trace
+Bundle-ClassPath: .,
+ lib/asm-3.0.jar,
+ lib/asm-tree-3.0.jar,
+ lib/cobertura.jar,
+ lib/jakarta-oro-2.0.8.jar,
+ lib/log4j-1.2.9.jar

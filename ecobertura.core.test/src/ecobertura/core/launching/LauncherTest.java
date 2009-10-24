@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import ecobertura.core.util.JavaProject;
 
-public class LauchnerTest {
+public class LauncherTest {
 
 	private IWorkspace workspace;
 	private JavaProject javaProject;
