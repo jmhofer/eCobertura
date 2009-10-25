@@ -1,6 +1,8 @@
 package ecobertura.core.launching;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -40,6 +42,10 @@ public class LauncherTest {
 		ILaunchConfigurationType javaLaunchType = launchMgr.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 		ILaunchConfigurationWorkingCopy configWC = javaLaunchType.newInstance(null, "myLaunchConfig");
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "Sample");
+		List<String> classpath = new ArrayList<String>();
+		classpath.add(javaProject.defaultClasspath().getMemento());
+		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
+		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
 		ILaunchConfiguration config = configWC.doSave();
 		config.launch("ecobertura.core.coverageLaunchMode", null);
 	}

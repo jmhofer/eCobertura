@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 
 import ecobertura.core.CorePlugin;
@@ -60,6 +61,10 @@ public class JavaProject {
 		project.delete(IProject.FORCE, NO_MONITOR);
 	}
 	
+	public IRuntimeClasspathEntry defaultClasspath() throws CoreException {
+		return JavaRuntime.newDefaultProjectClasspathEntry(javaProject);
+	}
+	
 	public JavaProject named(String name) throws CoreException, JavaModelException, IOException, OperationCanceledException, InterruptedException {
 		if (unnamed) {
 			createWorkspaceProject(name);
@@ -88,7 +93,7 @@ public class JavaProject {
 		initializeOutputPath();
 		initializeSourcePath();
 		initializeJRE();
-		createClassPathFrom();
+		createClassPath();
 		addSampleSourceFile();
 		waitUntilAutomaticBuildComplete();
 	}
@@ -110,7 +115,7 @@ public class JavaProject {
 				new Path(JavaRuntime.JRE_CONTAINER));
 	}
 	
-	private void createClassPathFrom() 
+	private void createClassPath() 
 			throws JavaModelException {
 		
 		javaProject.setRawClasspath(

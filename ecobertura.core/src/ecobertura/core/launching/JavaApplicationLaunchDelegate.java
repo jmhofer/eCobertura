@@ -51,10 +51,9 @@ public class JavaApplicationLaunchDelegate implements
 		    	logger.fine(String.format("skipping %s", classpathEntry.getLocation()));
 	    		continue;
 	    	}
-	    	// FIXME why nothing found?
-	    	final String classFilePath = classpathEntry.getLocation();
-	    	logger.fine(String.format("instrumenting %s", classFilePath));
-		    // TODO instrument
+	    	final String userClasspath = classpathEntry.getLocation();
+	    	logger.fine(String.format("instrumenting %s", userClasspath));
+		    // TODO instrument files within classpath
 	    }
 	    
  	}
