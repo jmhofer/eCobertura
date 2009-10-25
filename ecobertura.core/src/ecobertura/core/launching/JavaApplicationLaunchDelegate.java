@@ -1,5 +1,6 @@
 package ecobertura.core.launching;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
@@ -12,6 +13,8 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
+
+import ecobertura.core.cobertura.CoberturaWrapper;
 
 public class JavaApplicationLaunchDelegate implements
 		ILaunchConfigurationDelegate2, IExecutableExtension {
@@ -36,27 +39,47 @@ public class JavaApplicationLaunchDelegate implements
 		delegateToExtend.launch(configuration, ILaunchManager.RUN_MODE, launch, monitor);
 	}
 
+	// TODO clean this up! move it to its own class
 	private void instrumentClasspath(final ILaunchConfiguration configuration) 
 			throws CoreException {
 		
-		// TODO clean this up
-		
-	    final IRuntimeClasspathEntry[] unresolvedClasspathEntries = 
-	    	JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
-	    final IRuntimeClasspathEntry[] resolvedClasspathEntries = 
-	    	JavaRuntime.resolveRuntimeClasspath(unresolvedClasspathEntries, configuration);
-
-	    for (final IRuntimeClasspathEntry classpathEntry : resolvedClasspathEntries) {
+	    for (IRuntimeClasspathEntry classpathEntry : resolvedClasspathEntries(configuration)) {
 	    	if (classpathEntry.getClasspathProperty() != IRuntimeClasspathEntry.USER_CLASSES) {
 		    	logger.fine(String.format("skipping %s", classpathEntry.getLocation()));
 	    		continue;
 	    	}
 	    	final String userClasspath = classpathEntry.getLocation();
-	    	logger.fine(String.format("instrumenting %s", userClasspath));
-		    // TODO instrument files within classpath
+	    	logger.fine(String.format("instrumenting classes within %s", userClasspath));
+	    	instrumentFilesWithin(new File(userClasspath));
 	    }
 	    
  	}
+
+	private IRuntimeClasspathEntry[] resolvedClasspathEntries(
+			final ILaunchConfiguration configuration) throws CoreException {
+		
+		IRuntimeClasspathEntry[] unresolvedClasspathEntries = 
+	    	JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
+	    IRuntimeClasspathEntry[] resolvedClasspathEntries = 
+	    	JavaRuntime.resolveRuntimeClasspath(unresolvedClasspathEntries, configuration);
+	    
+		return resolvedClasspathEntries;
+	}
+
+	private void instrumentFilesWithin(final File file) {
+		if (file.isDirectory()) {
+			for (final File subFile : file.listFiles()) {
+				instrumentFilesWithin(subFile);
+			}
+		} else {
+			instrumentClassFile(file);
+		}
+	}
+
+	private void instrumentClassFile(File file) {
+    	logger.fine(String.format("instrumenting %s", file.getPath()));
+    	CoberturaWrapper.get().instrumentClassFile(file);
+	}
 
 	@Override
 	public boolean buildForLaunch(ILaunchConfiguration configuration,

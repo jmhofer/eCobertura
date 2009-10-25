@@ -20,6 +20,7 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 	
 	private CoberturaWrapper() {
 		coberturaMain = new Main();
+		// FIXME configure cobertura
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 			final File classFileToInstrument, final Main coberturaMain)
 			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		
-		final Method addInstrumentationToSingleClass = coberturaMain.getClass().getMethod(
+		final Method addInstrumentationToSingleClass = coberturaMain.getClass().getDeclaredMethod(
 				COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS, File.class);
 		
 		addInstrumentationToSingleClass.setAccessible(true);
