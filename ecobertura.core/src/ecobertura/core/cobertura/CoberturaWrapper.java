@@ -11,16 +11,48 @@ import net.sourceforge.cobertura.instrument.Main;
 public class CoberturaWrapper implements ICoberturaWrapper {
 
 	private static final String COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS = "addInstrumentationToSingleClass"; //$NON-NLS-1$
+	
+	private static CoberturaWrapper instance;
 
 	final Main coberturaMain;
+	final ProjectData projectData;
 	
 	public static ICoberturaWrapper get() {
-		return new CoberturaWrapper();
+		if (instance == null) {
+			System.err.println("CoberturaWrapper: initializing...");
+			instance = new CoberturaWrapper();
+		}
+		return instance;
 	}
 	
 	private CoberturaWrapper() {
 		coberturaMain = new Main();
-		// FIXME configure cobertura
+		projectData = new ProjectData();
+		initializeCoberturaProjectData();
+	}
+
+	private void initializeCoberturaProjectData() {
+		try {
+			setPrivateProjectData();
+			
+		} catch (NoSuchFieldException e) {
+			wrapByCoberturaException("field %s not found in Cobertura Main", e); //$NON-NLS-1$
+		} catch (IllegalAccessException e) {
+			wrapByCoberturaException("unable to access field %s in Cobertura Main", e); //$NON-NLS-1$
+		}
+	}
+	
+	private void setPrivateProjectData()
+			throws NoSuchFieldException, IllegalAccessException {
+		
+		Field projectDataField = coberturaMain.getClass().getDeclaredField("projectData");
+		projectDataField.setAccessible(true);
+		projectDataField.set(coberturaMain, projectData);
+	}
+	
+	@Override
+	public ProjectData projectData() {
+		return projectData;
 	}
 
 	@Override
@@ -49,29 +81,6 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 		addInstrumentationToSingleClass.invoke(coberturaMain, classFileToInstrument);
 	}
 
-	@Override
-	public ProjectData projectData() throws CoberturaException {
-		try {
-			return retrievePrivateProjectData();
-			
-		} catch (NoSuchFieldException e) {
-			wrapByCoberturaException("field %s not found in Cobertura Main", e); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
-			wrapByCoberturaException("unable to access field %s in Cobertura Main", e); //$NON-NLS-1$
-		}
-		
-		// will never happen because the exception wrapper always throws a CoberturaException
-		return null; 
-	}
-
-	private ProjectData retrievePrivateProjectData()
-			throws NoSuchFieldException, IllegalAccessException {
-		
-		Field projectDataField = coberturaMain.getClass().getDeclaredField("projectData");
-		projectDataField.setAccessible(true);
-		return (ProjectData) projectDataField.get(coberturaMain);
-	}
-	
 	private void wrapByCoberturaException(final String messageTemplate,
 			final Throwable cause) {
 		

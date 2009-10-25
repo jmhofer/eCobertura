@@ -34,8 +34,9 @@ public class JavaApplicationLaunchDelegate implements
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		
 	    // TODO monitor
+		
 		instrumentClasspath(configuration);
-		// simply forward for now
+		
 		delegateToExtend.launch(configuration, ILaunchManager.RUN_MODE, launch, monitor);
 	}
 
@@ -48,6 +49,7 @@ public class JavaApplicationLaunchDelegate implements
 		    	logger.fine(String.format("skipping %s", classpathEntry.getLocation()));
 	    		continue;
 	    	}
+	    	// FIXME instruments too much? - instruments jar files, too?
 	    	final String userClasspath = classpathEntry.getLocation();
 	    	logger.fine(String.format("instrumenting classes within %s", userClasspath));
 	    	instrumentFilesWithin(new File(userClasspath));
