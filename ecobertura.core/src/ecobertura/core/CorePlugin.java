@@ -20,15 +20,15 @@ public class CorePlugin extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		
-		Trace.configure();
+		Trace.configureForPluginId(PLUGIN_ID);
 		EclipseLogger.logFor(getLog());
 		
-		logger.fine("plugin started"); //$NON-NLS-1$
+		logger.info("plugin started"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		logger.fine("plugin stopped"); //$NON-NLS-1$
+		logger.info("plugin stopped"); //$NON-NLS-1$
 	}
 }

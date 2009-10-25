@@ -28,7 +28,7 @@ public class UIPlugin extends AbstractUIPlugin {
 		super.start(context);
 		UIPlugin.plugin = this;
 		
-		Trace.configure();
+		Trace.configureForPluginId(PLUGIN_ID);
 		EclipseLogger.logFor(getLog());
 		logger.info("Cobertura plugin started."); //$NON-NLS-1$
 		

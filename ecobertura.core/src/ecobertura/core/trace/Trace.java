@@ -7,31 +7,35 @@ import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
 
-import ecobertura.core.CorePlugin;
-
 public class Trace {
 	private static final String GLOBAL_PACKAGE = "ecobertura"; //$NON-NLS-1$
-	private static final String GLOBAL_TRACE_LEVEL = CorePlugin.PLUGIN_ID + "/debug/level"; //$NON-NLS-1$
+	private static final String GLOBAL_TRACE_LEVEL = "%s/debug/level"; //$NON-NLS-1$
 
 	private Trace() {
 		/* protect from instantiation */
 	}
 	
-	public static void configure() {
-		String globalLevel = getDebugOptionStringOrElse(GLOBAL_TRACE_LEVEL, "WARNING").toUpperCase(); //$NON-NLS-1$
-		
-	    Handler consoleHandler = new ConsoleHandler();
-	    Logger.getLogger(GLOBAL_PACKAGE).addHandler(consoleHandler);
+	public static void configureForPluginId(final String pluginId) {
+		String globalLevel = getDebugOptionStringOrElse(
+				String.format(GLOBAL_TRACE_LEVEL, pluginId), Level.WARNING.toString());
+	    Logger.getLogger(GLOBAL_PACKAGE).addHandler(configuredConsoleHandler());
 	    Logger.getLogger(GLOBAL_PACKAGE).setLevel(Level.parse(globalLevel));
 	}
-	
+
 	private static String getDebugOptionStringOrElse(String optionKey, String defaultValue) {
 		assert optionKey != null;
 		
-		String optionValue = Platform.getDebugOption(GLOBAL_TRACE_LEVEL);
+		String optionValue = Platform.getDebugOption(optionKey);
+		System.out.printf("option: %s = %s%n", optionKey, optionValue);
 		if (optionValue == null) {
-			return defaultValue;
+			return defaultValue.toUpperCase();
 		}
-		return optionValue;
+		return optionValue.toUpperCase();
+	}
+
+	private static Handler configuredConsoleHandler() {
+		final Handler consoleHandler = new ConsoleHandler();
+	    consoleHandler.setLevel(Level.ALL);
+		return consoleHandler;
 	}
 }

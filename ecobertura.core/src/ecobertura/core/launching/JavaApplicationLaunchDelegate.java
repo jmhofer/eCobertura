@@ -48,6 +48,7 @@ public class JavaApplicationLaunchDelegate implements
 
 	    for (final IRuntimeClasspathEntry classpathEntry : resolvedClasspathEntries) {
 	    	if (classpathEntry.getClasspathProperty() != IRuntimeClasspathEntry.USER_CLASSES) {
+		    	logger.fine(String.format("skipping %s", classpathEntry.getLocation()));
 	    		continue;
 	    	}
 	    	// FIXME why nothing found?
