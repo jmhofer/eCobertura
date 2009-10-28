@@ -1,12 +1,23 @@
 package ecobertura.core.cobertura;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.instrument.Main;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+
+import ecobertura.core.CorePlugin;
+import ecobertura.core.log.LogStatus;
 
 public class CoberturaWrapper implements ICoberturaWrapper {
 
@@ -88,5 +99,17 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 				messageTemplate, COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS);
 		
 		throw new CoberturaException(message, cause);
+	}
+	
+	@Override
+	public IPath pathToJar() throws CoreException {
+		try {
+			final URL url = FileLocator.toFileURL(FileLocator.find(new URL(String.format(
+					"platform:/plugin/%s/lib/cobertura.jar", CorePlugin.PLUGIN_ID))));
+			return new Path(url.getPath());
+		} catch (IOException e) {
+			throw new CoreException(LogStatus.fromExceptionWithSeverity(
+					"unable to retrieve cobertura jar", e, Status.ERROR));
+		}
 	}
 }

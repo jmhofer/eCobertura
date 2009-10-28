@@ -4,15 +4,15 @@ import org.eclipse.core.runtime.Status;
 
 import ecobertura.core.CorePlugin;
 
-class LogStatus extends Status {
-	static LogStatus fromMessageWithSeverity(final String message, final int severity) {
+public class LogStatus extends Status {
+	public static LogStatus fromMessageWithSeverity(final String message, final int severity) {
 		assert message != null;
 		assert severity == Status.ERROR || severity == Status.WARNING || severity == Status.INFO;
 		
 		return new LogStatus(severity, message);
 	}
 	
-	static LogStatus fromExceptionWithSeverity(final String message, final Throwable throwable, 
+	public static LogStatus fromExceptionWithSeverity(final String message, final Throwable throwable, 
 			final int severity) {
 		assert message != null;
 		assert severity == Status.ERROR || severity == Status.WARNING || severity == Status.INFO;

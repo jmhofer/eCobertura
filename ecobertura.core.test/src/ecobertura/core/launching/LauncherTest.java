@@ -52,7 +52,6 @@ public class LauncherTest {
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
 		ILaunchConfiguration config = configWC.doSave();
 		
-		// FIXME: doesn't really launch?!
 		config.launch("ecobertura.core.coverageLaunchMode", null);
 		
 		// check
