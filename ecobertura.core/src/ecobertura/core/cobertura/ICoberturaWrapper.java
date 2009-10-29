@@ -9,6 +9,6 @@ import net.sourceforge.cobertura.coveragedata.ProjectData;
 
 public interface ICoberturaWrapper {
 	void instrumentClassFile(File classFileToInstrument) throws CoberturaException;
-	ProjectData projectData() throws CoberturaException;
+	ProjectData projectDataFromFile(String fileName) throws CoberturaException;
 	IPath pathToJar() throws CoreException;
 }

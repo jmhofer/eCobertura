@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
+import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.instrument.Main;
 
@@ -26,7 +27,6 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 	private static CoberturaWrapper instance;
 
 	final Main coberturaMain;
-	final ProjectData projectData;
 	
 	public static ICoberturaWrapper get() {
 		if (instance == null) {
@@ -38,7 +38,6 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 	
 	private CoberturaWrapper() {
 		coberturaMain = new Main();
-		projectData = new ProjectData();
 		initializeCoberturaProjectData();
 	}
 
@@ -58,12 +57,13 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 		
 		Field projectDataField = coberturaMain.getClass().getDeclaredField("projectData");
 		projectDataField.setAccessible(true);
-		projectDataField.set(coberturaMain, projectData);
+		projectDataField.set(coberturaMain, new ProjectData());
 	}
-	
+
 	@Override
-	public ProjectData projectData() {
-		return projectData;
+	public ProjectData projectDataFromFile(final String fileName) {
+		ProjectData.saveGlobalProjectData();
+		return CoverageDataFileHandler.loadCoverageData(new File(fileName));
 	}
 
 	@Override

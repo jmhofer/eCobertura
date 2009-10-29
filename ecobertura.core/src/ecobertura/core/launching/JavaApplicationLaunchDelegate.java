@@ -42,6 +42,7 @@ public class JavaApplicationLaunchDelegate implements
 		
 		instrumentClasspath(configuration);
 		ILaunchConfiguration modifiedConfiguration = addCoberturaToClasspath(configuration);
+		modifiedConfiguration = addDatafileSystemProperty(modifiedConfiguration);
 		
 		delegateToExtend.launch(modifiedConfiguration, ILaunchManager.RUN_MODE, launch, monitor);
 	}
@@ -105,6 +106,18 @@ public class JavaApplicationLaunchDelegate implements
 		logger.fine("new classpath == " + classpathEntries);
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpathEntries);
 		
+		return configWC.doSave();
+	}
+
+	private ILaunchConfiguration addDatafileSystemProperty(
+			final ILaunchConfiguration configuration) throws CoreException {
+		
+		final ILaunchConfigurationWorkingCopy configWC = configuration.getWorkingCopy();
+		final String currentVMArguments = configWC.getAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "");
+		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
+				// TODO use the proper plugin subdirectory here
+				currentVMArguments + " -Dnet.sourceforge.cobertura.datafile=cobertura.ser ");
 		return configWC.doSave();
 	}
 	
