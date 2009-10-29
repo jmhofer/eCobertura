@@ -62,8 +62,10 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 
 	@Override
 	public ProjectData projectDataFromFile(final String fileName) {
-		ProjectData.saveGlobalProjectData();
-		return CoverageDataFileHandler.loadCoverageData(new File(fileName));
+		final File coberturaFile = new File(
+				CorePlugin.instance().pluginState().instrumentationDataDirectory(),
+				fileName);
+		return CoverageDataFileHandler.loadCoverageData(coberturaFile);
 	}
 
 	@Override

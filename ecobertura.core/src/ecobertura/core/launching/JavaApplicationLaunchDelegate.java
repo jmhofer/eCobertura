@@ -19,6 +19,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 
+import ecobertura.core.CorePlugin;
 import ecobertura.core.cobertura.CoberturaWrapper;
 
 public class JavaApplicationLaunchDelegate implements
@@ -115,9 +116,12 @@ public class JavaApplicationLaunchDelegate implements
 		final ILaunchConfigurationWorkingCopy configWC = configuration.getWorkingCopy();
 		final String currentVMArguments = configWC.getAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "");
+		final File coberturaFile = new File(
+				CorePlugin.instance().pluginState().instrumentationDataDirectory(), 
+				"cobertura.ser");
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
-				// TODO use the proper plugin subdirectory here
-				currentVMArguments + " -Dnet.sourceforge.cobertura.datafile=cobertura.ser ");
+				currentVMArguments + 
+					" -Dnet.sourceforge.cobertura.datafile=" + coberturaFile.getAbsolutePath());
 		return configWC.doSave();
 	}
 	
