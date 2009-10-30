@@ -1,5 +1,7 @@
 package ecobertura.core.launching;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,38 +45,63 @@ public class LauncherTest {
 	
 	@Test
 	public void testLaunchCoveredJavaApp() throws CoreException, IOException, OperationCanceledException, InterruptedException {
-		ILaunchManager launchMgr = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType javaLaunchType = launchMgr.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-		ILaunchConfigurationWorkingCopy configWC = javaLaunchType.newInstance(null, "myLaunchConfig");
+		final ILaunchConfiguration config = createJavaLaunchConfigurationForSample();
+		final LaunchTracker launchTracker = LaunchTracker.prepareLaunch();
+		config.launch("ecobertura.core.coverageLaunchMode", null);
+		launchTracker.waitForLaunchTermination();
+		checkCoverageResults();
+	}
+
+	private ILaunchConfiguration createJavaLaunchConfigurationForSample() throws CoreException {
+		ILaunchConfigurationWorkingCopy configWC = retrieveJavaApplicationConfigurationWorkingCopy();
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "Sample");
+		updateClasspath(configWC);
+		return configWC.doSave();
+	}
+
+	private ILaunchConfigurationWorkingCopy retrieveJavaApplicationConfigurationWorkingCopy()
+			throws CoreException {
+		ILaunchManager launchMgr = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType javaLaunchType = launchMgr.getLaunchConfigurationType(
+				IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+		ILaunchConfigurationWorkingCopy configWC = javaLaunchType.newInstance(
+				null, "myLaunchConfig");
+		return configWC;
+	}
+
+	private void updateClasspath(ILaunchConfigurationWorkingCopy configWC) throws CoreException {
 		List<String> classpath = new ArrayList<String>();
 		classpath.add(javaProject.defaultClasspath().getMemento());
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
-		ILaunchConfiguration config = configWC.doSave();
+	}
 
-		final LaunchTracker launchTracker = LaunchTracker.prepareLaunch();
-		config.launch("ecobertura.core.coverageLaunchMode", null);
-		launchTracker.waitForLaunchTermination();
-		
-		// TODO check via junit assertions
-		// check
+	private void checkCoverageResults() {
 		for (Object classDataObj : CoberturaWrapper.get().projectDataFromFile("cobertura.ser").getClasses()) {
 			if (!(classDataObj instanceof ClassData)) {
 				continue;
 			}
-			ClassData classData = (ClassData) classDataObj;
-			System.out.println(String.format("%d lines covered in class %s", 
-					classData.getNumberOfCoveredLines(), classData.getName()));
-			for (Object lineDataObj : classData.getLines()) {
-				if (!(lineDataObj instanceof LineData)) {
-					continue;
-				}
-				LineData lineData = (LineData) lineDataObj;
-				System.out.println(String.format("%s (%d): %d hits", 
-						lineData.getMethodName(), lineData.getLineNumber(), lineData.getHits()));
-				// TODO why is lineData.getMethodName() null?
+			checkSampleClassData((ClassData) classDataObj);
+		}
+	}
+
+	private void checkSampleClassData(ClassData classData) {
+		assertEquals("Sample", classData.getName());
+		assertEquals("expecting 8 covered lines in Sample class", 
+				8, classData.getNumberOfCoveredLines());
+		
+		checkLines(classData);
+	}
+
+	private void checkLines(ClassData classData) {
+		for (Object lineDataObj : classData.getLines()) {
+			if (!(lineDataObj instanceof LineData)) {
+				continue;
 			}
+			LineData lineData = (LineData) lineDataObj;
+			assertEquals("expecting each line to have been covered exactly once", 
+					1, lineData.getHits());
+			// TODO why is lineData.getMethodName() null?
 		}
 	}
 }
