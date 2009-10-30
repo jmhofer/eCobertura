@@ -15,8 +15,10 @@ import org.eclipse.jdt.launching.JavaRuntime;
 
 import ecobertura.core.CorePlugin;
 import ecobertura.core.cobertura.CoberturaWrapper;
+import ecobertura.core.cobertura.ICoberturaWrapper;
 
-final class LaunchInstrumenter {
+public final class LaunchInstrumenter {
+	public static final String COBERTURA_DATAFILE_PROPERTY = "net.sourceforge.cobertura.datafile"; 
 	private static final Logger logger = Logger.getLogger("ecobertura.core.launching");
 
 	private final ILaunchConfiguration configuration;
@@ -93,10 +95,10 @@ final class LaunchInstrumenter {
 				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "");
 		final File coberturaFile = new File(
 				CorePlugin.instance().pluginState().instrumentationDataDirectory(), 
-				"cobertura.ser");
+				ICoberturaWrapper.DEFAULT_COBERTURA_FILENAME);
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
-				currentVMArguments + 
-					" -Dnet.sourceforge.cobertura.datafile=" + coberturaFile.getAbsolutePath());
+				 String.format("%s -D%s=%s ", currentVMArguments, COBERTURA_DATAFILE_PROPERTY, 
+						 coberturaFile.getAbsolutePath()));
 	}
 	
 	ILaunchConfiguration getUpdatedLaunchConfiguration() throws CoreException {

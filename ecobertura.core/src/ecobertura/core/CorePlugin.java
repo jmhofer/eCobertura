@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 import ecobertura.core.log.EclipseLogger;
+import ecobertura.core.results.CoverageResultsCollector;
 import ecobertura.core.state.PluginState;
 import ecobertura.core.trace.Trace;
 
@@ -20,6 +21,7 @@ public class CorePlugin extends Plugin {
 	private static CorePlugin instance;
 	
 	private PluginState pluginState;
+	private CoverageResultsCollector resultsCollector;
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -30,6 +32,7 @@ public class CorePlugin extends Plugin {
 		EclipseLogger.logFor(getLog());
 
 		pluginState = PluginState.initialize(getStateLocation());
+		resultsCollector = CoverageResultsCollector.collect();
 		
 		logger.info("plugin started"); //$NON-NLS-1$
 	}
@@ -48,5 +51,9 @@ public class CorePlugin extends Plugin {
 	
 	public PluginState pluginState() {
 		return pluginState;
+	}
+	
+	public CoverageResultsCollector coverageResultsCollector() {
+		return resultsCollector;
 	}
 }

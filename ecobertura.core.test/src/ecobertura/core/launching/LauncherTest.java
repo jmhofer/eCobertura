@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ecobertura.core.cobertura.CoberturaWrapper;
+import ecobertura.core.cobertura.ICoberturaWrapper;
 import ecobertura.core.util.JavaProject;
 import ecobertura.core.util.LaunchTracker;
 
@@ -77,7 +78,9 @@ public class LauncherTest {
 	}
 
 	private void checkCoverageResults() {
-		for (Object classDataObj : CoberturaWrapper.get().projectDataFromFile("cobertura.ser").getClasses()) {
+		for (Object classDataObj : CoberturaWrapper.get().projectDataFromFile(
+				ICoberturaWrapper.DEFAULT_COBERTURA_FILENAME).getClasses()) {
+			
 			if (!(classDataObj instanceof ClassData)) {
 				continue;
 			}
