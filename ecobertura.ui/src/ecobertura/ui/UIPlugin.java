@@ -8,6 +8,7 @@ import org.osgi.framework.BundleContext;
 
 import ecobertura.core.log.EclipseLogger;
 import ecobertura.core.trace.Trace;
+import ecobertura.ui.core.CoverageResultsUIListener;
 import ecobertura.ui.editors.EditorsAnnotator;
 
 /**
@@ -15,13 +16,15 @@ import ecobertura.ui.editors.EditorsAnnotator;
  */
 public class UIPlugin extends AbstractUIPlugin {
 
+	// FIXME annoying multiple loggers
 	private static final Logger logger = Logger.getLogger(UIPlugin.PLUGIN_ID);
 	
 	public static final String PLUGIN_ID = "ecobertura.ui"; //$NON-NLS-1$
 
 	private static UIPlugin plugin;
 	
-	private EditorsAnnotator editorTracker; 
+	private EditorsAnnotator editorTracker;
+	private CoverageResultsUIListener resultsListener;
 
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -30,8 +33,10 @@ public class UIPlugin extends AbstractUIPlugin {
 		
 		Trace.configureForPluginId(PLUGIN_ID);
 		EclipseLogger.logFor(getLog());
+		// FIXME: logger shouldn't log everything multiple times (this is a multiple classloaders problem, probably)
 		logger.info("Cobertura plugin started."); //$NON-NLS-1$
 		
+		resultsListener = CoverageResultsUIListener.register();
 		editorTracker = EditorsAnnotator.trackEditorsOf(getWorkbench());
 	}
 
@@ -39,6 +44,7 @@ public class UIPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		UIPlugin.plugin = null;
 		editorTracker.dispose();
+		resultsListener.unregister();
 		super.stop(context);
 		
 		logger.info("Cobertura plugin stopped."); //$NON-NLS-1$
