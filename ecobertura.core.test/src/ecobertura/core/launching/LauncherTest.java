@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.LineData;
+import net.sourceforge.cobertura.coveragedata.ProjectData;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -23,8 +24,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ecobertura.core.cobertura.CoberturaWrapper;
-import ecobertura.core.cobertura.ICoberturaWrapper;
 import ecobertura.core.util.JavaProject;
 import ecobertura.core.util.LaunchTracker;
 
@@ -47,10 +46,10 @@ public class LauncherTest {
 	@Test
 	public void testLaunchCoveredJavaApp() throws CoreException, IOException, OperationCanceledException, InterruptedException {
 		final ILaunchConfiguration config = createJavaLaunchConfigurationForSample();
-		final LaunchTracker launchTracker = LaunchTracker.prepareLaunch();
+		final LaunchTracker tracker = LaunchTracker.prepareLaunch();
 		config.launch("ecobertura.core.coverageLaunchMode", null);
-		launchTracker.waitForLaunchTermination();
-		checkCoverageResults();
+		final ProjectData collectedCoverageData = tracker.waitForAndRetrieveCoverageResults(); 
+		checkCoverageResults(collectedCoverageData);
 	}
 
 	private ILaunchConfiguration createJavaLaunchConfigurationForSample() throws CoreException {
@@ -77,10 +76,8 @@ public class LauncherTest {
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
 	}
 
-	private void checkCoverageResults() {
-		for (Object classDataObj : CoberturaWrapper.get().projectDataFromFile(
-				ICoberturaWrapper.DEFAULT_COBERTURA_FILENAME).getClasses()) {
-			
+	private void checkCoverageResults(final ProjectData projectData) {
+		for (Object classDataObj : projectData.getClasses()) {
 			if (!(classDataObj instanceof ClassData)) {
 				continue;
 			}
