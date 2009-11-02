@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.Platform;
 public class Trace {
 	private static final String GLOBAL_PACKAGE = "ecobertura"; //$NON-NLS-1$
 	private static final String GLOBAL_TRACE_LEVEL = "%s/debug/level"; //$NON-NLS-1$
-
+	
 	private Trace() {
 		/* protect from instantiation */
 	}
@@ -26,7 +26,6 @@ public class Trace {
 		assert optionKey != null;
 		
 		String optionValue = Platform.getDebugOption(optionKey);
-		System.out.printf("option: %s = %s%n", optionKey, optionValue);
 		if (optionValue == null) {
 			return defaultValue.toUpperCase();
 		}

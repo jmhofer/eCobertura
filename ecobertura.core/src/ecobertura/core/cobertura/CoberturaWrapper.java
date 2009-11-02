@@ -30,7 +30,6 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 	
 	public static ICoberturaWrapper get() {
 		if (instance == null) {
-			System.err.println("CoberturaWrapper: initializing...");
 			instance = new CoberturaWrapper();
 		}
 		return instance;
