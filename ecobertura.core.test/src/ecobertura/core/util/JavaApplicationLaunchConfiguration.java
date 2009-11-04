@@ -42,8 +42,10 @@ public class JavaApplicationLaunchConfiguration {
 		return configWC;
 	}
 
+	// FIXME this doesn't work for some reason...
+	@SuppressWarnings("unchecked")
 	private void updateClasspath(ILaunchConfigurationWorkingCopy configWC) throws CoreException {
-		List<String> classpath = new ArrayList<String>();
+		final List<String> classpath = configWC.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, new ArrayList<String>());
 		classpath.add(javaProject.defaultClasspath().getMemento());
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);

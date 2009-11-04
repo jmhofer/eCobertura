@@ -16,6 +16,7 @@ import org.eclipse.debug.core.model.IProcess;
 import ecobertura.core.cobertura.CoberturaWrapper;
 import ecobertura.core.cobertura.ICoberturaWrapper;
 
+// TODO check if it's really our own launch!
 public class CoverageResultsCollector implements IDebugEventSetListener {
 	
 	private static final Logger logger = Logger.getLogger("ecobertura.core.results");
@@ -46,7 +47,7 @@ public class CoverageResultsCollector implements IDebugEventSetListener {
 			return false;
 		}
 		final ILaunch launch = ((IProcess) event.getSource()).getLaunch();
-		return launch.getLaunchConfiguration().equals(currentLaunchConfiguration);
+		return true; //launch.getLaunchConfiguration().equals(currentLaunchConfiguration);
 	}
 
 	private boolean isLaunchTerminationEvent(final DebugEvent event) {

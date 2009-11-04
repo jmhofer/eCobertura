@@ -1,13 +1,9 @@
 package ecobertura.core.launching;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -85,19 +81,10 @@ public final class LaunchInstrumenter {
     	CoberturaWrapper.get().instrumentClassFile(file);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void addCoberturaToClasspath() throws CoreException {
-		// TODO only add if not already there, or remove after launch
-		final List<String> classpathEntries = new ArrayList<String>(configWC.getAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, Collections.EMPTY_LIST));
-		final IPath pathToCoberturaJar = CoberturaWrapper.get().pathToJar();
-		final IRuntimeClasspathEntry coberturaEntry = JavaRuntime.newArchiveRuntimeClasspathEntry(
-				pathToCoberturaJar);
-		classpathEntries.add(coberturaEntry.getMemento());
-		logger.fine("updated classpath: " + classpathEntries.toString());
-		// FIXME no shortcuts here... we have to use the classpath provider somehow :/
-		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
-		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpathEntries);
+	    configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER,
+	            InstrumentedClasspathProvider.ID);
+	    InstrumentedClasspathProvider.wrap(JavaRuntime.getClasspathProvider(configuration));
 	}
 
 	private void addDatafileSystemProperty() throws CoreException {
@@ -120,6 +107,6 @@ public final class LaunchInstrumenter {
 	}
 	
 	ILaunchConfiguration getUpdatedLaunchConfiguration() throws CoreException {
-		return configWC.doSave();
+		return configWC;
 	}
 }
