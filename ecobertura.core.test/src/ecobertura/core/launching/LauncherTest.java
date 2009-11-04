@@ -1,12 +1,14 @@
 package ecobertura.core.launching;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Set;
 
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.LineData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
+import net.sourceforge.cobertura.coveragedata.SourceFileData;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -48,6 +50,11 @@ public class LauncherTest {
 	}
 
 	private void checkCoverageResults(final ProjectData projectData) {
+		checkClassesInProject(projectData);
+		checkSourceFilesInProject(projectData);
+	}
+
+	private void checkClassesInProject(final ProjectData projectData) {
 		for (Object classDataObj : projectData.getClasses()) {
 			if (!(classDataObj instanceof ClassData)) {
 				continue;
@@ -56,12 +63,31 @@ public class LauncherTest {
 		}
 	}
 
-	private void checkSampleClassData(ClassData classData) {
+	private void checkSampleClassData(final ClassData classData) {
 		assertEquals("Sample", classData.getName());
+		assertEquals("Sample.java", classData.getSourceFileName());
 		assertEquals("expecting 8 covered lines in Sample class", 
 				8, classData.getNumberOfCoveredLines());
 		
 		checkLines(classData);
+	}
+
+	private void checkSourceFilesInProject(final ProjectData projectData) {
+		for (Object sourceFileObj : projectData.getSourceFiles()) {
+			if (!(sourceFileObj instanceof SourceFileData)) {
+				continue;
+			}
+			checkSampleSourceFileData((SourceFileData) sourceFileObj);
+		}
+	}
+
+	private void checkSampleSourceFileData(final SourceFileData sourceFileData) {
+		assertEquals("Sample.java", sourceFileData.getName());
+		final Set<?> classObjs = sourceFileData.getClasses();
+		assertEquals(1, classObjs.size());
+		final Object classObj = classObjs.iterator().next(); 
+		assertTrue(classObj instanceof ClassData);
+		assertEquals("Sample", ((ClassData) classObj).getName());
 	}
 
 	private void checkLines(ClassData classData) {
