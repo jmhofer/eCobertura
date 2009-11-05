@@ -83,8 +83,8 @@ public final class LaunchInstrumenter {
 
 	private void addCoberturaToClasspath() throws CoreException {
 	    configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER,
-	            InstrumentedClasspathProvider.ID);
-	    InstrumentedClasspathProvider.wrap(JavaRuntime.getClasspathProvider(configuration));
+	            CoverageClasspathProvider.ID);
+	    CoverageClasspathProvider.wrap(JavaRuntime.getClasspathProvider(configuration));
 	}
 
 	private void addDatafileSystemProperty() throws CoreException {

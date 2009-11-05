@@ -12,18 +12,18 @@ import org.eclipse.jdt.launching.JavaRuntime;
 
 import ecobertura.core.cobertura.CoberturaWrapper;
 
-public class InstrumentedClasspathProvider implements IRuntimeClasspathProvider {
+public class CoverageClasspathProvider implements IRuntimeClasspathProvider {
 	private static final Logger logger = Logger.getLogger("ecobertura.core.launching");
 	
-	public static final String ID = "ecobertura.core.launching.instrumentedClasspathProvider"; //$NON-NLS-1$
+	public static final String ID = "ecobertura.core.launching.coverageClasspathProvider"; //$NON-NLS-1$
 	
 	private static ThreadLocal<IRuntimeClasspathProvider> wrappedProvider = 
 		new ThreadLocal<IRuntimeClasspathProvider>();
 
 	public static void wrap(IRuntimeClasspathProvider wrappedProvider) {
-		if (wrappedProvider != InstrumentedClasspathProvider.wrappedProvider) {
+		if (wrappedProvider != CoverageClasspathProvider.wrappedProvider) {
 			logger.fine("wrapping provider...");
-			InstrumentedClasspathProvider.wrappedProvider.set(wrappedProvider);
+			CoverageClasspathProvider.wrappedProvider.set(wrappedProvider);
 		}
 	}
 	

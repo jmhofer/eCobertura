@@ -22,8 +22,8 @@
    <extension
          point="org.eclipse.jdt.launching.classpathProviders">
       <classpathProvider
-            class="ecobertura.core.launching.InstrumentedClasspathProvider"
-            id="ecobertura.core.launching.instrumentedClasspathProvider">
+            class="ecobertura.core.launching.CoverageClasspathProvider"
+            id="ecobertura.core.launching.coverageClasspathProvider">
       </classpathProvider>
    </extension>
 

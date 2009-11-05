@@ -10,19 +10,17 @@ import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 
 import ecobertura.core.cobertura.CoberturaWrapper;
 import ecobertura.core.cobertura.ICoberturaWrapper;
 
-// TODO check if it's really our own launch!
 public class CoverageResultsCollector implements IDebugEventSetListener {
 	
 	private static final Logger logger = Logger.getLogger("ecobertura.core.results");
 	
 	private final List<CoverageResultsListener> listeners = new Vector<CoverageResultsListener>();
-	private ILaunchConfiguration currentLaunchConfiguration;
+	private ILaunch currentLaunch;
 	
 	public static CoverageResultsCollector collect() {
 		return new CoverageResultsCollector();
@@ -47,7 +45,7 @@ public class CoverageResultsCollector implements IDebugEventSetListener {
 			return false;
 		}
 		final ILaunch launch = ((IProcess) event.getSource()).getLaunch();
-		return true; //launch.getLaunchConfiguration().equals(currentLaunchConfiguration);
+		return launch == currentLaunch;
 	}
 
 	private boolean isLaunchTerminationEvent(final DebugEvent event) {
@@ -66,8 +64,8 @@ public class CoverageResultsCollector implements IDebugEventSetListener {
 		}
 	}
 
-	public void coveredLaunchStarted(final ILaunchConfiguration launchConfiguration) {
-		this.currentLaunchConfiguration = launchConfiguration;
+	public void coveredLaunchStarted(final ILaunch launch) {
+		this.currentLaunch = launch;
 	}
 	
 	public void addListener(final CoverageResultsListener listener) {

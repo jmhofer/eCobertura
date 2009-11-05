@@ -32,7 +32,7 @@ public class JavaApplicationLaunchDelegate implements
 			LaunchInstrumenter.instrumentClassesFor(configuration);
 		final ILaunchConfiguration updatedConfiguration = 
 			launchInstrumenter.getUpdatedLaunchConfiguration();
-		CorePlugin.instance().coverageResultsCollector().coveredLaunchStarted(updatedConfiguration);
+		CorePlugin.instance().coverageResultsCollector().coveredLaunchStarted(launch);
 		delegateToExtend.launch(updatedConfiguration, ILaunchManager.RUN_MODE, launch, monitor);
 	}
 
