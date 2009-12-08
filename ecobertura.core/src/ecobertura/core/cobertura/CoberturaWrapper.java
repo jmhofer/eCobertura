@@ -14,11 +14,11 @@ import net.sourceforge.cobertura.instrument.Main;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 
 import ecobertura.core.CorePlugin$;
-import ecobertura.core.log.LogStatus;
 
 public class CoberturaWrapper implements ICoberturaWrapper {
 
@@ -109,8 +109,8 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 					"platform:/plugin/%s/lib/cobertura.jar", CorePlugin$.MODULE$.pluginId()))));
 			return new Path(url.getPath());
 		} catch (IOException e) {
-			throw new CoreException(LogStatus.fromExceptionWithSeverity(
-					"unable to retrieve cobertura jar", e, Status.ERROR));
+			throw new CoreException(new Status(IStatus.ERROR, CorePlugin$.MODULE$.pluginId(), 
+					"unable to retrieve cobertura jar", e));
 		}
 	}
 }

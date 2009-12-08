@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.LineData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 import ecobertura.core.results.CoverageResultsListener;
 import ecobertura.ui.UIPlugin;
 
@@ -18,12 +18,12 @@ public class CoverageResultsUIListener implements CoverageResultsListener {
 	}
 	
 	private CoverageResultsUIListener() {
-		CorePlugin.instance().coverageResultsCollector().addListener(this);
+		CorePlugin$.MODULE$.instance().coverageResultsCollector().addListener(this);
 		logger.fine("coverage results ui listener registered");
 	}
 	
 	public void unregister() {
-		CorePlugin.instance().coverageResultsCollector().removeListener(this);
+		CorePlugin$.MODULE$.instance().coverageResultsCollector().removeListener(this);
 		logger.fine("coverage results ui listener unregistered");
 	}
 	

@@ -10,6 +10,7 @@ import ecobertura.core.results.CoverageResultsCollector
 import ecobertura.core.state.PluginState
 import ecobertura.core.trace.Trace
 
+
 object CorePlugin {
 	private val internalPluginId = "ecobertura.core" //$NON-NLS-1$
 	private val logger = Logger getLogger internalPluginId

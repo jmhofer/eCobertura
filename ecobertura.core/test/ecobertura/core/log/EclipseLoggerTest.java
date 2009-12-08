@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import ecobertura.core.log.EclipseLogger;
+import ecobertura.core.log.EclipseLogger$;
 
 public class EclipseLoggerTest {
 
@@ -23,60 +23,60 @@ public class EclipseLoggerTest {
 		ilog = mock(ILog.class);
 		status = ArgumentCaptor.forClass(IStatus.class);
 		
-		EclipseLogger.logFor(ilog);
+		EclipseLogger$.MODULE$.logFor(ilog);
 	}
 	
 	@Test
 	public void testInfoString() {
-		EclipseLogger.info("hello");
+		EclipseLogger$.MODULE$.info("hello");
 		assertLogMessageSeverity("hello", Status.INFO);
 	}
 
 	@Test
 	public void testWarnString() {
-		EclipseLogger.warn("hello");
+		EclipseLogger$.MODULE$.warn("hello");
 		assertLogMessageSeverity("hello", Status.WARNING);
 	}
 
 	@Test
 	public void testErrorString() {
-		EclipseLogger.error("hello");
+		EclipseLogger$.MODULE$.error("hello");
 		assertLogMessageSeverity("hello", Status.ERROR);
 	}
 
 	@Test
 	public void testInfoStringThrowable() {
-		EclipseLogger.info("hello", new Exception("hello exc"));
+		EclipseLogger$.MODULE$.info("hello", new Exception("hello exc"));
 		assertLogMessageSeverityException("hello", Status.INFO, new Exception("hello exc"));
 	}
 
 	@Test
 	public void testWarnStringThrowable() {
-		EclipseLogger.warn("hello", new Exception("hello exc"));
+		EclipseLogger$.MODULE$.warn("hello", new Exception("hello exc"));
 		assertLogMessageSeverityException("hello", Status.WARNING, new Exception("hello exc"));
 	}
 
 	@Test
 	public void testErrorStringThrowable() {
-		EclipseLogger.error("hello", new Exception("hello exc"));
+		EclipseLogger$.MODULE$.error("hello", new Exception("hello exc"));
 		assertLogMessageSeverityException("hello", Status.ERROR, new Exception("hello exc"));
 	}
 	
 	@Test
 	public void testInfoThrowable() {
-		EclipseLogger.info(new Exception("hello"));
+		EclipseLogger$.MODULE$.info(new Exception("hello"));
 		assertLogMessageSeverityException("hello", Status.INFO, new Exception("hello"));
 	}
 
 	@Test
 	public void testWarnThrowable() {
-		EclipseLogger.warn(new Exception("hello"));
+		EclipseLogger$.MODULE$.warn(new Exception("hello"));
 		assertLogMessageSeverityException("hello", Status.WARNING, new Exception("hello"));
 	}
 
 	@Test
 	public void testErrorThrowable() {
-		EclipseLogger.error(new Exception("hello"));
+		EclipseLogger$.MODULE$.error(new Exception("hello"));
 		assertLogMessageSeverityException("hello", Status.ERROR, new Exception("hello"));
 	}
 
