@@ -2,7 +2,7 @@ package ecobertura.core.log;
 
 import org.eclipse.core.runtime.Status;
 
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 
 public class LogStatus extends Status {
 	public static LogStatus fromMessageWithSeverity(final String message, final int severity) {
@@ -22,11 +22,11 @@ public class LogStatus extends Status {
 	}
 	
 	private LogStatus(final int severity, final String message) {
-		super(severity, CorePlugin.PLUGIN_ID, message);
+		super(severity, CorePlugin$.MODULE$.pluginId(), message);
 	}
 	
 	private LogStatus(final int severity, final String message, final Throwable throwable) {
-		super(severity, CorePlugin.PLUGIN_ID, message, throwable);
+		super(severity, CorePlugin$.MODULE$.pluginId(), message, throwable);
 	}
 	
 }

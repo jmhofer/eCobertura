@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 import ecobertura.core.log.EclipseLogger;
 
 public class LoggerPDETest implements ILogListener {
@@ -24,7 +24,7 @@ public class LoggerPDETest implements ILogListener {
 	
 	@Before
 	public void setUp() throws Exception {
-		core = Platform.getBundle(CorePlugin.PLUGIN_ID);
+		core = Platform.getBundle(CorePlugin$.MODULE$.pluginId());
 		Platform.addLogListener(this);
 		core.start();
 	}

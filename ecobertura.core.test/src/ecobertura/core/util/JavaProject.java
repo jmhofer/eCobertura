@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 
 /**
  * Builder utility class for creating Java projects in an Eclipse workspace.
@@ -126,7 +126,7 @@ public class JavaProject {
 	private void addSampleSourceFile() throws CoreException, IOException {
 		IPath srcFilePath = new Path(srcFolder.getFullPath() + "/Sample.java");
 		IFile srcFile = workspace.getRoot().getFile(srcFilePath);
-		URL url = FileLocator.find(Platform.getBundle(CorePlugin.PLUGIN_ID), new Path("resources/Sample.java"), Collections.EMPTY_MAP);
+		URL url = FileLocator.find(Platform.getBundle(CorePlugin$.MODULE$.pluginId()), new Path("resources/Sample.java"), Collections.EMPTY_MAP);
 		srcFile.create(url.openStream(), IFile.FORCE, NO_MONITOR);
 		JavaCore.create(srcFile);
 	}

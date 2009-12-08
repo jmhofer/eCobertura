@@ -9,7 +9,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 
 public class JavaApplicationLaunchDelegate implements
 		ILaunchConfigurationDelegate2, IExecutableExtension {
@@ -32,7 +32,7 @@ public class JavaApplicationLaunchDelegate implements
 			LaunchInstrumenter.instrumentClassesFor(configuration);
 		final ILaunchConfiguration updatedConfiguration = 
 			launchInstrumenter.getUpdatedLaunchConfiguration();
-		CorePlugin.instance().coverageResultsCollector().coveredLaunchStarted(launch);
+		CorePlugin$.MODULE$.instance().coverageResultsCollector().coveredLaunchStarted(launch);
 		delegateToExtend.launch(updatedConfiguration, ILaunchManager.RUN_MODE, launch, monitor);
 	}
 

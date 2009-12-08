@@ -3,7 +3,7 @@ package ecobertura.core.util;
 import java.util.concurrent.Semaphore;
 
 import net.sourceforge.cobertura.coveragedata.ProjectData;
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 import ecobertura.core.results.CoverageResultsListener;
 
 public class LaunchTracker {
@@ -22,7 +22,7 @@ public class LaunchTracker {
 	}
 
 	private void registerCoverageResultsListener() {
-		CorePlugin.instance().coverageResultsCollector().addListener(new CoverageResultsListener() {
+		CorePlugin$.MODULE$.instance().coverageResultsCollector().addListener(new CoverageResultsListener() {
 			@Override
 			public void coverageRunCompleted(ProjectData projectData) {
 				LaunchTracker.this.projectData = projectData;

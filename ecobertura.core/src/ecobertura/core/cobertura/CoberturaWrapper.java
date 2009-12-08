@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 import ecobertura.core.log.LogStatus;
 
 public class CoberturaWrapper implements ICoberturaWrapper {
@@ -62,7 +62,7 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 	@Override
 	public ProjectData projectDataFromFile(final String fileName) {
 		final File coberturaFile = new File(
-				CorePlugin.instance().pluginState().instrumentationDataDirectory(),
+				CorePlugin$.MODULE$.instance().pluginState().instrumentationDataDirectory(),
 				fileName);
 		return CoverageDataFileHandler.loadCoverageData(coberturaFile);
 	}
@@ -106,7 +106,7 @@ public class CoberturaWrapper implements ICoberturaWrapper {
 	public IPath pathToJar() throws CoreException {
 		try {
 			final URL url = FileLocator.toFileURL(FileLocator.find(new URL(String.format(
-					"platform:/plugin/%s/lib/cobertura.jar", CorePlugin.PLUGIN_ID))));
+					"platform:/plugin/%s/lib/cobertura.jar", CorePlugin$.MODULE$.pluginId()))));
 			return new Path(url.getPath());
 		} catch (IOException e) {
 			throw new CoreException(LogStatus.fromExceptionWithSeverity(

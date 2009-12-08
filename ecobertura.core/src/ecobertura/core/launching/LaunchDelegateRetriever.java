@@ -18,7 +18,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 
-import ecobertura.core.CorePlugin;
+import ecobertura.core.CorePlugin$;
 
 class LaunchDelegateRetriever {
 	private static final Logger logger = Logger.getLogger("ecobertura.core.launching"); //$NON-NLS-1$
@@ -43,7 +43,7 @@ class LaunchDelegateRetriever {
 		ILaunchConfigurationType type = 
 			DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType(launchTypeName);
 		if (type == null) {
-			throw new CoreException(new Status(Status.ERROR, CorePlugin.PLUGIN_ID, 
+			throw new CoreException(new Status(Status.ERROR, CorePlugin$.MODULE$.pluginId(), 
 					String.format("unknown launch configuration type %s", launchTypeName))); //$NON-NLS-1$
 		}
 		return type;
@@ -53,7 +53,7 @@ class LaunchDelegateRetriever {
 		ILaunchDelegate[] delegatesForType = type.getDelegates(new HashSet<String>(
 				Arrays.asList(ILaunchManager.RUN_MODE)));
 		if (delegatesForType.length == 0) {
-			throw new CoreException(new Status(Status.ERROR, CorePlugin.PLUGIN_ID, 
+			throw new CoreException(new Status(Status.ERROR, CorePlugin$.MODULE$.pluginId(), 
 					String.format("no delegate for %s found", type.getName()))); //$NON-NLS-1$
 		}
 		if (delegatesForType.length > 1) {
