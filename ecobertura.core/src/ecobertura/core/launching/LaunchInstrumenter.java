@@ -10,9 +10,8 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 
-import ecobertura.core.CorePlugin;
-import ecobertura.core.cobertura.CoberturaWrapper;
-import ecobertura.core.cobertura.ICoberturaWrapper;
+import ecobertura.core.CorePlugin$;
+import ecobertura.core.cobertura.CoberturaWrapper$;
 
 public final class LaunchInstrumenter {
 	public static final String COBERTURA_DATAFILE_PROPERTY = "net.sourceforge.cobertura.datafile"; 
@@ -78,7 +77,7 @@ public final class LaunchInstrumenter {
 
 	private void instrumentClassFile(File file) {
     	logger.fine(String.format("instrumenting %s", file.getPath()));
-    	CoberturaWrapper.get().instrumentClassFile(file);
+    	CoberturaWrapper$.MODULE$.get().instrumentClassFile(file);
 	}
 
 	private void addCoberturaToClasspath() throws CoreException {
@@ -89,8 +88,8 @@ public final class LaunchInstrumenter {
 
 	private void addDatafileSystemProperty() throws CoreException {
 		final File coberturaFile = new File(
-				CorePlugin.instance().pluginState().instrumentationDataDirectory(), 
-				ICoberturaWrapper.DEFAULT_COBERTURA_FILENAME);
+				CorePlugin$.MODULE$.instance().pluginState().instrumentationDataDirectory(), 
+				CoberturaWrapper$.MODULE$.DEFAULT_COBERTURA_FILENAME());
 		final String coberturaVMArgument = String.format("-D%s=%s ", COBERTURA_DATAFILE_PROPERTY, 
 				 coberturaFile.getAbsolutePath());
 		final String currentVMArguments = configWC.getAttribute(
