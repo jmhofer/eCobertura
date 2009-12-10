@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import org.eclipse.core.runtime.Status
 
-import ecobertura.core.log.LogStatus._
+import _root_.ecobertura.core.log.LogStatus._
 
 class LogStatusTest {
 	var status: Status = null

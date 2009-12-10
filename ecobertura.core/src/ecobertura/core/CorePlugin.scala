@@ -5,11 +5,10 @@ import java.util.logging.Logger
 import org.eclipse.core.runtime.Plugin
 import org.osgi.framework.BundleContext
 
-import ecobertura.core.log.EclipseLogger
-import ecobertura.core.results.CoverageResultsCollector
-import ecobertura.core.state.PluginState
-import ecobertura.core.trace.Trace
-
+import log.EclipseLogger
+import results.CoverageResultsCollector
+import state.PluginState
+import trace.Trace
 
 object CorePlugin {
 	private val internalPluginId = "ecobertura.core" //$NON-NLS-1$

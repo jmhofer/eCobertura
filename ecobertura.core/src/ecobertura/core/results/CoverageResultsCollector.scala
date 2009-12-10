@@ -22,11 +22,6 @@ class CoverageResultsCollector extends IDebugEventSetListener {
 	DebugPlugin.getDefault addDebugEventListener this
 	
 	override def handleDebugEvents(events: Array[DebugEvent]) = {
-		for (event <- events if isCoverageLaunchTerminationEvent(event)) {
-			logger fine "detected termination of covered launch"
-			notifyListeners(retrieveCoverageData)
-		}
-		
 		def isCoverageLaunchTerminationEvent(event: DebugEvent) : Boolean = {
 			def isLaunchTerminationEvent(event: DebugEvent) : Boolean = 
 				event.getSource.isInstanceOf[IProcess] && event.getKind == DebugEvent.TERMINATE
@@ -42,6 +37,11 @@ class CoverageResultsCollector extends IDebugEventSetListener {
 
 		def retrieveCoverageData = 
 			CoberturaWrapper.get projectDataFromFile CoberturaWrapper.DEFAULT_COBERTURA_FILENAME
+
+		for (event <- events if isCoverageLaunchTerminationEvent(event)) {
+			logger fine "detected termination of covered launch"
+			notifyListeners(retrieveCoverageData)
+		}
 	}
 	
 	def coveredLaunchStarted(launch: ILaunch) = {

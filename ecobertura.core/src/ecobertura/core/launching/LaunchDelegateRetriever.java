@@ -18,7 +18,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 
-import ecobertura.core.CorePlugin$;
+import ecobertura.core.*;
 
 class LaunchDelegateRetriever {
 	private static final Logger logger = Logger.getLogger("ecobertura.core.launching"); //$NON-NLS-1$
