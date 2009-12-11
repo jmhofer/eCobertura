@@ -10,7 +10,7 @@ import org.eclipse.debug.core._
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2
 
-import _root_.ecobertura.core.CorePlugin
+import ecobertura.core.CorePlugin
 
 object LaunchDelegateRetriever {
 	def fromExtensionConfig(config: IConfigurationElement) = new LaunchDelegateRetriever(config)
