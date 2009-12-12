@@ -39,7 +39,7 @@ public class EditorsAnnotator {
 
 	private void addPartListenersTo(IWorkbenchWindow[] windows) {
 		for (IWorkbenchWindow window : windows) {
-			window.getPartService().addPartListener(windowListener.getPartListener());
+			window.getPartService().addPartListener(windowListener.partListener());
 		}
 	}
 
@@ -75,7 +75,7 @@ public class EditorsAnnotator {
 		workbench.removeWindowListener(windowListener);
 		IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
 		for (IWorkbenchWindow window : windows) {
-			window.getPartService().removePartListener(windowListener.getPartListener());
+			window.getPartService().removePartListener(windowListener.partListener());
 		}
 	}
 }
