@@ -22,7 +22,7 @@ class LauncherTest {
 	@Before
 	def setUp = {
 		workspace = ResourcesPlugin.getWorkspace
-		javaProject = JavaProject createIn workspace named "HelloWorld"
+		javaProject = (JavaProject createIn workspace) named "HelloWorld"
 	}
 	
 	@After
