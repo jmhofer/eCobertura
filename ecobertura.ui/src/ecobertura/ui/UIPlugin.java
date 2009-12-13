@@ -7,7 +7,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import ecobertura.core.log.EclipseLogger$;
-import ecobertura.ui.core.CoverageResultsUIListener;
+import ecobertura.ui.core.*;
 import ecobertura.ui.editors.EditorsAnnotator;
 
 /**
@@ -34,7 +34,7 @@ public class UIPlugin extends AbstractUIPlugin {
 		// FIXME: logger shouldn't log everything multiple times (this is a multiple classloaders problem, probably)
 		logger.info("Cobertura plugin started."); //$NON-NLS-1$
 		
-		resultsListener = CoverageResultsUIListener.register();
+		resultsListener = CoverageResultsUIListener$.MODULE$.register();
 		editorTracker = EditorsAnnotator.trackEditorsOf(getWorkbench());
 	}
 
