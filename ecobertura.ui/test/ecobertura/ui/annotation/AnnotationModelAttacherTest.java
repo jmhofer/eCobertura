@@ -54,7 +54,7 @@ public class AnnotationModelAttacherTest {
 	@Test
 	public void testAttachToInvalidProvider() {
 		when(editor.getDocumentProvider()).thenReturn(null);
-		new AnnotationModelAttacher().attachTo(editor);
+		AnnotationModelAttacher.attachTo(editor);
 		
 		verify(handler).publish(record.capture());
 		
@@ -70,7 +70,7 @@ public class AnnotationModelAttacherTest {
 	public void testAttachToInvalidModel() {
 		when(editor.getDocumentProvider()).thenReturn(provider);
 		when(provider.getAnnotationModel(any())).thenReturn(invalidModel);
-		new AnnotationModelAttacher().attachTo(editor);
+		AnnotationModelAttacher.attachTo(editor);
 		
 		verify(handler).publish(record.capture());
 		
@@ -86,7 +86,7 @@ public class AnnotationModelAttacherTest {
 	public void testAttachTo() {
 		when(editor.getDocumentProvider()).thenReturn(provider);
 		when(provider.getAnnotationModel(any())).thenReturn((IAnnotationModel) modelExt);
-		new AnnotationModelAttacher().attachTo(editor);
+		AnnotationModelAttacher.attachTo(editor);
 		
 		verify(handler, times(2)).publish(record.capture());
 		
@@ -100,7 +100,7 @@ public class AnnotationModelAttacherTest {
 		when(editor.getDocumentProvider()).thenReturn(provider);
 		when(provider.getAnnotationModel(any())).thenReturn((IAnnotationModel) modelExt);
 		when(modelExt.getAnnotationModel(CoverageAnnotationModel.MODEL_ID)).thenReturn(nonNullModel);
-		new AnnotationModelAttacher().attachTo(editor);
+		AnnotationModelAttacher.attachTo(editor);
 		verify(handler, never()).publish(any(LogRecord.class));
 	}
 }

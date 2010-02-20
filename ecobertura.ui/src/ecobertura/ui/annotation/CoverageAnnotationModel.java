@@ -27,7 +27,7 @@ public class CoverageAnnotationModel extends AbstractAnnotationModel {
 		new ArrayList<CoverageAnnotation>(64);
 	
 	public static void attachTo(final ITextEditor editor) {
-		new AnnotationModelAttacher().attachTo(editor);
+		AnnotationModelAttacher.attachTo(editor);
 	}
 
 	static CoverageAnnotationModel createForEditorDocument(

@@ -38,13 +38,13 @@ class EditorsAnnotator(workbench: IWorkbench) {
 		def annotateEditorsOfPage(page: IWorkbenchPage) = {
 			page.getEditorReferences foreach (annotateEditor(_))
 		}
-		
-		def annotateEditor(partref: IWorkbenchPartReference) = {
-			val part = partref getPart false
-			part match {
-				case editor: ITextEditor => CoverageAnnotationModel attachTo editor
-				case _ => /* nothing to do */
-			}
+	}
+
+	def annotateEditor(partref: IWorkbenchPartReference) = {
+		val part = partref getPart false
+		part match {
+			case editor: ITextEditor => CoverageAnnotationModel attachTo editor
+			case _ => /* nothing to do */
 		}
 	}
 	
