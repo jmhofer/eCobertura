@@ -12,7 +12,7 @@ object CoverageResultsUIListener {
 }
 
 class CoverageResultsUIListener extends CoverageResultsListener {
-	val logger = Logger.getLogger(UIPlugin.PLUGIN_ID)
+	val logger = Logger.getLogger(UIPlugin.pluginId)
 
 	CorePlugin.instance.coverageResultsCollector addListener this
 	logger fine "coverage results ui listener registered"
