@@ -18,7 +18,7 @@ class LaunchShortcutRetriever(shortcutId: String) {
 	def getShortcut = {
 		def getShortcutFromExtensionPoint(launchShortcuts: IExtensionPoint) = {
 			val shortcut = launchShortcuts.getConfigurationElements find 
-					(shortcutId == _.getAttribute("id"))
+					(config => shortcutId.equals(config.getAttribute("id")))
 			shortcut match {
 				case Some(foundShortcutConfig) => 
 					getLaunchShortcutFromConfigurationElement(foundShortcutConfig)
