@@ -15,7 +15,7 @@ object CoverageAnnotationModel {
 	private val logger = Logger getLogger "ecobertura.ui.annotation" //$NON-NLS-1$
 
 	class Key { /* internal marker class */ }
-	def MODEL_ID = new Key
+	val MODEL_ID = new Key
 	
 	def attachTo(editor: ITextEditor) =
 		AnnotationModelAttacher.attachTo(editor)
