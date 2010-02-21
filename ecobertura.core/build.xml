@@ -70,15 +70,15 @@
     	
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
+            <fileset dir="src/main">
                 <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
+                <exclude name="**/*.scala"/>
             </fileset>
         </copy>
         <copy includeemptydirs="false" todir="bin">
-            <fileset dir="test">
+            <fileset dir="src/test">
                 <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
+                <exclude name="**/*.scala"/>
             </fileset>
         </copy>
     </target>
@@ -90,12 +90,12 @@
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <scalac destdir="bin" target="jvm-1.5">
-            <src path="src"/>
+        <scalac destdir="bin" target="jvm-1.5" deprecation="yes">
+            <src path="src/main/scala"/>
             <classpath refid="ecobertura.core.classpath"/>
         </scalac>
-        <scalac destdir="bin" target="jvm-1.5">
-            <src path="test"/>
+        <scalac destdir="bin" target="jvm-1.5" deprecation="yes">
+            <src path="src/test/scala"/>
             <classpath refid="ecobertura.core.classpath"/>
         </scalac>
     </target>

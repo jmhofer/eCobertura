@@ -42,7 +42,7 @@ class LaunchDelegateRetriever(config: IConfigurationElement) {
 			throw new CoreException(new Status(IStatus.ERROR, CorePlugin.pluginId,
 					String format ("no delegate for %s found", launchType.getName)))
 		}
-		convertToType2Delegate(delegatesForType.first.getDelegate)
+		convertToType2Delegate(delegatesForType.head.getDelegate)
 	}
 	
 	private def convertToType2Delegate(delegate: ILaunchConfigurationDelegate) = {

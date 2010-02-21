@@ -50,5 +50,5 @@ class CoverageResultsCollector extends IDebugEventSetListener {
 	}
 	
 	def addListener(listener: CoverageResultsListener) = listeners ::= listener
-	def removeListener(listener: CoverageResultsListener) = listeners -= listener 
+	def removeListener(listener: CoverageResultsListener) = listeners.filterNot(_.equals(listener)) 
 }
