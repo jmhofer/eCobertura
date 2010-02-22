@@ -10,6 +10,8 @@ import org.eclipse.ui._
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
 
+import ecobertura.ui.util.Predef._
+
 /**
  * This sample class demonstrates how to plug-in a new
  * workbench view. The view shows data obtained from the
@@ -75,7 +77,7 @@ class CoberturaView extends ViewPart {
 		viewer.setInput(getViewSite)
 
 		// Create the help context id for the viewer's control
-		//PlatformUI.getWorkbench.getHelpSystem.setHelp(viewer.getControl, "ecobertura.ui.viewer")
+		// PlatformUI.getWorkbench.getHelpSystem.setHelp(viewer.getControl, "ecobertura.ui.viewer")
 		
 		makeActions
 		hookContextMenu
@@ -83,28 +85,22 @@ class CoberturaView extends ViewPart {
 		contributeToActionBars
 
 		def makeActions = {
-			action1 = new Action {
-				override def run = showMessage("Action 1 executed")
-			}
+			action1 = showMessage("Action 1 executed")
 			action1.setText("Action 1")
 			action1.setToolTipText("Action 1 tooltip")
 			action1.setImageDescriptor(PlatformUI.getWorkbench.getSharedImages
 				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK))
 				
-			action2 = new Action {
-				override def run = showMessage("Action 2 executed")
-			}
-			action1.setText("Action 2")
-			action1.setToolTipText("Action 2 tooltip")
-			action1.setImageDescriptor(PlatformUI.getWorkbench.getSharedImages
+			action2 = showMessage("Action 2 executed")
+			action2.setText("Action 2")
+			action2.setToolTipText("Action 2 tooltip")
+			action2.setImageDescriptor(PlatformUI.getWorkbench.getSharedImages
 				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK))
 				
-			doubleClickAction = new Action {
-				override def run = {
-					val selection = viewer.getSelection
-					val obj = selection.asInstanceOf[IStructuredSelection].getFirstElement
-					showMessage("Double-click detected on " + obj.toString)
-				}
+			doubleClickAction = {
+				val selection = viewer.getSelection
+				val obj = selection.asInstanceOf[IStructuredSelection].getFirstElement
+				showMessage("Double-click detected on " + obj.toString)
 			}
 			
 			def showMessage(message: String) = 
@@ -115,11 +111,7 @@ class CoberturaView extends ViewPart {
 		def hookContextMenu = {
 			val menuMgr = new MenuManager("#PopupMenu")
 			menuMgr.setRemoveAllWhenShown(true)
-			menuMgr.addMenuListener(new IMenuListener() {
-				override def menuAboutToShow(manager: IMenuManager) = {
-					fillContextMenu(manager)
-				}
-			})
+			menuMgr.addMenuListener { manager: IMenuManager => fillContextMenu(manager) }
 			val menu = menuMgr.createContextMenu(viewer.getControl)
 			viewer.getControl.setMenu(menu)
 			getSite.registerContextMenu(menuMgr, viewer)
@@ -134,9 +126,7 @@ class CoberturaView extends ViewPart {
 		}
 		
 		def hookDoubleClickAction = {
-			viewer.addDoubleClickListener(new IDoubleClickListener {
-				override def doubleClick(event: DoubleClickEvent) = doubleClickAction.run
-			})
+			viewer.addDoubleClickListener { event: DoubleClickEvent => doubleClickAction.run }
 		}
 		
 		def contributeToActionBars = {
