@@ -48,14 +48,12 @@ class ConfigurationTabGroupRetriever(config: IConfigurationElement) {
 		
 	private def hasRunMode(delegateConfig: IConfigurationElement) = {
 		delegateConfig.getChildren("launchMode").exists( //$NON-NLS-1$
-				launchModeConfig => ILaunchManager.RUN_MODE.equals(
-						launchModeConfig.getAttribute("mode"))) //$NON-NLS-1$
+			launchModeConfig => ILaunchManager.RUN_MODE == launchModeConfig.getAttribute("mode")) //$NON-NLS-1$
 	}
 	
 	private def getTabGroupFromConfigurationElement(delegateConfig: IConfigurationElement) = {
 		try {
-			delegateConfig.createExecutableExtension("class")
-					.asInstanceOf[ILaunchConfigurationTabGroup] //$NON-NLS-1$
+			delegateConfig.createExecutableExtension("class").asInstanceOf[ILaunchConfigurationTabGroup] //$NON-NLS-1$
 		} catch {
 			case e: CoreException => {
 				logger.log(Level.WARNING, "unable to create launch configuration tab group", e) //$NON-NLS-1$

@@ -17,14 +17,13 @@ class LaunchShortcutRetriever(shortcutId: String) {
 	
 	def getShortcut = {
 		def getShortcutFromExtensionPoint(launchShortcuts: IExtensionPoint) = {
-			val shortcut = launchShortcuts.getConfigurationElements find 
-					(config => shortcutId.equals(config.getAttribute("id")))
+			val shortcut = launchShortcuts.getConfigurationElements.find(
+					config => shortcutId == config.getAttribute("id"))
 			shortcut match {
 				case Some(foundShortcutConfig) => 
 					getLaunchShortcutFromConfigurationElement(foundShortcutConfig)
 				case None => {
-					logger warning String.format(
-						"No standard launch shortcut named '%s' found.", shortcutId) //$NON-NLS-1$
+					logger warning String.format("No standard launch shortcut named '%s' found.", shortcutId) //$NON-NLS-1$
 					null
 				}
 			}

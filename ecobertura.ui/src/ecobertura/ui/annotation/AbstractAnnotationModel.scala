@@ -15,7 +15,7 @@ abstract class AbstractAnnotationModel extends IAnnotationModel {
 	}
 	
 	override def removeAnnotationModelListener(listener: IAnnotationModelListener) =
-		listeners -= listener
+		listeners.filterNot(_ == listener)
 		
 	protected def fireModelChanged(event: AnnotationModelEvent) = {
 		event.markSealed

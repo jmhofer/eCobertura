@@ -10,18 +10,18 @@ class JavaApplicationLaunchShortcut extends ILaunchShortcut with IExecutableExte
 	
 	override def setInitializationData(config: IConfigurationElement, propertyName: String, 
 			data: Any) = {
-		val retrievedShortcut = LaunchShortcutRetriever fromId data.asInstanceOf[String] 
+		val retrievedShortcut = LaunchShortcutRetriever.fromId(data.asInstanceOf[String]) 
 		if (retrievedShortcut != null) 
 			shortcutToExtend = Some(retrievedShortcut) 
 	}
 	
 	override def launch(selection: ISelection, mode: String) = shortcutToExtend match {
-		case Some(shortcut) => shortcut launch (selection, mode)
+		case Some(shortcut) => shortcut.launch(selection, mode)
 		case _ => // do nothing
 	}
 	
 	override def launch(editor: IEditorPart, mode: String) = shortcutToExtend match {
-		case Some(shortcut) => shortcut launch (editor, mode)
+		case Some(shortcut) => shortcut.launch(editor, mode)
 		case _ => // do nothing
 	}
 }
