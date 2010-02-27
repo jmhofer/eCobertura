@@ -3,11 +3,7 @@ package ecobertura.ui.views
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.ui.part._
 import org.eclipse.jface.viewers._
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.jface.action._
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui._
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
 
 import ecobertura.ui.util.Predef._
@@ -37,9 +33,6 @@ object CoberturaView {
 }
 class CoberturaView extends ViewPart {
 	private var viewer: TableViewer = null
-	private var action1: Action = null
-	private var action2: Action = null
-	private var doubleClickAction: Action = null
 
 	/*
 	 * The content provider class is responsible for
@@ -78,73 +71,6 @@ class CoberturaView extends ViewPart {
 
 		// Create the help context id for the viewer's control
 		// PlatformUI.getWorkbench.getHelpSystem.setHelp(viewer.getControl, "ecobertura.ui.viewer")
-		
-		makeActions
-		hookContextMenu
-		hookDoubleClickAction
-		contributeToActionBars
-
-		def makeActions = {
-			action1 = showMessage("Action 1 executed")
-			action1.setText("Action 1")
-			action1.setToolTipText("Action 1 tooltip")
-			action1.setImageDescriptor(PlatformUI.getWorkbench.getSharedImages
-				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK))
-				
-			action2 = showMessage("Action 2 executed")
-			action2.setText("Action 2")
-			action2.setToolTipText("Action 2 tooltip")
-			action2.setImageDescriptor(PlatformUI.getWorkbench.getSharedImages
-				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK))
-				
-			doubleClickAction = {
-				val selection = viewer.getSelection
-				val obj = selection.asInstanceOf[IStructuredSelection].getFirstElement
-				showMessage("Double-click detected on " + obj.toString)
-			}
-			
-			def showMessage(message: String) = 
-					MessageDialog.openInformation(viewer.getControl.getShell, 
-							"Cobertura View", message)
-		}
-		
-		def hookContextMenu = {
-			val menuMgr = new MenuManager("#PopupMenu")
-			menuMgr.setRemoveAllWhenShown(true)
-			menuMgr.addMenuListener { manager: IMenuManager => fillContextMenu(manager) }
-			val menu = menuMgr.createContextMenu(viewer.getControl)
-			viewer.getControl.setMenu(menu)
-			getSite.registerContextMenu(menuMgr, viewer)
-			
-		}
-
-		def fillContextMenu(manager: IMenuManager) = {
-			manager.add(action1)
-			manager.add(action2)
-			// Other plug-ins can contribute there actions here
-			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS))
-		}
-		
-		def hookDoubleClickAction = {
-			viewer.addDoubleClickListener { event: DoubleClickEvent => doubleClickAction.run }
-		}
-		
-		def contributeToActionBars = {
-			val bars = getViewSite.getActionBars
-			fillLocalPullDown(bars.getMenuManager)
-			fillLocalToolBar(bars.getToolBarManager)
-			
-			def fillLocalPullDown(manager: IMenuManager) = {
-				manager.add(action1)
-				manager.add(new Separator)
-				manager.add(action2)
-			}
-			
-			def fillLocalToolBar(manager: IToolBarManager) = {
-				manager.add(action1)
-				manager.add(action2)
-			}
-		}
 	}
 
 	/**
