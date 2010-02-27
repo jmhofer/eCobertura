@@ -9,11 +9,11 @@
             id="ecobertura.ui">
       </category>
       <view
-            name="Cobertura View"
+            name="Coverage Session View"
             icon="icons/sample.gif"
             category="ecobertura.ui"
-            class="ecobertura.ui.views.CoberturaView"
-            id="ecobertura.ui.views.CoberturaView">
+            class="ecobertura.ui.views.session.CoverageSessionView"
+            id="ecobertura.ui.views.session.CoverageSessionView">
       </view>
    </extension>
    <extension
@@ -136,15 +136,15 @@
             name="Cover Java Application">
       </command>
       <category
-            description="Cobertura View Commands"
-            id="ecobertura.ui.view.commands.category"
-            name="Cobertura View">
+            description="Coverage Session View Commands"
+            id="ecobertura.ui.views.session.commands.category"
+            name="Coverage Session View">
       </category>
       <command
-            categoryId="ecobertura.ui.view.commands.category"
-            defaultHandler="ecobertura.ui.views.commands.OpenCoverageSessionHandler"
+            categoryId="ecobertura.ui.views.session.commands.category"
+            defaultHandler="ecobertura.ui.views.session.commands.OpenCoverageSessionHandler"
             description="Open a coverage session within the view"
-            id="ecobertura.ui.view.commands.openCoverageSession"
+            id="ecobertura.ui.views.session.commands.openCoverageSession"
             name="Open Coverage Session">
       </command>
    </extension>
@@ -167,9 +167,9 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:ecobertura.ui.views.CoberturaView?after=additions">
+            locationURI="toolbar:ecobertura.ui.views.session.CoverageSessionView?after=additions">
          <command
-               commandId="ecobertura.ui.view.commands.openCoverageSession"
+               commandId="ecobertura.ui.views.session.commands.openCoverageSession"
                icon="icons/sample.gif"
                label="Open..."
                mnemonic="O"

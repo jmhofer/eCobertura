@@ -1,4 +1,4 @@
-package ecobertura.ui.views
+package ecobertura.ui.views.session
 
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.ui.part._
@@ -8,41 +8,15 @@ import org.eclipse.swt.SWT;
 
 import ecobertura.ui.util.Predef._
 
-/**
- * This sample class demonstrates how to plug-in a new
- * workbench view. The view shows data obtained from the
- * model. The sample creates a dummy model on the fly,
- * but a real implementation would connect to the model
- * available either in this or another plug-in (e.g. the workspace).
- * The view is connected to the model using a content provider.
- * <p>
- * The view uses a label provider to define how model
- * objects should be presented in the view. Each
- * view can present the same model objects using
- * different labels and icons, if needed. Alternatively,
- * a single label provider can be shared between views
- * in order to ensure that objects of the same type are
- * presented in the same way everywhere.
- * <p>
- */
-object CoberturaView {
+object CoverageSessionView {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	def ID = "ecobertura.ui.views.CoberturaView"
+	def ID = "ecobertura.ui.views.session.CoverageSessionView"
 }
-class CoberturaView extends ViewPart {
+class CoverageSessionView extends ViewPart {
 	private var viewer: TableViewer = null
 
-	/*
-	 * The content provider class is responsible for
-	 * providing objects to the view. It can wrap
-	 * existing objects in adapters or simply return
-	 * objects as-is. These objects may be sensitive
-	 * to the current input of the view, or ignore
-	 * it and always show the same content 
-	 * (like Task List, for example).
-	 */
 	class ViewContentProvider extends IStructuredContentProvider {
 		override def inputChanged(v: Viewer, oldInput: Any, newInput: Any) = {}
 		override def dispose = {}
