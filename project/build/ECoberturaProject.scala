@@ -10,5 +10,5 @@ class ECoberturaProject(info: ProjectInfo) extends ParentProject(info) {
 //	override def localScala: Seq[ScalaInstance] = 
 //		defineScala("2.8.0-local", new File(eclipseHome + "/configuration/org.eclipse.osgi/bundles/623/1/.cp/lib"))
 	
-	lazy val core = project("ecoburtura.core", "eCobertura Core")
+	lazy val core = project("ecobertura.core", "eCobertura Core")
 }
