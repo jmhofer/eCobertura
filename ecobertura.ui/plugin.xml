@@ -170,7 +170,7 @@
             locationURI="toolbar:ecobertura.ui.views.session.CoverageSessionView?after=additions">
          <command
                commandId="ecobertura.ui.views.session.commands.openCoverageSession"
-               icon="icons/sample.gif"
+               icon="icons/fldr_obj.gif"
                label="Open..."
                mnemonic="O"
                style="push"
