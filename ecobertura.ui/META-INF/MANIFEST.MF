@@ -8,10 +8,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
+ org.eclipse.jdt.ui,
  org.junit4,
- ecobertura.core,
  org.eclipse.debug.ui,
  scala.library,
- org.eclipse.jdt.ui;bundle-version="3.5.1"
+ ecobertura.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

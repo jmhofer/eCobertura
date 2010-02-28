@@ -1,6 +1,10 @@
 package ecobertura.ui.views.session
 
+import java.util.logging.Logger
+
 trait CoverageSessionPublisher {
+	private val logger = Logger.getLogger("ecobertura.ui.views.session") //$NON-NLS-1$
+
 	private var listeners: List[CoverageSessionListener] = Nil
 
 	def addListener(listener: CoverageSessionListener) =
@@ -9,5 +13,8 @@ trait CoverageSessionPublisher {
 	def removeListener(listener: CoverageSessionListener) = 
 		listeners.filterNot(_ == listener)
 		
-	protected def fireSessionReset = listeners.foreach(_.sessionReset)
+	protected def fireSessionReset = {
+		logger.fine("Building from coverage session...")
+		listeners.foreach(_.sessionReset)
+	}
 }

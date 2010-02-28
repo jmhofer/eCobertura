@@ -12,7 +12,7 @@ import trace.Trace
 
 object CorePlugin {
 	private val internalPluginId = "ecobertura.core" //$NON-NLS-1$
-	private val logger = Logger getLogger internalPluginId
+	private val logger = Logger.getLogger(internalPluginId)
 	
 	private var internalInstance: CorePlugin = null
 	
@@ -33,13 +33,13 @@ class CorePlugin extends Plugin {
 		super.start(context)
 		internalInstance = this
 		
-		Trace configureForPluginId pluginId;
-		EclipseLogger logFor getLog
+		Trace.configureForPluginId(pluginId)
+		EclipseLogger.logFor(getLog)
 
-		internalPluginState = PluginState initialize getStateLocation
-		internalResultsCollector = CoverageResultsCollector collect
+		internalPluginState = PluginState.initialize(getStateLocation)
+		internalResultsCollector = CoverageResultsCollector.collect
 		
-		logger info "plugin started" //$NON-NLS-1$
+		logger.info("plugin started") //$NON-NLS-1$
 	}
 	
 	override def stop(context: BundleContext): Unit = {
@@ -47,6 +47,6 @@ class CorePlugin extends Plugin {
 		internalInstance = null
 		super.stop(context)
 		
-		logger info "plugin stopped" //$NON-NLS-1$
+		logger.info("plugin stopped") //$NON-NLS-1$
 	}
 }

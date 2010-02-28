@@ -21,6 +21,7 @@ class CoberturaPackageData(packageData: PackageData) extends PackageCoverage {
 	override def classes = {
 		val classSet = packageData.getClasses.asInstanceOf[Set[ClassData]]
 		
+		// FIXME can't convert java.util.TreeSet to scala.collection.immutable.Set
 		classSet.map(ClassCoverage.fromCoberturaClassData(_))
 	}
 }

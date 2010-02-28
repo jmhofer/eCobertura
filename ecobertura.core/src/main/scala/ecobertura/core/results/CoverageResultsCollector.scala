@@ -36,7 +36,7 @@ class CoverageResultsCollector extends IDebugEventSetListener {
 			listeners foreach (_.coverageRunCompleted(projectData))
 
 		def retrieveCoverageData = 
-			CoberturaWrapper.get projectDataFromFile CoberturaWrapper.DEFAULT_COBERTURA_FILENAME
+			CoberturaWrapper.get.projectDataFromDefaultFile
 
 		for (event <- events if isCoverageLaunchTerminationEvent(event)) {
 			logger fine "detected termination of covered launch"

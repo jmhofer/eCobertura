@@ -22,6 +22,7 @@ object CoberturaWrapper {
 
 trait ICoberturaWrapper {
 	def instrumentClassFile(classFileToInstrument: File)
+	def projectDataFromDefaultFile : ProjectData
 	def projectDataFromFile(fileName: String) : ProjectData
 	def pathToJar : IPath
 }
@@ -48,11 +49,17 @@ class CoberturaWrapper extends ICoberturaWrapper {
 			projectDataField set (coberturaMain, new ProjectData())
 		}
 	}
+
+	override def projectDataFromFile(filename: String) : ProjectData = {
+		val coberturaFile = new File(filename)
+		CoverageDataFileHandler.loadCoverageData(coberturaFile)
+	}
 	
-	override def projectDataFromFile(fileName: String) : ProjectData = {
+	override def projectDataFromDefaultFile : ProjectData = {
 		val coberturaFile = new File(
-				CorePlugin.instance.pluginState.instrumentationDataDirectory, fileName)
-		CoverageDataFileHandler loadCoverageData coberturaFile
+				CorePlugin.instance.pluginState.instrumentationDataDirectory, 
+				CoberturaWrapper.DEFAULT_COBERTURA_FILENAME)
+		CoverageDataFileHandler.loadCoverageData(coberturaFile)
 	}
 	
 	override def instrumentClassFile(classFileToInstrument: File) = {

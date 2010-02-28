@@ -1,17 +1,22 @@
 package ecobertura.ui.views.session
 
+import java.util.logging.Logger
 import ecobertura.core.data._
 
 import org.eclipse.jface.viewers.Viewer
 import org.eclipse.jface.viewers.ITreeContentProvider
 
 object CoverageSessionModel {
+	private val logger = Logger.getLogger("ecobertura.ui.views.session") //$NON-NLS-1$
+	
 	private var instance = new CoverageSessionModel
 
 	def get = instance
 }
 
 class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentProvider {
+	import CoverageSessionModel.logger
+	
 	private var coverageSession: Option[CoverageSession] = None
 	
 	def clear = {
@@ -21,12 +26,14 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 	}
 	
 	def setCoverageSession(coverageSession: CoverageSession) = {
+		println("setCoverageSession")
 		this.coverageSession = Some(coverageSession)
 		buildFromSession
 		fireSessionReset
 	}
 	
 	def buildFromSession = {
+		logger.fine("Building from coverage session...")
 		CoverageSessionRoot.removeAllChildren
 		coverageSession match {
 			case Some(session) => {
@@ -40,8 +47,10 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 	
 	def buildFromPackageCoverage(covPackage: PackageCoverage) = {
 		val sessionPackage = CoverageSessionPackage(covPackage.name)
+		logger.fine("Building package from coverage session..." + sessionPackage.name)
 		covPackage.classes.foreach { covClass =>
 			sessionPackage.addChild(CoverageSessionClass(covClass.name))
+			logger.fine("... adding class " + covClass.name)
 		}
 		sessionPackage
 	}
