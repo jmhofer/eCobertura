@@ -1,0 +1,10 @@
+eCobertura - An Eclipse plugin for Cobertura
+============================================
+
+Build requirements:
+- Eclipse PDE
+- A working version of the Scala 2.8 Eclipse plugin
+
+Build instructions:
+- Use the built-in PDE build
+  (sbt build is not yet working)
