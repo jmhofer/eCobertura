@@ -15,5 +15,5 @@ trait ClassCoverage {
 }
 
 class CoberturaClassData(classData: ClassData) extends ClassCoverage {
-	override def name = classData.getName
+	override def name = classData.getBaseName
 }

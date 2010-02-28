@@ -1,5 +1,6 @@
 package ecobertura.core.data
 
+import java.util.TreeSet
 import net.sourceforge.cobertura.coveragedata._
 
 import scala.collection.JavaConversions._
@@ -12,16 +13,15 @@ object PackageCoverage {
 
 trait PackageCoverage {
 	def name: String
-	def classes: Set[ClassCoverage]
+	def classes: List[ClassCoverage]
 }
 
 class CoberturaPackageData(packageData: PackageData) extends PackageCoverage {
 	override def name = packageData.getName
 	
 	override def classes = {
-		val classSet = packageData.getClasses.asInstanceOf[Set[ClassData]]
+		val classSet = packageData.getClasses.asInstanceOf[TreeSet[ClassData]]
 		
-		// FIXME can't convert java.util.TreeSet to scala.collection.immutable.Set
-		classSet.map(ClassCoverage.fromCoberturaClassData(_))
+		classSet.map(ClassCoverage.fromCoberturaClassData(_)).toList
 	}
 }

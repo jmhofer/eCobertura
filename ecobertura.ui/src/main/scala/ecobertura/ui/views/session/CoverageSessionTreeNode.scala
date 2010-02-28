@@ -12,7 +12,7 @@ trait CoverageSessionTreeNode {
 	def icon: Image
 
 	def children: List[CoverageSessionTreeNode] = nodeChildren
-	def hasChildren = nodeChildren == Nil
+	def hasChildren = nodeChildren != Nil
 	
 	def addChild(child: CoverageSessionTreeNode) = {
 		nodeChildren ::= child

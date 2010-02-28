@@ -26,7 +26,6 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 	}
 	
 	def setCoverageSession(coverageSession: CoverageSession) = {
-		println("setCoverageSession")
 		this.coverageSession = Some(coverageSession)
 		buildFromSession
 		fireSessionReset
