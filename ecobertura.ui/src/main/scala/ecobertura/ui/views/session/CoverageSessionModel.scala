@@ -1,6 +1,7 @@
 package ecobertura.ui.views.session
 
-import ecobertura.core.data.CoverageSession
+import ecobertura.core.data._
+
 import org.eclipse.jface.viewers.Viewer
 import org.eclipse.jface.viewers.ITreeContentProvider
 
@@ -15,12 +16,34 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 	
 	def clear = {
 		coverageSession = None
+		buildFromSession
 		fireSessionReset
 	}
 	
 	def setCoverageSession(coverageSession: CoverageSession) = {
 		this.coverageSession = Some(coverageSession)
+		buildFromSession
 		fireSessionReset
+	}
+	
+	def buildFromSession = {
+		CoverageSessionRoot.removeAllChildren
+		coverageSession match {
+			case Some(session) => {
+				session.packages.foreach { covPackage =>
+					CoverageSessionRoot.addChild(buildFromPackageCoverage(covPackage))
+				}
+			}
+			case None => /* nothing to do */ 
+		}
+	}
+	
+	def buildFromPackageCoverage(covPackage: PackageCoverage) = {
+		val sessionPackage = CoverageSessionPackage(covPackage.name)
+		covPackage.classes.foreach { covClass =>
+			sessionPackage.addChild(CoverageSessionClass(covClass.name))
+		}
+		sessionPackage
 	}
 	
 	override def getElements(element: Any) : Array[Object] = getChildren(element)

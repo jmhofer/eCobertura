@@ -18,6 +18,10 @@ trait CoverageSessionTreeNode {
 		nodeChildren ::= child
 		child.parent = Some(this)
 	}
+	
+	def removeAllChildren = {
+		nodeChildren = Nil
+	}
 }
 
 abstract class CoverageSessionNode
