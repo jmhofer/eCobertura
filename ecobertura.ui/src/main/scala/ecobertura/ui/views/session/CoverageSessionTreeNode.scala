@@ -11,6 +11,9 @@ trait CoverageSessionTreeNode {
 	def name: String
 	def icon: Image
 
+	def linesCovered: Int
+	def linesTotal: Int
+	
 	def children: List[CoverageSessionTreeNode] = nodeChildren
 	def hasChildren = nodeChildren != Nil
 	
@@ -31,15 +34,18 @@ case object CoverageSessionRoot
 	override def name = "root"
 	override def icon =  
 		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_DEFAULT)
+		
+	override def linesCovered = 0
+	override def linesTotal = 0
 }
 
-case class CoverageSessionPackage(name: String) 
+case class CoverageSessionPackage(name: String, linesCovered: Int, linesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
 	override def icon =
 		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_PACKAGE)
 }
 
-case class CoverageSessionClass(name: String) 
+case class CoverageSessionClass(name: String, linesCovered: Int, linesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
 	override def icon =  
 		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_CLASS)

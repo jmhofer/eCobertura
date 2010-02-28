@@ -11,7 +11,7 @@ object PackageCoverage {
 	}
 }
 
-trait PackageCoverage {
+trait PackageCoverage extends CoverageData {
 	def name: String
 	def classes: List[ClassCoverage]
 }
@@ -24,4 +24,7 @@ class CoberturaPackageData(packageData: PackageData) extends PackageCoverage {
 		
 		classSet.map(ClassCoverage.fromCoberturaClassData(_)).toList
 	}
+	
+	override def linesCovered = packageData.getNumberOfCoveredLines
+	override def linesTotal = packageData.getNumberOfValidLines
 }

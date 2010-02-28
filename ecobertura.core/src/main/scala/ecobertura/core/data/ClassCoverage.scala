@@ -10,10 +10,13 @@ object ClassCoverage {
 	}
 }
 
-trait ClassCoverage {
+trait ClassCoverage extends CoverageData {
 	def name: String
 }
 
 class CoberturaClassData(classData: ClassData) extends ClassCoverage {
 	override def name = classData.getBaseName
+	
+	override def linesCovered = classData.getNumberOfCoveredLines
+	override def linesTotal = classData.getNumberOfValidLines
 }

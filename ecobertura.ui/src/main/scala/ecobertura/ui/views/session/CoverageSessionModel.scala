@@ -45,10 +45,12 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 	}
 	
 	def buildFromPackageCoverage(covPackage: PackageCoverage) = {
-		val sessionPackage = CoverageSessionPackage(covPackage.name)
+		val sessionPackage = CoverageSessionPackage(
+				covPackage.name, covPackage.linesCovered, covPackage.linesTotal)
 		logger.fine("Building package from coverage session..." + sessionPackage.name)
 		covPackage.classes.foreach { covClass =>
-			sessionPackage.addChild(CoverageSessionClass(covClass.name))
+			sessionPackage.addChild(
+					CoverageSessionClass(covClass.name, covClass.linesCovered, covClass.linesTotal))
 			logger.fine("... adding class " + covClass.name)
 		}
 		sessionPackage
