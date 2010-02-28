@@ -12,6 +12,7 @@ import org.eclipse.ui._
 import org.eclipse.ui.part._
 
 import ecobertura.ui.util.Predef._
+import ecobertura.ui.views.session.labels._
 
 object CoverageSessionView {
 	/**
@@ -33,20 +34,23 @@ class CoverageSessionView extends ViewPart {
 	 * This is a callback that will allow us to create the viewer and initialize it.
 	 */
 	override def createPartControl(parent: Composite) = {
-		val swtTreeTable = new Tree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL)
-		swtTreeTable.setHeaderVisible(true)
-		swtTreeTable.setLinesVisible(true)
+//		val swtTreeTable = new Tree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL)
+//		swtTreeTable.setHeaderVisible(true)
+//		swtTreeTable.setLinesVisible(true)
 		
-		viewer = new TreeViewer(swtTreeTable)
+		viewer = new TreeViewer(parent, SWT.SINGLE)
+		val swtTreeTable = viewer.getTree
+		swtTreeTable.setHeaderVisible(true)
+		
 		val treeColumnLayout = new TreeColumnLayout
 		parent.setLayout(treeColumnLayout)
 		
-		addTreeColumn("Name", SWT.LEFT, 8)
-		addTreeColumn("Lines", SWT.RIGHT, 1)
-		addTreeColumn("Total", SWT.RIGHT, 1)
+		addTreeColumn("Name", SWT.LEFT, 7).setLabelProvider(new NameLabelProvider)
+		addTreeColumn("Lines", SWT.RIGHT, 1).setLabelProvider(new LinesCoveredLabelProvider)
+		addTreeColumn("Total", SWT.RIGHT, 1).setLabelProvider(new LinesTotalLabelProvider)
+		addTreeColumn("%", SWT.RIGHT, 1).setLabelProvider(new LinesPercentageLabelProvider)
 		
 		viewer.setContentProvider(CoverageSessionModel.get)
-		viewer.setLabelProvider(new CoverageSessionLabelProvider)
 		viewer.setSorter(new NameSorter)
 		viewer.setInput(CoverageSessionRoot)
 		viewer.expandAll
@@ -55,17 +59,20 @@ class CoverageSessionView extends ViewPart {
 			override def sessionReset = {
 				logger.fine("Viewer has received sessionReset event")
 				viewer.setInput(CoverageSessionRoot)
+				viewer.expandAll
 			}
 		})
 
 		// Create the help context id for the viewer's control
 		// PlatformUI.getWorkbench.getHelpSystem.setHelp(viewer.getControl, "ecobertura.ui.viewer")
 
-		def addTreeColumn(name: String, alignment: Int, weight: Int) {
-			val column = new TreeColumn(swtTreeTable, alignment)
-			column.setText(name)
-			column.setAlignment(alignment)
-			treeColumnLayout.setColumnData(column, new ColumnWeightData(weight))
+		def addTreeColumn(name: String, alignment: Int, weight: Int) = {
+			val column = new TreeViewerColumn(viewer, alignment)
+			column.getColumn.setText(name)
+			column.getColumn.setAlignment(alignment)
+			treeColumnLayout.setColumnData(column.getColumn, new ColumnWeightData(weight))
+			
+			column
 		}
 	}
 

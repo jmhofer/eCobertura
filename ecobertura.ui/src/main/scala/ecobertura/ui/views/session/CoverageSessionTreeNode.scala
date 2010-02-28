@@ -2,7 +2,7 @@ package ecobertura.ui.views.session
 
 import org.eclipse.swt.graphics.Image
 import org.eclipse.ui.PlatformUI
-import org.eclipse.jdt.ui.ISharedImages
+import org.eclipse.jdt.ui._
 
 trait CoverageSessionTreeNode {
 	private var nodeChildren: List[CoverageSessionTreeNode] = Nil
@@ -31,8 +31,8 @@ abstract class CoverageSessionNode
 
 case object CoverageSessionRoot 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
-	override def name = "root"
-	override def icon =  
+	override val name = "root"
+	override val icon =  
 		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_DEFAULT)
 		
 	override def linesCovered = 0
@@ -41,12 +41,12 @@ case object CoverageSessionRoot
 
 case class CoverageSessionPackage(name: String, linesCovered: Int, linesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
-	override def icon =
-		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_PACKAGE)
+	override val icon =
+		JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_PACKAGE)
 }
 
 case class CoverageSessionClass(name: String, linesCovered: Int, linesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
-	override def icon =  
-		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_CLASS)
+	override val icon =  
+		JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_CLASS)
 }
