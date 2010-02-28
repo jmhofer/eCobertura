@@ -1,4 +1,4 @@
-package ecobertura.core.cobertura.data
+package ecobertura.core.data
 
 import net.sourceforge.cobertura.coveragedata._
 

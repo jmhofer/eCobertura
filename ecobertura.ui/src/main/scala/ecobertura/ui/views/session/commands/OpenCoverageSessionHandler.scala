@@ -6,13 +6,15 @@ import org.eclipse.swt.widgets.FileDialog
 import org.eclipse.ui.handlers.HandlerUtil
 
 import ecobertura.core.cobertura.CoberturaWrapper
+import ecobertura.core.data.CoverageSession
 import ecobertura.ui.views.session.CoverageSessionModel
 
 class OpenCoverageSessionHandler extends AbstractHandler {
 	override def execute(event: ExecutionEvent) = {
 		val sessionFilename = retrieveCoverageSessionFilename(event)
 		val projectData = CoberturaWrapper.get.projectDataFromFile(sessionFilename)
-		CoverageSessionModel.get.setProjectData(projectData)
+		CoverageSessionModel.get.setCoverageSession(
+				CoverageSession.fromCoberturaProjectData(projectData))
 		
 		null // handlers must return null
 	}

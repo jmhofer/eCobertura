@@ -1,2 +1,5 @@
-bin
+bin/
 .scala_dependencies
+project/boot/
+project/build/target/
+target/
