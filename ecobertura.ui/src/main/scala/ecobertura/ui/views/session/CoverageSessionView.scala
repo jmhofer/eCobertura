@@ -34,10 +34,6 @@ class CoverageSessionView extends ViewPart {
 	 * This is a callback that will allow us to create the viewer and initialize it.
 	 */
 	override def createPartControl(parent: Composite) = {
-//		val swtTreeTable = new Tree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL)
-//		swtTreeTable.setHeaderVisible(true)
-//		swtTreeTable.setLinesVisible(true)
-		
 		viewer = new TreeViewer(parent, SWT.SINGLE)
 		val swtTreeTable = viewer.getTree
 		swtTreeTable.setHeaderVisible(true)
@@ -76,7 +72,6 @@ class CoverageSessionView extends ViewPart {
 		}
 	}
 
-	
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
