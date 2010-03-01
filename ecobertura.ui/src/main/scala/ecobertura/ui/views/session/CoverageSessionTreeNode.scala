@@ -32,11 +32,18 @@ abstract class CoverageSessionNode
 case object CoverageSessionRoot 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
 	override val name = "root"
-	override val icon =  
-		PlatformUI.getWorkbench.getSharedImages.getImage(ISharedImages.IMG_OBJS_DEFAULT)
+	override val icon = null  
 		
 	override def linesCovered = 0
 	override def linesTotal = 0
+}
+
+case class CoverageSessionAllPackages(linesCovered: Int, linesTotal: Int) 
+		extends CoverageSessionNode with CoverageSessionTreeNode {
+	override val name = "All Packages"
+	override val icon =  
+		PlatformUI.getWorkbench.getSharedImages.getImage(
+				org.eclipse.ui.ISharedImages.IMG_OBJ_PROJECT)
 }
 
 case class CoverageSessionPackage(name: String, linesCovered: Int, linesTotal: Int) 

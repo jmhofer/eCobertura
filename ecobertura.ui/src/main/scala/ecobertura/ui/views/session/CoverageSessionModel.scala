@@ -36,8 +36,10 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 		CoverageSessionRoot.removeAllChildren
 		coverageSession match {
 			case Some(session) => {
+				val covAllPackages = CoverageSessionAllPackages(session.linesCovered, session.linesTotal)
+				CoverageSessionRoot.addChild(covAllPackages)
 				session.packages.foreach { covPackage =>
-					CoverageSessionRoot.addChild(buildFromPackageCoverage(covPackage))
+					covAllPackages.addChild(buildFromPackageCoverage(covPackage))
 				}
 			}
 			case None => /* nothing to do */ 
