@@ -37,6 +37,7 @@ class CoverageSessionView extends ViewPart {
 		viewer = new TreeViewer(parent, SWT.SINGLE)
 		val swtTreeTable = viewer.getTree
 		swtTreeTable.setHeaderVisible(true)
+		swtTreeTable.setLinesVisible(true)
 		
 		val treeColumnLayout = new TreeColumnLayout
 		parent.setLayout(treeColumnLayout)
@@ -49,13 +50,11 @@ class CoverageSessionView extends ViewPart {
 		viewer.setContentProvider(CoverageSessionModel.get)
 		viewer.setSorter(new NameSorter)
 		viewer.setInput(CoverageSessionRoot)
-		viewer.expandAll
 		
 		CoverageSessionModel.get.addListener(new CoverageSessionListener {
 			override def sessionReset = {
 				logger.fine("Viewer has received sessionReset event")
 				viewer.setInput(CoverageSessionRoot)
-				viewer.expandAll
 			}
 		})
 
