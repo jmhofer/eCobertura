@@ -1,10 +1,8 @@
 package ecobertura.core.util
-
-import java.util.concurrent.Semaphore
-
-import net.sourceforge.cobertura.coveragedata.ProjectData
+import java.util.concurrent.Semaphore
 
 import ecobertura.core.CorePlugin
+import ecobertura.core.data.CoverageSession
 import ecobertura.core.results.CoverageResultsListener
 
 object LaunchTracker {
@@ -12,7 +10,7 @@ object LaunchTracker {
 }
 
 class LaunchTracker {
-	private var projectData: Option[ProjectData] = None
+	private var session: Option[CoverageSession] = None
 
 	private val launchRunning = new Semaphore(1)
 	
@@ -21,9 +19,9 @@ class LaunchTracker {
 	
 	private def registerCoverageResultsListener = {
 		CorePlugin.instance.coverageResultsCollector addListener new CoverageResultsListener {
-			override def coverageRunCompleted(projectData: ProjectData) = {
-				assert(projectData != null)
-				LaunchTracker.this.projectData = Some(projectData)
+			override def coverageRunCompleted(session: CoverageSession) = {
+				assert(session != null)
+				LaunchTracker.this.session = Some(session)
 				launchRunning.release
 			}
 		}
@@ -33,7 +31,7 @@ class LaunchTracker {
 		launchRunning.acquire
 		launchRunning.release
 
-		assert(projectData != None)
-		projectData.get
+		assert(session != None)
+		session.get
 	}
 }

@@ -7,7 +7,8 @@ import net.sourceforge.cobertura.coveragedata.ProjectData
 import org.eclipse.debug.core._
 import org.eclipse.debug.core.model.IProcess
 
-import _root_.ecobertura.core.cobertura.CoberturaWrapper
+import ecobertura.core.cobertura.CoberturaWrapper
+import ecobertura.core.data.CoverageSession
 
 object CoverageResultsCollector {
 	def collect = new CoverageResultsCollector
@@ -32,11 +33,11 @@ class CoverageResultsCollector extends IDebugEventSetListener {
 			Some(launch) == currentLaunch
 		}
 		
-		def notifyListeners(projectData: ProjectData) = 
-			listeners foreach (_.coverageRunCompleted(projectData))
+		def notifyListeners(coverageSession: CoverageSession) = 
+			listeners foreach (_.coverageRunCompleted(coverageSession))
 
 		def retrieveCoverageData = 
-			CoberturaWrapper.get.projectDataFromDefaultFile
+			CoverageSession.fromCoberturaProjectData(CoberturaWrapper.get.projectDataFromDefaultFile)
 
 		for (event <- events if isCoverageLaunchTerminationEvent(event)) {
 			logger fine "detected termination of covered launch"

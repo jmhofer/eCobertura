@@ -1,7 +1,6 @@
 package ecobertura.core.results
-
-import net.sourceforge.cobertura.coveragedata.ProjectData
+import ecobertura.core.data.CoverageSession
 
 trait CoverageResultsListener {
-	def coverageRunCompleted(projectData: ProjectData) : Unit
+	def coverageRunCompleted(coverageSesion: CoverageSession) : Unit
 }
