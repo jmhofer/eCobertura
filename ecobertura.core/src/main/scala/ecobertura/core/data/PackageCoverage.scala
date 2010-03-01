@@ -27,4 +27,6 @@ class CoberturaPackageData(packageData: PackageData) extends PackageCoverage {
 	
 	override def linesCovered = packageData.getNumberOfCoveredLines
 	override def linesTotal = packageData.getNumberOfValidLines
+	override def branchesCovered = packageData.getNumberOfCoveredBranches
+	override def branchesTotal = packageData.getNumberOfValidBranches
 }

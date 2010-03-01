@@ -42,10 +42,13 @@ class CoverageSessionView extends ViewPart {
 		val treeColumnLayout = new TreeColumnLayout
 		parent.setLayout(treeColumnLayout)
 		
-		addTreeColumn("Name", SWT.LEFT, 7).setLabelProvider(new NameLabelProvider)
+		addTreeColumn("Name", SWT.LEFT, 9).setLabelProvider(new NameLabelProvider)
 		addTreeColumn("Lines", SWT.RIGHT, 1).setLabelProvider(new LinesCoveredLabelProvider)
 		addTreeColumn("Total", SWT.RIGHT, 1).setLabelProvider(new LinesTotalLabelProvider)
 		addTreeColumn("%", SWT.RIGHT, 1).setLabelProvider(new LinesPercentageLabelProvider)
+		addTreeColumn("Branches", SWT.RIGHT, 1).setLabelProvider(new BranchesCoveredLabelProvider)
+		addTreeColumn("Total", SWT.RIGHT, 1).setLabelProvider(new BranchesTotalLabelProvider)
+		addTreeColumn("%", SWT.RIGHT, 1).setLabelProvider(new BranchesPercentageLabelProvider)
 		
 		viewer.setContentProvider(CoverageSessionModel.get)
 		viewer.setSorter(new NameSorter)

@@ -13,6 +13,8 @@ trait CoverageSessionTreeNode {
 
 	def linesCovered: Int
 	def linesTotal: Int
+	def branchesCovered: Int
+	def branchesTotal: Int
 	
 	def children: List[CoverageSessionTreeNode] = nodeChildren
 	def hasChildren = nodeChildren != Nil
@@ -36,9 +38,11 @@ case object CoverageSessionRoot
 		
 	override def linesCovered = 0
 	override def linesTotal = 0
+	override def branchesCovered = 0
+	override def branchesTotal = 0
 }
 
-case class CoverageSessionAllPackages(linesCovered: Int, linesTotal: Int) 
+case class CoverageSessionAllPackages(linesCovered: Int, linesTotal: Int, branchesCovered: Int, branchesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
 	override val name = "All Packages"
 	override val icon =  
@@ -46,13 +50,13 @@ case class CoverageSessionAllPackages(linesCovered: Int, linesTotal: Int)
 				org.eclipse.ui.ISharedImages.IMG_OBJ_PROJECT)
 }
 
-case class CoverageSessionPackage(name: String, linesCovered: Int, linesTotal: Int) 
+case class CoverageSessionPackage(name: String, linesCovered: Int, linesTotal: Int, branchesCovered: Int, branchesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
 	override val icon =
 		JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_PACKAGE)
 }
 
-case class CoverageSessionClass(name: String, linesCovered: Int, linesTotal: Int) 
+case class CoverageSessionClass(name: String, linesCovered: Int, linesTotal: Int, branchesCovered: Int, branchesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
 	override val icon =  
 		JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_CLASS)

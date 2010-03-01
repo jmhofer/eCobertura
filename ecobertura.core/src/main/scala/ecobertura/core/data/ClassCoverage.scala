@@ -19,4 +19,6 @@ class CoberturaClassData(classData: ClassData) extends ClassCoverage {
 	
 	override def linesCovered = classData.getNumberOfCoveredLines
 	override def linesTotal = classData.getNumberOfValidLines
+	override def branchesCovered = classData.getNumberOfCoveredBranches
+	override def branchesTotal = classData.getNumberOfValidBranches
 }

@@ -14,6 +14,8 @@ object CoverageSession {
 trait CoverageData {
 	def linesCovered: Int
 	def linesTotal: Int
+	def branchesCovered: Int
+	def branchesTotal: Int
 }
 
 trait CoverageSession extends CoverageData {
@@ -29,4 +31,6 @@ class CoberturaSessionImpl(projectData: ProjectData) extends CoverageSession {
 	
 	override def linesCovered = projectData.getNumberOfCoveredLines
 	override def linesTotal = projectData.getNumberOfValidLines
+	override def branchesCovered = projectData.getNumberOfCoveredBranches
+	override def branchesTotal = projectData.getNumberOfValidBranches
 }
