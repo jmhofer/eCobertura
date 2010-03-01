@@ -1,6 +1,7 @@
 import sbt._
 import scala.io
-import java.io.File
+import java.io._
+import java.util.jar.Manifest
 
 class ECoberturaCoreProject(info: ProjectInfo) extends DefaultProject(info) {
 
@@ -13,7 +14,9 @@ class ECoberturaCoreProject(info: ProjectInfo) extends DefaultProject(info) {
   // TODO be more specific here
   override def unmanagedClasspath = super.unmanagedClasspath +++ eclipsePlugins
 
-  // TODO package needs to include our own manifest instead of the generated one, and also
-  // needs a specific resources path
-  //override def packageOptions = JarManifest(new Manifest(new FileInputStream("src/main/resources/META-INF/MANIFEST.MF"))) :: Nil
+  // special eclipse plugin resources path
+  override def mainResources = ".options" +++ "build.properties" +++ "plugin.xml" +++ (("src" +++ "OSGI-INF" +++ "lib") ** "*")
+
+  // package needs to include our own manifest instead of the generated one
+  override def packageOptions = JarManifest(new Manifest(new FileInputStream("META-INF/MANIFEST.MF"))) :: Nil
 }
