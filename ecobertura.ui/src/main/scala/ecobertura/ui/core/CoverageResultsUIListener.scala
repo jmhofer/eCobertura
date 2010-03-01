@@ -2,9 +2,12 @@ package ecobertura.ui.core
 
 import java.util.logging.Logger
 
+import org.eclipse.swt.widgets.Display
+
 import ecobertura.core.CorePlugin
 import ecobertura.core.data.CoverageSession
 import ecobertura.core.results.CoverageResultsListener
+import ecobertura.ui.util.Predef._
 import ecobertura.ui.UIPlugin
 import ecobertura.ui.views.session.CoverageSessionModel
 
@@ -32,6 +35,8 @@ class CoverageResultsUIListener extends CoverageResultsListener {
 				logger.fine(classData.toString)
 			}
 		}
-		CoverageSessionModel.get.setCoverageSession(coverageSession)
+		Display.getCurrent.syncExec {
+			CoverageSessionModel.get.setCoverageSession(coverageSession)
+		}
 	}
 }
