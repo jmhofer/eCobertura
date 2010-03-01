@@ -56,8 +56,10 @@ class CoverageSessionView extends ViewPart {
 		
 		CoverageSessionModel.get.addListener(new CoverageSessionListener {
 			override def sessionReset = {
-				logger.fine("Viewer has received sessionReset event")
-				viewer.setInput(CoverageSessionRoot)
+				Display.getCurrent.syncExec {
+					logger.fine("Viewer has received sessionReset event")
+					viewer.setInput(CoverageSessionRoot)
+				}
 			}
 		})
 

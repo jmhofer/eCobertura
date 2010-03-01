@@ -16,10 +16,14 @@ trait CoverageData {
 	def linesTotal: Int
 	def branchesCovered: Int
 	def branchesTotal: Int
+	override def toString =
+		String.format("(%d, %d, %d, %d)", int2Integer(linesCovered), 
+				int2Integer(linesTotal), int2Integer(branchesCovered), int2Integer(branchesTotal))
 }
 
 trait CoverageSession extends CoverageData {
 	def packages: List[PackageCoverage]
+	override def toString = String.format("CoverageSession%s", super.toString)
 }
 
 class CoberturaSessionImpl(projectData: ProjectData) extends CoverageSession {

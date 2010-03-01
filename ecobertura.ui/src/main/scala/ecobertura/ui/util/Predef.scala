@@ -15,4 +15,8 @@ object Predef {
 	implicit def doubleClickListener(func: DoubleClickEvent => Unit) = new IDoubleClickListener {
 		override def doubleClick(event: DoubleClickEvent) = func(event)
 	}
+	
+	implicit def run(taskToRun: => Unit) = new Runnable() {
+			override def run = taskToRun
+	}
 }

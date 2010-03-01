@@ -14,6 +14,7 @@ object PackageCoverage {
 trait PackageCoverage extends CoverageData {
 	def name: String
 	def classes: List[ClassCoverage]
+	override def toString = String.format("PackageCoverage(%s)%s", name, super.toString)
 }
 
 class CoberturaPackageData(packageData: PackageData) extends PackageCoverage {

@@ -12,6 +12,7 @@ object ClassCoverage {
 
 trait ClassCoverage extends CoverageData {
 	def name: String
+	override def toString = String.format("ClassCoverage(%s)%s", name, super.toString)
 }
 
 class CoberturaClassData(classData: ClassData) extends ClassCoverage {
