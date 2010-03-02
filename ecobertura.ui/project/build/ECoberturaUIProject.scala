@@ -21,8 +21,6 @@ class ECoberturaUIProject(info: ProjectInfo) extends DefaultProject(info) {
   // special eclipse plugin resources path
   override def mainResources = ".options" +++ "build.properties" +++ "plugin.xml" +++ (("src" +++ "OSGI-INF" +++ "lib") ** "*")
 
-  // TODO package needs to include our own manifest instead of the generated one, and also
-  // needs a specific resources path
+  // package needs to include our own manifest instead of the generated one
   override def packageOptions = JarManifest(new Manifest(new FileInputStream("META-INF/MANIFEST.MF"))) :: Nil
-
 }
