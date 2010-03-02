@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/scala"/>
 	<classpathentry kind="src" path="src/test/scala"/>
+	<classpathentry exported="true" kind="lib" path="lib/cobertura-1.9.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-tree-3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cobertura.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta-oro-2.0.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
