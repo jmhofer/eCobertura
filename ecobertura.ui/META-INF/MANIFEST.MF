@@ -11,8 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui,
  org.junit4,
  org.eclipse.debug.ui,
- scala.library,
  ecobertura.core,
- org.eclipse.jdt.core
+ org.eclipse.jdt.core,
+ org.eclipse.core.expressions,
+ scala.library
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

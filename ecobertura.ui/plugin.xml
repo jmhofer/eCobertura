@@ -147,6 +147,13 @@
             id="ecobertura.ui.views.session.commands.openCoverageSession"
             name="Open Coverage Session">
       </command>
+      <command
+            categoryId="ecobertura.ui.views.session.commands.category"
+            defaultHandler="ecobertura.ui.views.session.commands.OpenCoveredClassHandler"
+            description="Open a covered class from a coverage session"
+            id="ecobertura.ui.views.session.commands.openCoveredClass"
+            name="Open Covered Class">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">

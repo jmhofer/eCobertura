@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers._
 
 import org.eclipse.ui._
 import org.eclipse.ui.part._
+import org.eclipse.ui.handlers.IHandlerService
 
 import ecobertura.ui.util.Predef._
 import ecobertura.ui.views.session.labels._
@@ -54,6 +55,14 @@ class CoverageSessionView extends ViewPart {
 		viewer.setSorter(new NameSorter)
 		viewer.setInput(CoverageSessionRoot)
 		
+		viewer.addDoubleClickListener { 
+			event: DoubleClickEvent => {
+				val handlerService = getSite.getService(classOf[IHandlerService]).asInstanceOf[IHandlerService]
+				val ignore = handlerService.executeCommand(
+						"ecobertura.ui.views.session.commands.openCoveredClass", null)
+			}
+		}
+		
 		CoverageSessionModel.get.addListener(new CoverageSessionListener {
 			override def sessionReset = {
 				logger.fine("Viewer has received sessionReset event")
@@ -80,4 +89,6 @@ class CoverageSessionView extends ViewPart {
 	override def setFocus = {
 		viewer.getControl.setFocus
 	}
+	
+	def selection = viewer.getSelection
 }
