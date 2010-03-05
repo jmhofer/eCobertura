@@ -36,9 +36,7 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 		CoverageSessionRoot.removeAllChildren
 		coverageSession match {
 			case Some(session) => {
-				val covAllPackages = CoverageSessionAllPackages(
-						session.linesCovered, session.linesTotal, 
-						session.branchesCovered, session.branchesTotal)
+				val covAllPackages = new CoverageSessionAllPackages(session)
 				CoverageSessionRoot.addChild(covAllPackages)
 				session.packages.foreach { covPackage =>
 					covAllPackages.addChild(buildFromPackageCoverage(covPackage))
@@ -49,14 +47,10 @@ class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentPro
 	}
 	
 	def buildFromPackageCoverage(covPackage: PackageCoverage) = {
-		val sessionPackage = CoverageSessionPackage(
-				covPackage.name, covPackage.linesCovered, covPackage.linesTotal,
-				covPackage.branchesCovered, covPackage.branchesTotal)
+		val sessionPackage = new CoverageSessionPackage(covPackage)
 		logger.fine("Building package from coverage session..." + sessionPackage.name)
 		covPackage.classes.foreach { covClass =>
-			sessionPackage.addChild(
-					CoverageSessionClass(covClass.name, covClass.linesCovered, covClass.linesTotal,
-							covClass.branchesCovered, covClass.branchesTotal))
+			sessionPackage.addChild(new CoverageSessionClass(covClass))
 			logger.fine("... adding class " + covClass.name)
 		}
 		sessionPackage

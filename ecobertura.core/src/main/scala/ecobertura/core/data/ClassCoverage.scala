@@ -12,11 +12,13 @@ object ClassCoverage {
 
 trait ClassCoverage extends CoverageData {
 	def name: String
+	def packageName: String
 	override def toString = String.format("ClassCoverage(%s)%s", name, super.toString)
 }
 
 class CoberturaClassData(classData: ClassData) extends ClassCoverage {
 	override def name = classData.getBaseName
+	override def packageName = classData.getPackageName
 	
 	override def linesCovered = classData.getNumberOfCoveredLines
 	override def linesTotal = classData.getNumberOfValidLines

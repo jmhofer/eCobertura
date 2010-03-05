@@ -6,7 +6,7 @@ import ecobertura.ui.views.session.CoverageSessionTreeNode
 
 class LinesCoveredLabelProvider extends ColumnLabelProvider {
 	override def getText(node: Any) = node match {
-		case coverageNode: CoverageSessionTreeNode => coverageNode.linesCovered.toString
+		case coverageNode: CoverageSessionTreeNode => coverageNode.coverageData.linesCovered.toString
 		case _ => "???"
 	}
 }

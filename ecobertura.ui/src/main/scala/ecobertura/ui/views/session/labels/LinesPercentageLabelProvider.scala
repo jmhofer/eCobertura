@@ -8,7 +8,8 @@ import ecobertura.ui.util.Format
 class LinesPercentageLabelProvider extends ColumnLabelProvider {
 	override def getText(node: Any) = node match {
 		case coverageNode: CoverageSessionTreeNode => 
-			Format.asPercentage(coverageNode.linesCovered, coverageNode.linesTotal)
+			Format.asPercentage(coverageNode.coverageData.linesCovered, 
+					coverageNode.coverageData.linesTotal)
 		case _ => "???"
 	}
 }

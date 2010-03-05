@@ -21,6 +21,14 @@ trait CoverageData {
 				int2Integer(linesTotal), int2Integer(branchesCovered), int2Integer(branchesTotal))
 }
 
+object EmptyCoverageData extends CoverageData {
+	override def linesCovered = 0
+	override def linesTotal = 0
+	override def branchesCovered = 0
+	override def branchesTotal = 0
+	override def toString = String.format("EmptyCoverageSession%s", super.toString)
+}
+
 trait CoverageSession extends CoverageData {
 	def packages: List[PackageCoverage]
 	override def toString = String.format("CoverageSession%s", super.toString)
