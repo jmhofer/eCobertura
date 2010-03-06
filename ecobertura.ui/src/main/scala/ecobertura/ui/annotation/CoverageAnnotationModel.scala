@@ -12,7 +12,7 @@ import org.eclipse.ui.texteditor.ITextEditor
 // TODO react to document/editor changes 
 // TODO react to coverage changes
 object CoverageAnnotationModel {
-	private val logger = Logger getLogger "ecobertura.ui.annotation" //$NON-NLS-1$
+	private val logger = Logger.getLogger("ecobertura.ui.annotation") //$NON-NLS-1$
 
 	class Key { /* internal marker class */ }
 	val MODEL_ID = new Key
@@ -31,17 +31,21 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	
 	private var annotations = List[CoverageAnnotation]()
 	
-	logger fine "CoverageAnnotationModel created." //$NON-NLS-1$
-	// TODO what about editor and document?
-	initializeAnnotations
+	logger.fine("CoverageAnnotationModel created.") //$NON-NLS-1$
+	initializeAnnotations(document)
 	
-	private def initializeAnnotations = {
+	private def initializeAnnotations(document: IDocument) = {
 		// TODO correct stuff instead of dummy stuff
-		val annotation = CoverageAnnotation.fromPosition(0, 10)
-		annotations ::= annotation
-		val event = new AnnotationModelEvent(this)
-		event.annotationAdded(annotation)
-		fireModelChanged(event)
+		for (line <- 0 until document.getNumberOfLines) {
+			if (document.getLineLength(line) > 0) {
+				val annotation = CoverageAnnotation.fromPosition(document.getLineOffset(line), 
+						document.getLineLength(line))
+				annotations ::= annotation
+				val event = new AnnotationModelEvent(this)
+				event.annotationAdded(annotation)
+				fireModelChanged(event)
+			}
+		}
 	}
 	
 	override def connect(document: IDocument) = {

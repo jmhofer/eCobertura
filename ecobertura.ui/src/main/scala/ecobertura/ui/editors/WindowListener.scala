@@ -6,7 +6,7 @@ class WindowListener(editorTracker: EditorsAnnotator) extends IWindowListener {
 
 	val partListener: IPartListener2 = new IPartListener2() {
 		override def partOpened(partref: IWorkbenchPartReference) = 
-			editorTracker annotateEditor partref
+			editorTracker.annotateEditor(partref)
 		
 		override def partActivated(partref: IWorkbenchPartReference) = { /* NOP */ } 
 		override def partBroughtToTop(partref: IWorkbenchPartReference) = { /* NOP */ } 
@@ -18,10 +18,10 @@ class WindowListener(editorTracker: EditorsAnnotator) extends IWindowListener {
 	}
 	
 	override def windowOpened(window: IWorkbenchWindow) =
-		window.getPartService addPartListener partListener
+		window.getPartService.addPartListener(partListener)
 	
 	override def windowClosed(window: IWorkbenchWindow) =
-		window.getPartService removePartListener partListener
+		window.getPartService.removePartListener(partListener)
 		
 	override def windowActivated(window: IWorkbenchWindow) = { /* NOP */ }
 	override def windowDeactivated(window: IWorkbenchWindow) = { /* NOP */ }
