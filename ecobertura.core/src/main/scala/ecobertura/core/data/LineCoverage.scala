@@ -17,6 +17,8 @@ trait LineCoverage {
 	def lineNumber: Int
 	def hits: Long
 	def isCovered = hits > 0
+	
+	override def toString = String.format("LineCoverage(%d, %d)", int2Integer(lineNumber), long2Long(hits))
 }
 
 class LineCoverageImpl(lineData: LineData) extends LineCoverage {

@@ -14,20 +14,23 @@ import ecobertura.core.CorePlugin
 import ecobertura.core.log.LogStatus
 
 object CoberturaWrapper {
-	def DEFAULT_COBERTURA_FILENAME = "cobertura.ser"; //$NON-NLS-1$
+	val DEFAULT_COBERTURA_FILENAME = "cobertura.ser" //$NON-NLS-1$
+	val COBERTURA_JAR_NAME = "cobertura-1.9.4.jar" //$NON-NLS-1$
 
-	private lazy val instance = new CoberturaWrapper()
+	private lazy val instance = new CoberturaWrapper
 	def get = instance
 }
 
 trait ICoberturaWrapper {
 	def instrumentClassFile(classFileToInstrument: File)
-	def projectDataFromDefaultFile : ProjectData
-	def projectDataFromFile(fileName: String) : ProjectData
-	def pathToJar : IPath
+	def projectDataFromDefaultFile: ProjectData
+	def projectDataFromFile(fileName: String): ProjectData
+	def pathToJar: IPath
 }
 
 class CoberturaWrapper extends ICoberturaWrapper {
+	import CoberturaWrapper._
+	
 	private val COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS = "addInstrumentationToSingleClass"; //$NON-NLS-1$
 	private val coberturaMain = new Main()
 	
@@ -45,8 +48,8 @@ class CoberturaWrapper extends ICoberturaWrapper {
 
 		def setPrivateProjectData = {
 			val projectDataField = coberturaMain.getClass.getDeclaredField("projectData")
-			projectDataField setAccessible true
-			projectDataField set (coberturaMain, new ProjectData())
+			projectDataField.setAccessible(true)
+			projectDataField.set(coberturaMain, new ProjectData())
 		}
 	}
 
@@ -79,8 +82,8 @@ class CoberturaWrapper extends ICoberturaWrapper {
 				classFileToInstrument: File, coberturaMain: Main) = {
 			val addInstrumentationToSingleClass = coberturaMain.getClass.getDeclaredMethod(
 					COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS, classOf[File])
-			addInstrumentationToSingleClass setAccessible true
-			addInstrumentationToSingleClass invoke (coberturaMain, classFileToInstrument)
+			addInstrumentationToSingleClass.setAccessible(true)
+			addInstrumentationToSingleClass.invoke(coberturaMain, classFileToInstrument)
 		}
 	}
 
@@ -92,7 +95,7 @@ class CoberturaWrapper extends ICoberturaWrapper {
 	override def pathToJar : IPath = {
 		try {
 			val url = FileLocator.toFileURL(FileLocator.find(new URL(
-					String format ("platform:/plugin/%s/lib/cobertura.jar", CorePlugin.pluginId))))
+					String.format("platform:/plugin/%s/lib/%s", CorePlugin.pluginId, COBERTURA_JAR_NAME))))
 			new Path(url.getPath)
 			
 		} catch {

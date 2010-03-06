@@ -32,7 +32,7 @@ class JavaElementFinder(covClass: CoverageSessionClass) {
 		override def acceptSearchMatch(searchMatch: SearchMatch) = {
 			searchMatch.getElement match {
 				case javaElement: IJavaElement => {
-					logger.fine(String.format("Match found: %s", searchMatch.getElement))
+					logger.fine(String.format("Match found: %s", javaElement))
 					callback(javaElement)
 				}
 				case _ => /* nothing to do */

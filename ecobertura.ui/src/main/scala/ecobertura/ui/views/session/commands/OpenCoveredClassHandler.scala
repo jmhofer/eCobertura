@@ -1,5 +1,6 @@
 package ecobertura.ui.views.session.commands
 
+import java.util.logging.Logger
 import org.eclipse.jface.viewers.IStructuredSelection
 import org.eclipse.jface.viewers.ISelection
 import org.eclipse.core.commands._
@@ -12,6 +13,8 @@ import ecobertura.ui.views.session._
 import ecobertura.ui.util._
 
 class OpenCoveredClassHandler extends AbstractHandler {
+	val logger = Logger.getLogger("ecobertura.ui.views.session.command")
+	
 	override def execute(event: ExecutionEvent) = {
 		val window = HandlerUtil.getActiveWorkbenchWindow(event)
 		val page = window.getActivePage
@@ -28,10 +31,11 @@ class OpenCoveredClassHandler extends AbstractHandler {
 			case _ => /* nothing to do */
 		}
 
-		def handleClassSelection(covClass: CoverageSessionClass) = 
+		def handleClassSelection(covClass: CoverageSessionClass) = { 
 			JavaElementFinder.fromCoverageSessionClass(covClass).find(
 					JavaEditorOpener.openAndReveal)
-		
+			logger.fine(covClass.coverageData.lines.mkString(", "))
+		}
 		null
 	}
 }
