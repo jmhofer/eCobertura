@@ -8,6 +8,8 @@ import org.eclipse.jface.text._
 import org.eclipse.jface.text.source._
 import org.eclipse.ui.texteditor.ITextEditor
 
+import ecobertura.ui.views.session.CoverageSessionModel
+
 // TODO fire events to listeners
 // TODO react to document/editor changes 
 // TODO react to coverage changes
@@ -36,6 +38,15 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	
 	private def initializeAnnotations(document: IDocument) = {
 		// TODO correct stuff instead of dummy stuff
+		CoverageSessionModel.get.coverageSession match {
+			case Some(session) => {
+				logger.fine("CoverageSession active") /* session active */
+				// TODO retrieve coverage data for file if available
+				// TODO annotate editor according to coverage data
+			}
+			case _ => /* nothing to do */
+		}
+		
 		for (line <- 0 until document.getNumberOfLines) {
 			if (document.getLineLength(line) > 0) {
 				val annotation = CoverageAnnotation.fromPosition(document.getLineOffset(line), 
@@ -49,9 +60,8 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	}
 	
 	override def connect(document: IDocument) = {
-		logger.fine("CoverageAnnotationModel connected to " + document.get) //$NON-NLS-1$
+		logger.fine("CoverageAnnotationModel connected") //$NON-NLS-1$
 		addAnnotationsTo(document)
-		// TODO connecting
 		
 		def addAnnotationsTo(document: IDocument) = {
 			try {
@@ -64,21 +74,17 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	}
 	
 	override def disconnect(document: IDocument) = {
-		// TODO disconnecting
 		removeAnnotationsFrom(document)
-		logger.fine("CoverageAnnotationModel disconnected from " + document.get) //$NON-NLS-1$
+		logger.fine("CoverageAnnotationModel disconnected") //$NON-NLS-1$
 		
-		def removeAnnotationsFrom(document: IDocument) = {
+		def removeAnnotationsFrom(document: IDocument) =
 			annotations.foreach(annotation => document.removePosition(annotation.getPosition))
-		}
 	}
 	
 	override def getAnnotationIterator = JavaConversions.asIterator(annotations.iterator)
 	
-	override def getPosition(annotation: Annotation) = {
-		annotation match {
-			case coverageAnnotation: CoverageAnnotation => coverageAnnotation.getPosition
-			case _ => null
-		}
+	override def getPosition(annotation: Annotation) = annotation match {
+		case coverageAnnotation: CoverageAnnotation => coverageAnnotation.getPosition
+		case _ => null
 	}
 }

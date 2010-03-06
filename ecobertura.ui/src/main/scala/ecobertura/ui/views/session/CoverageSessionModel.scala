@@ -17,20 +17,22 @@ object CoverageSessionModel {
 class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentProvider {
 	import CoverageSessionModel.logger
 	
-	private var coverageSession: Option[CoverageSession] = None
+	private var internalCoverageSession: Option[CoverageSession] = None
 	
 	def clear = {
-		coverageSession = None
+		internalCoverageSession = None
 		buildFromSession
 		fireSessionReset
 	}
 	
 	def setCoverageSession(coverageSession: CoverageSession) = {
-		this.coverageSession = Some(coverageSession)
+		internalCoverageSession = Some(coverageSession)
 		buildFromSession
 		fireSessionReset
 	}
 	
+	def coverageSession = internalCoverageSession
+		
 	def buildFromSession = {
 		logger.fine("Building from coverage session...")
 		CoverageSessionRoot.removeAllChildren
