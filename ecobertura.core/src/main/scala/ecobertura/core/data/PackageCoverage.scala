@@ -14,20 +14,30 @@ object PackageCoverage {
 trait PackageCoverage extends CoverageData {
 	def name: String
 	def classes: List[ClassCoverage]
+	def sourceFileLines: Map[String, List[LineCoverage]]
 	override def toString = String.format("PackageCoverage(%s)%s", name, super.toString)
 }
 
 class CoberturaPackageData(packageData: PackageData) extends PackageCoverage {
-	override def name = packageData.getName
+	override val name = packageData.getName
 	
-	override def classes = {
+	override val classes = {
 		val classSet = packageData.getClasses.asInstanceOf[TreeSet[ClassData]]
-		
 		classSet.map(ClassCoverage.fromCoberturaClassData(_)).toList
 	}
 	
-	override def linesCovered = packageData.getNumberOfCoveredLines
-	override def linesTotal = packageData.getNumberOfValidLines
-	override def branchesCovered = packageData.getNumberOfCoveredBranches
-	override def branchesTotal = packageData.getNumberOfValidBranches
+	private var internalSourceFileLines = Map[String, List[LineCoverage]]()
+	for (classCoverage <- classes) {
+		internalSourceFileLines += classCoverage.sourceFileName -> 
+			(internalSourceFileLines.get(classCoverage.sourceFileName) match {
+				case Some(list) => list ++ classCoverage.lines
+				case None => classCoverage.lines
+			})
+	}
+	val sourceFileLines = internalSourceFileLines
+	
+	override val linesCovered = packageData.getNumberOfCoveredLines
+	override val linesTotal = packageData.getNumberOfValidLines
+	override val branchesCovered = packageData.getNumberOfCoveredBranches
+	override val branchesTotal = packageData.getNumberOfValidBranches
 }

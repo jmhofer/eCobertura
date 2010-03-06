@@ -19,14 +19,15 @@ trait ClassCoverage extends CoverageData {
 }
 
 class CoberturaClassData(classData: ClassData) extends ClassCoverage {
-	override def name = classData.getBaseName
-	override def packageName = classData.getPackageName
-	override def sourceFileName = classData.getSourceFileName
+	override val name = classData.getBaseName
+	override val packageName = classData.getPackageName
+	override val sourceFileName = classData.getSourceFileName.substring(
+			classData.getSourceFileName.lastIndexOf("/") + 1)
 	
-	override def linesCovered = classData.getNumberOfCoveredLines
-	override def linesTotal = classData.getNumberOfValidLines
-	override def branchesCovered = classData.getNumberOfCoveredBranches
-	override def branchesTotal = classData.getNumberOfValidBranches
+	override val linesCovered = classData.getNumberOfCoveredLines
+	override val linesTotal = classData.getNumberOfValidLines
+	override val branchesCovered = classData.getNumberOfCoveredBranches
+	override val branchesTotal = classData.getNumberOfValidBranches
 	
-	override def lines = LineCoverage.fromLineDataSet(classData.getLines.toList)
+	override val lines = LineCoverage.fromLineDataSet(classData.getLines.toList)
 }

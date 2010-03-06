@@ -1,11 +1,14 @@
 package ecobertura.ui.annotation
 
+import ecobertura.core.data.LineCoverage
+import org.eclipse.jdt.core.ITypeRoot
 import scala.collection.JavaConversions
 
 import java.util.logging._
 
 import org.eclipse.jface.text._
 import org.eclipse.jface.text.source._
+import org.eclipse.jdt.ui._
 import org.eclipse.ui.texteditor.ITextEditor
 
 import ecobertura.ui.views.session.CoverageSessionModel
@@ -34,27 +37,46 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	private var annotations = List[CoverageAnnotation]()
 	
 	logger.fine("CoverageAnnotationModel created.") //$NON-NLS-1$
-	initializeAnnotations(document)
+	initializeAnnotations(editor, document)
 	
-	private def initializeAnnotations(document: IDocument) = {
-		// TODO correct stuff instead of dummy stuff
+	private def initializeAnnotations(editor: ITextEditor, document: IDocument) = {
+		// TODO refactor!
 		CoverageSessionModel.get.coverageSession match {
 			case Some(session) => {
 				logger.fine("CoverageSession active") /* session active */
-				// TODO retrieve coverage data for file if available
-				// TODO annotate editor according to coverage data
+				JavaUI.getEditorInputTypeRoot(editor.getEditorInput) match {
+					case typeRoot: ITypeRoot => {
+						val sourceFileName = typeRoot.getElementName
+						val packageName = typeRoot.getParent.getElementName
+						session.packageMap.get(packageName) match {
+							case Some(packageCov) => {
+								packageCov.sourceFileLines.get(sourceFileName) match {
+									case Some(lines) => {
+										logger.fine("found lines: " + lines.mkString(", "))
+										annotateLines(lines)
+									}
+									case None => /* nothing to do */
+								}
+							}
+							case None => /* nothing to do */
+						}
+					}
+					case _ => /* nothing to do */
+				}
 			}
 			case _ => /* nothing to do */
 		}
-		
-		for (line <- 0 until document.getNumberOfLines) {
-			if (document.getLineLength(line) > 0) {
-				val annotation = CoverageAnnotation.fromPosition(document.getLineOffset(line), 
-						document.getLineLength(line))
-				annotations ::= annotation
-				val event = new AnnotationModelEvent(this)
-				event.annotationAdded(annotation)
-				fireModelChanged(event)
+
+		def annotateLines(lines: List[LineCoverage]) = {
+			for (line <- lines; lineNumber = line.lineNumber - 1) {
+				if (document.getLineLength(lineNumber) > 0) {
+					val annotation = CoverageAnnotation.fromPosition(document.getLineOffset(lineNumber), 
+							document.getLineLength(lineNumber))
+					annotations ::= annotation
+					val event = new AnnotationModelEvent(this)
+					event.annotationAdded(annotation)
+					fireModelChanged(event)
+				}
 			}
 		}
 	}

@@ -31,18 +31,24 @@ object EmptyCoverageData extends CoverageData {
 
 trait CoverageSession extends CoverageData {
 	def packages: List[PackageCoverage]
+	def packageMap: Map[String, PackageCoverage]
 	override def toString = String.format("CoverageSession%s", super.toString)
 }
 
 class CoberturaSessionImpl(projectData: ProjectData) extends CoverageSession {
-	override def packages = {
+	override val packages = {
 		val packageSet = projectData.getPackages.asInstanceOf[TreeSet[PackageData]]
 		
 		packageSet.map(PackageCoverage.fromCoberturaPackageData(_)).toList
 	}
+
+	private var internalPackageMap = Map[String, PackageCoverage]()
+	for (packageCov <- packages) internalPackageMap += packageCov.name -> packageCov
 	
-	override def linesCovered = projectData.getNumberOfCoveredLines
-	override def linesTotal = projectData.getNumberOfValidLines
-	override def branchesCovered = projectData.getNumberOfCoveredBranches
-	override def branchesTotal = projectData.getNumberOfValidBranches
+	override val packageMap = internalPackageMap
+	
+	override val linesCovered = projectData.getNumberOfCoveredLines
+	override val linesTotal = projectData.getNumberOfValidLines
+	override val branchesCovered = projectData.getNumberOfCoveredBranches
+	override val branchesTotal = projectData.getNumberOfValidBranches
 }
