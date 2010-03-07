@@ -29,7 +29,7 @@ class CoverageAnnotationTest {
 	
 	@Before
 	def setUp = {
-		ca = CoverageAnnotation fromPosition (10, 20)
+		ca = CoverageAnnotation.coveredAtPosition(10, 20)
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ class CoverageAnnotationTest {
 	def testIsPersistent = assertFalse(ca.isPersistent)
 	
 	@Test
-	def testGetType = assertEquals(CoverageAnnotation.ID, ca.getType)
+	def testGetType = assertEquals(CoverageAnnotation.ID_COVERED, ca.getType)
 			
 	@Test
 	def testIsMarkedDeleted = assertFalse(ca.isMarkedDeleted)
@@ -48,8 +48,8 @@ class CoverageAnnotationTest {
 	def testGetText = assertNull(ca.getText)
 	
 	@Test(expected=classOf[IllegalArgumentException])
-	def testFromPositionIllegalOffset: Unit = CoverageAnnotation fromPosition (-1, 10)
+	def testFromPositionIllegalOffset: Unit = CoverageAnnotation.coveredAtPosition(-1, 10)
 
 	@Test(expected=classOf[IllegalArgumentException])
-	def testFromPositionIllegalLength: Unit = CoverageAnnotation fromPosition (10, -1)
+	def testFromPositionIllegalLength: Unit = CoverageAnnotation.coveredAtPosition(10, -1)
 }

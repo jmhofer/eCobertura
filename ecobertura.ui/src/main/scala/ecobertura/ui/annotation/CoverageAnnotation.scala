@@ -23,17 +23,21 @@ import org.eclipse.jface.text.Position
 import org.eclipse.jface.text.source.Annotation
 
 object CoverageAnnotation {
-	val ID = "ecobertura.ui.annotation.coverageAnnotation" //$NON-NLS-1$
+	val ID_COVERED = "ecobertura.ui.annotation.coverageAnnotation.covered" //$NON-NLS-1$
+	val ID_NOT_COVERED = "ecobertura.ui.annotation.coverageAnnotation.notCovered" //$NON-NLS-1$
 		
-	def fromPosition(offset: Int, length: Int): CoverageAnnotation = {
-		if (offset < 0 || length <= 0) 
-			throw new IllegalArgumentException("invalid position") //$NON-NLS-1$
-		new CoverageAnnotation(offset, length)
-	}
+	def coveredAtPosition(offset: Int, length: Int): CoverageAnnotation =
+		new CoverageAnnotation(ID_COVERED, offset, length)
+	
+	def notCoveredAtPosition(offset: Int, length: Int): CoverageAnnotation =
+		new CoverageAnnotation(ID_NOT_COVERED, offset, length)
 }
 
-class CoverageAnnotation(offset: Int, length: Int) 
-		extends Annotation(CoverageAnnotation.ID, false, null) {
+class CoverageAnnotation(typeId: String, offset: Int, length: Int) 
+		extends Annotation(typeId, false, null) {
+	
+	if (offset < 0 || length <= 0) 
+		throw new IllegalArgumentException("invalid position") //$NON-NLS-1$
 	
 	val position = new Position(offset, length)
 
