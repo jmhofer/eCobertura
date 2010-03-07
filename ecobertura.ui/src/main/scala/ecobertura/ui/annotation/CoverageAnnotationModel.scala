@@ -1,16 +1,15 @@
 package ecobertura.ui.annotation
 
-import ecobertura.core.data.LineCoverage
-import org.eclipse.jdt.core.ITypeRoot
 import scala.collection.JavaConversions
 
 import java.util.logging._
 
 import org.eclipse.jface.text._
 import org.eclipse.jface.text.source._
-import org.eclipse.jdt.ui._
 import org.eclipse.ui.texteditor.ITextEditor
 
+import ecobertura.core.data.LineCoverage
+import ecobertura.ui.editors.LineCoverageFinder
 import ecobertura.ui.views.session.CoverageSessionModel
 
 // TODO fire events to listeners
@@ -40,29 +39,12 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	initializeAnnotations(editor, document)
 	
 	private def initializeAnnotations(editor: ITextEditor, document: IDocument) = {
-		// TODO refactor!
+		
 		CoverageSessionModel.get.coverageSession match {
 			case Some(session) => {
 				logger.fine("CoverageSession active") /* session active */
-				JavaUI.getEditorInputTypeRoot(editor.getEditorInput) match {
-					case typeRoot: ITypeRoot => {
-						val sourceFileName = typeRoot.getElementName
-						val packageName = typeRoot.getParent.getElementName
-						session.packageMap.get(packageName) match {
-							case Some(packageCov) => {
-								packageCov.sourceFileLines.get(sourceFileName) match {
-									case Some(lines) => {
-										logger.fine("found lines: " + lines.mkString(", "))
-										annotateLines(lines)
-									}
-									case None => /* nothing to do */
-								}
-							}
-							case None => /* nothing to do */
-						}
-					}
-					case _ => /* nothing to do */
-				}
+				val coveredLines = LineCoverageFinder.forSession(session).findInEditor(editor)
+				annotateLines(coveredLines)
 			}
 			case _ => /* nothing to do */
 		}
