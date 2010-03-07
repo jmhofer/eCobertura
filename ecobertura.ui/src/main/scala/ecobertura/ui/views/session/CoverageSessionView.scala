@@ -17,7 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.ui.views.session
+package ecobertura.ui.views.session
+import org.eclipse.jface.action.Separator
+
+import org.eclipse.jface.action.MenuManager
 
 import java.util.logging.Logger
 
@@ -58,6 +61,12 @@ class CoverageSessionView extends ViewPart {
 		val swtTreeTable = viewer.getTree
 		swtTreeTable.setHeaderVisible(true)
 		swtTreeTable.setLinesVisible(true)
+		
+		val menuManager = new MenuManager
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS))
+		swtTreeTable.setMenu(menuManager.createContextMenu(swtTreeTable))
+		getSite.registerContextMenu("ecoburtura.ui.views.session.popup", menuManager, viewer)
+		getSite.setSelectionProvider(viewer)
 		
 		val treeColumnLayout = new TreeColumnLayout
 		parent.setLayout(treeColumnLayout)

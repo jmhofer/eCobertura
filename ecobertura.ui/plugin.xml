@@ -161,6 +161,18 @@
             adaptable="false"
             id="ecobertura.ui.objectPopup"
             objectClass="java.lang.Object">
+         <visibility>
+            <and>
+               <objectClass
+                     name="java.lang.Object">
+               </objectClass>
+               <not>
+                  <objectClass
+                        name="ecobertura.ui.views.session.CoverageSessionTreeNode">
+                  </objectClass>
+               </not>
+            </and>
+         </visibility>
          <action
                class="ecobertura.ui.actions.CoverAsContextualLaunchAction"
                enablesFor="+"
@@ -182,6 +194,39 @@
                mnemonic="O"
                style="push"
                tooltip="Opens a coverage session &quot;cobertura.ser&quot;.">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:ecobertura.ui.views.session.CoverageSessionView?after=additions">
+         <command
+               commandId="ecobertura.ui.views.session.commands.openCoverageSession"
+               icon="icons/fldr_obj.gif"
+               label="Open Coverage Session..."
+               mnemonic="O"
+               style="push"
+               tooltip="Opens a coverage session &quot;cobertura.ser&quot;.">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:ecoburtura.ui.views.session.popup?after=additions">
+         <command
+               commandId="ecobertura.ui.views.session.commands.openCoveredClass"
+               label="Jump to..."
+               mnemonic="J"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <instanceof
+                           value="ecobertura.ui.views.session.CoverageSessionClass">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
