@@ -62,11 +62,7 @@ class CoverageSessionView extends ViewPart {
 		swtTreeTable.setHeaderVisible(true)
 		swtTreeTable.setLinesVisible(true)
 		
-		val menuManager = new MenuManager
-		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS))
-		swtTreeTable.setMenu(menuManager.createContextMenu(swtTreeTable))
-		getSite.registerContextMenu("ecoburtura.ui.views.session.popup", menuManager, viewer)
-		getSite.setSelectionProvider(viewer)
+		registerContextMenu(swtTreeTable)
 		
 		val treeColumnLayout = new TreeColumnLayout
 		parent.setLayout(treeColumnLayout)
@@ -109,6 +105,14 @@ class CoverageSessionView extends ViewPart {
 		}
 	}
 
+	private def registerContextMenu(swtTreeTable: Tree) = {
+		val menuManager = new MenuManager
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS))
+		swtTreeTable.setMenu(menuManager.createContextMenu(swtTreeTable))
+		getSite.registerContextMenu("ecoburtura.ui.views.session.popup", menuManager, viewer)
+		getSite.setSelectionProvider(viewer)
+	}
+	
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
