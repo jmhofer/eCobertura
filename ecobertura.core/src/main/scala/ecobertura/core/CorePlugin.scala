@@ -67,6 +67,7 @@ class CorePlugin extends Plugin {
 		if (internalInstance != null) {
 			internalPluginState.cleanUp
 			internalInstance = null
+			internalResultsCollector.stopCollecting
 			super.stop(context)
 			
 			logger.info("plugin stopped") //$NON-NLS-1$

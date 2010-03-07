@@ -37,11 +37,11 @@ object CoverageResultsUIListener {
 class CoverageResultsUIListener extends CoverageResultsListener {
 	val logger = Logger.getLogger(UIPlugin.pluginId)
 
-	CorePlugin.instance.coverageResultsCollector addListener this
+	CorePlugin.instance.coverageResultsCollector.addListener(this)
 	logger.fine("coverage results ui listener registered")
 	
 	def unregister = {
-		CorePlugin.instance.coverageResultsCollector removeListener this
+		CorePlugin.instance.coverageResultsCollector.removeListener(this)
 		logger.fine("coverage results ui listener unregistered")
 	}
 	

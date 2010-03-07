@@ -38,33 +38,33 @@ class JavaApplicationLaunchDelegate extends ILaunchConfigurationDelegate2
 		
 		// TODO monitor
 		
-		val launchInstrumenter = LaunchInstrumenter instrumentClassesFor configuration
+		val launchInstrumenter = LaunchInstrumenter.instrumentClassesFor(configuration)
 		val updatedConfiguration = launchInstrumenter.getUpdatedLaunchConfiguration
 		
-		CorePlugin.instance.coverageResultsCollector coveredLaunchStarted launch
-		delegateToExtend launch (updatedConfiguration, ILaunchManager.RUN_MODE, launch, monitor)
+		CorePlugin.instance.coverageResultsCollector.coveredLaunchStarted(launch)
+		delegateToExtend.launch(updatedConfiguration, ILaunchManager.RUN_MODE, launch, monitor)
 	}
 	
 	override def buildForLaunch(configuration: ILaunchConfiguration, mode: String,
 			monitor: IProgressMonitor) = {
 		// simply forward for now
-		delegateToExtend buildForLaunch (configuration, mode, monitor)
+		delegateToExtend.buildForLaunch(configuration, mode, monitor)
 	}
 	
 	override def finalLaunchCheck(configuration: ILaunchConfiguration, mode: String,
 			monitor: IProgressMonitor) = {
 		// simply forward for now
-		delegateToExtend finalLaunchCheck (configuration, mode, monitor)
+		delegateToExtend.finalLaunchCheck(configuration, mode, monitor)
 	}
 	
 	override def getLaunch(configuration: ILaunchConfiguration, mode: String) = {
 		// simply forward for now
-		delegateToExtend getLaunch (configuration, mode)
+		delegateToExtend.getLaunch(configuration, mode)
 	}
 
 	override def preLaunchCheck(configuration: ILaunchConfiguration, mode: String,
 			monitor: IProgressMonitor) = {
 		// simply forward for now
-		delegateToExtend preLaunchCheck (configuration, mode, monitor)
+		delegateToExtend.preLaunchCheck(configuration, mode, monitor)
 	}
 }

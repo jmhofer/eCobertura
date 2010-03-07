@@ -34,41 +34,50 @@ object CoverageResultsCollector {
 }
 
 class CoverageResultsCollector extends IDebugEventSetListener {
-	val logger = Logger getLogger "ecobertura.core.results"
+	val logger = Logger.getLogger("ecobertura.core.results")
 
 	private var listeners = List[CoverageResultsListener]() 
 	private var currentLaunch: Option[ILaunch] = None
 	
-	DebugPlugin.getDefault addDebugEventListener this
+	DebugPlugin.getDefault.addDebugEventListener(this)
 	
 	override def handleDebugEvents(events: Array[DebugEvent]) = {
 		def isCoverageLaunchTerminationEvent(event: DebugEvent) : Boolean = {
-			def isLaunchTerminationEvent(event: DebugEvent) : Boolean = 
-				event.getSource.isInstanceOf[IProcess] && event.getKind == DebugEvent.TERMINATE
-
 			if (!isLaunchTerminationEvent(event)) false
-				
-			val launch = event.getSource.asInstanceOf[IProcess].getLaunch
-			Some(launch) == currentLaunch
+			else {
+				val launch = event.getSource.asInstanceOf[IProcess].getLaunch
+				Some(launch) == currentLaunch
+			}
 		}
 		
+		def isLaunchTerminationEvent(event: DebugEvent) : Boolean = 
+			event.getSource.isInstanceOf[IProcess] && event.getKind == DebugEvent.TERMINATE
+			
 		def notifyListeners(coverageSession: CoverageSession) = 
-			listeners foreach (_.coverageRunCompleted(coverageSession))
+			listeners.foreach(_.coverageRunCompleted(coverageSession))
 
 		def retrieveCoverageData = 
 			CoverageSession.fromCoberturaProjectData(CoberturaWrapper.get.projectDataFromDefaultFile)
 
 		for (event <- events if isCoverageLaunchTerminationEvent(event)) {
-			logger fine "detected termination of covered launch"
+			logger.fine("detected termination of covered launch: " + event.toString)
 			notifyListeners(retrieveCoverageData)
 		}
 	}
 	
 	def coveredLaunchStarted(launch: ILaunch) = {
 		assert(launch != null)
+		logger.fine("covered launch started...")
 		currentLaunch = Some(launch)
 	}
 	
-	def addListener(listener: CoverageResultsListener) = listeners ::= listener
+	def stopCollecting = {
+		DebugPlugin.getDefault.removeDebugEventListener(this)
+	}
+	
+	def addListener(listener: CoverageResultsListener) = {
+		logger.fine("adding listener " + listener.toString)
+		listeners ::= listener
+	}
 	def removeListener(listener: CoverageResultsListener) = listeners.filterNot(_.equals(listener)) 
 }
