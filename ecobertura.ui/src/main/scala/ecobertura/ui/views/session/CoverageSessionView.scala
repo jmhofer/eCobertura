@@ -82,11 +82,9 @@ class CoverageSessionView extends ViewPart {
 			}
 		}
 		
-		CoverageSessionModel.get.addListener(new CoverageSessionListener {
-			override def sessionReset = {
-				logger.fine("Viewer has received sessionReset event")
-				viewer.setInput(CoverageSessionRoot)
-			}
+		CoverageSessionModel.get.addSessionResetListener(() => {
+			logger.fine("Viewer has received sessionReset event")
+			viewer.setInput(CoverageSessionRoot)
 		})
 
 		// Create the help context id for the viewer's control

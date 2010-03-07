@@ -33,7 +33,7 @@ object CoverageSessionModel {
 	def get = instance
 }
 
-class CoverageSessionModel extends CoverageSessionPublisher with ITreeContentProvider {
+class CoverageSessionModel extends CoverageSessionResetPublisher with ITreeContentProvider {
 	import CoverageSessionModel.logger
 	
 	private var internalCoverageSession: Option[CoverageSession] = None

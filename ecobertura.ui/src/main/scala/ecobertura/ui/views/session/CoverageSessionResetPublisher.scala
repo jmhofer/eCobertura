@@ -19,6 +19,21 @@
  */
 package ecobertura.ui.views.session
 
-trait CoverageSessionListener {
-	def sessionReset
+import java.util.logging.Logger
+
+trait CoverageSessionResetPublisher {
+	private val logger = Logger.getLogger("ecobertura.ui.views.session") //$NON-NLS-1$
+
+	private var listeners: List[() => Unit] = Nil
+
+	def addSessionResetListener(listener: () => Unit) =
+		listeners ::= listener
+	
+	def removeSessionResetListener(listener: () => Unit) = 
+		listeners.filterNot(_ == listener)
+		
+	protected def fireSessionReset = {
+		logger.fine("coverage session reset...")
+		listeners.foreach(_())
+	}
 }

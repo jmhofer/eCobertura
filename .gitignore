@@ -5,3 +5,5 @@ lib_managed/
 src_managed/
 project/boot/
 project/build/target
+/ecobertura.core/.settings/org.eclipse.jdt.ui.prefs
+/ecobertura.ui/.settings/org.eclipse.jdt.ui.prefs
