@@ -1,3 +1,22 @@
+/*
+ * This file is part of eCobertura.
+ * 
+ * Copyright (c) 2009, 2010 Joachim Hofer
+ * All rights reserved.
+ *
+ * eCobertura is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * eCobertura is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ecobertura.ui.annotation
 
 import scala.collection.JavaConversions
@@ -9,11 +28,10 @@ import org.eclipse.jface.text.source._
 import org.eclipse.ui.texteditor.ITextEditor
 
 import ecobertura.core.data.LineCoverage
+import ecobertura.ui.util.Predef._
 import ecobertura.ui.editors.LineCoverageFinder
 import ecobertura.ui.views.session.CoverageSessionModel
 
-// TODO fire events to listeners
-// TODO react to document/editor changes 
 // TODO react to coverage changes
 object CoverageAnnotationModel {
 	private val logger = Logger.getLogger("ecobertura.ui.annotation") //$NON-NLS-1$
@@ -37,6 +55,7 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	
 	logger.fine("CoverageAnnotationModel created.") //$NON-NLS-1$
 	initializeAnnotations(editor, document)
+	document.addDocumentListener(removeAllAnnotations)
 	
 	private def initializeAnnotations(editor: ITextEditor, document: IDocument) = {
 		
@@ -61,6 +80,13 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 				}
 			}
 		}
+	}
+	
+	private def removeAllAnnotations = {
+		val event = new AnnotationModelEvent(this)
+		annotations.foreach(event.annotationRemoved(_))
+		annotations = Nil
+		fireModelChanged(event)
 	}
 	
 	override def connect(document: IDocument) = {
