@@ -27,11 +27,11 @@ object PluginState {
 }
 
 class PluginState(stateLocation: IPath) {
-	val instrumentationDataDirectory = new File(stateLocation toFile, "cobertura")
-	instrumentationDataDirectory mkdirs
+	val instrumentationDataDirectory = new File(stateLocation.toFile, "cobertura")
+	instrumentationDataDirectory.mkdirs
 	
 	def cleanUp = {
-		instrumentationDataDirectory.listFiles map (_.delete)
-		instrumentationDataDirectory delete
+		instrumentationDataDirectory.listFiles.map(_.delete)
+		instrumentationDataDirectory.delete
 	}
 }

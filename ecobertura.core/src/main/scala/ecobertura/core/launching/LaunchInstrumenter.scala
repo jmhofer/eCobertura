@@ -33,7 +33,7 @@ import _root_.ecobertura.core.cobertura.CoberturaWrapper;
 object LaunchInstrumenter {
 	val COBERTURA_DATAFILE_PROPERTY = "net.sourceforge.cobertura.datafile"
 		
-	private val logger = Logger getLogger "ecobertura.core.launching"
+	private val logger = Logger.getLogger("ecobertura.core.launching")
 	
 	def instrumentClassesFor(configuration: ILaunchConfiguration) = 
 		new LaunchInstrumenter(configuration)
@@ -44,15 +44,16 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 	
 	private val configWC = configuration.getWorkingCopy
 	instrumentClasspath
+	CoberturaWrapper.get.saveProjectDataToDefaultFile
 	addCoberturaToClasspath
 	addDatafileSystemProperty
 	
 	private def instrumentClasspath = {
 		def resolvedClasspathEntries = {
 			val unresolvedClasspathEntries = 
-				JavaRuntime computeUnresolvedRuntimeClasspath configuration
+				JavaRuntime.computeUnresolvedRuntimeClasspath(configuration)
 			val resolvedClasspathEntries = 
-				JavaRuntime resolveRuntimeClasspath (unresolvedClasspathEntries, configuration)
+				JavaRuntime.resolveRuntimeClasspath(unresolvedClasspathEntries, configuration)
 			
 			resolvedClasspathEntries
 		}
@@ -65,8 +66,8 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 
 			def instrumentFilesWithin(file: File) : Unit = {
 				def instrumentClassFile(file: File) = {
-					logger.fine(String format ("instrumenting %s", file.getPath()))
-					CoberturaWrapper.get instrumentClassFile file
+					logger.fine(String.format("instrumenting %s", file.getPath()))
+					CoberturaWrapper.get.instrumentClassFile(file)
 				}
 				
 				if (file.isDirectory) {
@@ -78,31 +79,30 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 				val userClasspath = classpathEntry.getLocation
 				logger.fine(String format ("instrumenting classes within %s", userClasspath))
 				instrumentFilesWithin(new File(userClasspath))
-			} else logger.fine(String format ("skipping %s", classpathEntry.getLocation))
+			} else logger.fine(String.format("skipping %s", classpathEntry.getLocation))
 		})
 	}
 
 	private def addCoberturaToClasspath = {
-		configWC setAttribute (IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, 
+		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, 
 				CoverageClasspathProvider.ID)
-		CoverageClasspathProvider wrap (JavaRuntime getClasspathProvider configuration)
+		CoverageClasspathProvider.wrap(JavaRuntime.getClasspathProvider(configuration))
 	}
 	
 	private def addDatafileSystemProperty = {
-		def requiresCoberturaVMArgument(currentVMArguments: String, coberturaVMArgument: String) = {
-			(currentVMArguments indexOf coberturaVMArgument) == -1
-		}
+		def requiresCoberturaVMArgument(currentVMArguments: String, coberturaVMArgument: String) =
+			(currentVMArguments.indexOf(coberturaVMArgument)) == -1
 		
 		val coberturaFile = new File(CorePlugin.instance.pluginState.instrumentationDataDirectory,
 				CoberturaWrapper.DEFAULT_COBERTURA_FILENAME)
-		val coberturaVMArgument = String format ("-D%s=%s ", COBERTURA_DATAFILE_PROPERTY, 
+		val coberturaVMArgument = String.format("-D%s=%s ", COBERTURA_DATAFILE_PROPERTY, 
 				coberturaFile.getAbsolutePath)
-		val currentVMArguments = configWC getAttribute (
+		val currentVMArguments = configWC.getAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "")
 		
 		if (requiresCoberturaVMArgument(currentVMArguments, coberturaVMArgument))
-			configWC setAttribute (IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
-					String format ("%s %s ", currentVMArguments, coberturaVMArgument))
+			configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
+					String.format("%s %s ", currentVMArguments, coberturaVMArgument))
 	}
 	
 	def getUpdatedLaunchConfiguration = configWC

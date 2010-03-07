@@ -22,6 +22,7 @@ package ecobertura.core.cobertura
 import java.io._
 import java.lang.reflect._
 import java.net.URL
+import java.util.logging.Logger
 
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler
 import net.sourceforge.cobertura.coveragedata.ProjectData
@@ -33,8 +34,10 @@ import ecobertura.core.CorePlugin
 import ecobertura.core.log.LogStatus
 
 object CoberturaWrapper {
+	val logger = Logger.getLogger("ecobertura.core.cobertura")
+	
 	val DEFAULT_COBERTURA_FILENAME = "cobertura.ser" //$NON-NLS-1$
-	val COBERTURA_JAR_NAME = "cobertura-1.9.4.jar" //$NON-NLS-1$
+	val COBERTURA_JAR_NAME = "cobertura-1.9.4.1.jar" //$NON-NLS-1$
 
 	private lazy val instance = new CoberturaWrapper
 	def get = instance
@@ -42,6 +45,7 @@ object CoberturaWrapper {
 
 trait ICoberturaWrapper {
 	def instrumentClassFile(classFileToInstrument: File)
+	def saveProjectDataToDefaultFile
 	def projectDataFromDefaultFile: ProjectData
 	def projectDataFromFile(fileName: String): ProjectData
 	def pathToJar: IPath
@@ -51,11 +55,13 @@ class CoberturaWrapper extends ICoberturaWrapper {
 	import CoberturaWrapper._
 	
 	private val COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS = "addInstrumentationToSingleClass"; //$NON-NLS-1$
-	private val coberturaMain = new Main()
+	private val coberturaMain = new Main
+	private val coberturaProjectData = new ProjectData
 	
 	initializeCoberturaProjectData
 	
 	private def initializeCoberturaProjectData = {
+		logger.fine("initializing Cobertura project data...")
 		try {
 			setPrivateProjectData
 		} catch {
@@ -68,7 +74,7 @@ class CoberturaWrapper extends ICoberturaWrapper {
 		def setPrivateProjectData = {
 			val projectDataField = coberturaMain.getClass.getDeclaredField("projectData")
 			projectDataField.setAccessible(true)
-			projectDataField.set(coberturaMain, new ProjectData())
+			projectDataField.set(coberturaMain, coberturaProjectData)
 		}
 	}
 
@@ -77,12 +83,15 @@ class CoberturaWrapper extends ICoberturaWrapper {
 		CoverageDataFileHandler.loadCoverageData(coberturaFile)
 	}
 	
-	override def projectDataFromDefaultFile : ProjectData = {
-		val coberturaFile = new File(
-				CorePlugin.instance.pluginState.instrumentationDataDirectory, 
+	override def projectDataFromDefaultFile : ProjectData =
+		CoverageDataFileHandler.loadCoverageData(defaultCoberturaFile)
+	
+	override def saveProjectDataToDefaultFile =
+		CoverageDataFileHandler.saveCoverageData(coberturaProjectData, defaultCoberturaFile)
+
+	private def defaultCoberturaFile = 
+		new File(CorePlugin.instance.pluginState.instrumentationDataDirectory, 
 				CoberturaWrapper.DEFAULT_COBERTURA_FILENAME)
-		CoverageDataFileHandler.loadCoverageData(coberturaFile)
-	}
 	
 	override def instrumentClassFile(classFileToInstrument: File) = {
 		try {

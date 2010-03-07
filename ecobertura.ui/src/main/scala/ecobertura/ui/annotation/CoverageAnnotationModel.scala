@@ -77,7 +77,7 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 		}
 
 		def annotateLines(lines: List[LineCoverage]) = {
-			for (line <- lines; lineNumber = line.lineNumber - 1) {
+			for (line <- lines if line.isCovered; lineNumber = line.lineNumber - 1) {
 				if (document.getLineLength(lineNumber) > 0) {
 					val annotation = CoverageAnnotation.fromPosition(document.getLineOffset(lineNumber), 
 							document.getLineLength(lineNumber))

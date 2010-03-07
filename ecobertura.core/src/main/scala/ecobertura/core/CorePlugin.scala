@@ -49,23 +49,27 @@ class CorePlugin extends Plugin {
 	def coverageResultsCollector = internalResultsCollector
 
 	override def start(context: BundleContext): Unit = {
-		super.start(context)
-		internalInstance = this
-		
-		Trace.configureForPluginId(pluginId)
-		EclipseLogger.logFor(getLog)
-
-		internalPluginState = PluginState.initialize(getStateLocation)
-		internalResultsCollector = CoverageResultsCollector.collect
-		
-		logger.info("plugin started") //$NON-NLS-1$
+		if (internalInstance == null) {
+			super.start(context)
+			internalInstance = this
+			
+			Trace.configureForPluginId(pluginId)
+			EclipseLogger.logFor(getLog)
+	
+			internalPluginState = PluginState.initialize(getStateLocation)
+			internalResultsCollector = CoverageResultsCollector.collect
+			
+			logger.info("plugin started") //$NON-NLS-1$
+		}
 	}
 	
 	override def stop(context: BundleContext): Unit = {
-		internalPluginState.cleanUp
-		internalInstance = null
-		super.stop(context)
-		
-		logger.info("plugin stopped") //$NON-NLS-1$
+		if (internalInstance != null) {
+			internalPluginState.cleanUp
+			internalInstance = null
+			super.stop(context)
+			
+			logger.info("plugin stopped") //$NON-NLS-1$
+		}
 	}
 }
