@@ -51,32 +51,29 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	import CoverageAnnotationModel.logger
 	
 	private var annotations = List[CoverageAnnotation]()
-	private var documentChanged = false
 	
 	logger.fine("CoverageAnnotationModel created.") //$NON-NLS-1$
 	initializeAnnotations(editor, document)
 	
 	document.addDocumentListener {
-		documentChanged = true
 		removeAllAnnotations
 	}
 	
 	CoverageSessionModel.get.addSessionResetListener(() => {
-		if (!documentChanged) {
-			removeAllAnnotations
-			initializeAnnotations(editor, document)
-		}
+		removeAllAnnotations
+		initializeAnnotations(editor, document)
 	})
 	
 	private def initializeAnnotations(editor: ITextEditor, document: IDocument) = {
-		
-		CoverageSessionModel.get.coverageSession match {
-			case Some(session) => {
-				logger.fine("CoverageSession active") /* session active */
-				val coveredLines = LineCoverageFinder.forSession(session).findInEditor(editor)
-				annotateLines(coveredLines)
+		if (!editor.isDirty) { 
+			CoverageSessionModel.get.coverageSession match {
+				case Some(session) => {
+					logger.fine("CoverageSession active") /* session active */
+					val coveredLines = LineCoverageFinder.forSession(session).findInEditor(editor)
+					annotateLines(coveredLines)
+				}
+				case _ => /* nothing to do */
 			}
-			case _ => /* nothing to do */
 		}
 
 		def annotateLines(lines: List[LineCoverage]) = {

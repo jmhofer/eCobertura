@@ -39,7 +39,7 @@
       <specification
             annotationType="ecobertura.ui.annotation.coverageAnnotation"
             colorPreferenceKey="coverage_color"
-            colorPreferenceValue="192,255,192"
+            colorPreferenceValue="221,255,221"
             contributesToHeader="false"
             highlightPreferenceKey="coverage_highlight"
             highlightPreferenceValue="true"
