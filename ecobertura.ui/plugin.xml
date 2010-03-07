@@ -10,7 +10,7 @@
       </category>
       <view
             name="Coverage Session View"
-            icon="icons/sample.gif"
+            icon="icons/magnifier.gif"
             category="ecobertura.ui"
             class="ecobertura.ui.views.session.CoverageSessionView"
             id="ecobertura.ui.views.session.CoverageSessionView">
