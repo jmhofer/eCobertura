@@ -60,6 +60,7 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	}
 	
 	CoverageSessionModel.get.addSessionResetListener(() => {
+		logger.fine("session has been reset...")
 		removeAllAnnotations
 		initializeAnnotations(editor, document)
 	})
