@@ -32,7 +32,6 @@ import ecobertura.ui.util.Predef._
 import ecobertura.ui.editors.LineCoverageFinder
 import ecobertura.ui.views.session.CoverageSessionModel
 
-// TODO react to coverage changes
 object CoverageAnnotationModel {
 	private val logger = Logger.getLogger("ecobertura.ui.annotation") //$NON-NLS-1$
 
@@ -52,10 +51,22 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	import CoverageAnnotationModel.logger
 	
 	private var annotations = List[CoverageAnnotation]()
+	private var documentChanged = false
 	
 	logger.fine("CoverageAnnotationModel created.") //$NON-NLS-1$
 	initializeAnnotations(editor, document)
-	document.addDocumentListener(removeAllAnnotations)
+	
+	document.addDocumentListener {
+		documentChanged = true
+		removeAllAnnotations
+	}
+	
+	CoverageSessionModel.get.addSessionResetListener(() => {
+		if (!documentChanged) {
+			removeAllAnnotations
+			initializeAnnotations(editor, document)
+		}
+	})
 	
 	private def initializeAnnotations(editor: ITextEditor, document: IDocument) = {
 		
