@@ -33,6 +33,5 @@ Build requirements:
 - A working version of the Scala 2.8 Eclipse plugin
 
 Build instructions:
-- Use the built-in PDE build or
-- Use sbt...
-  -> ecobertura.ui and ecobertura.core should both be packageable
+- Use the built-in PDE build
+- A PDE headless build is currently work in progress
