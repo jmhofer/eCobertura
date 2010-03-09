@@ -3,3 +3,8 @@ bin/
 /ecobertura.core/.settings/org.eclipse.jdt.ui.prefs
 /ecobertura.ui/.settings/org.eclipse.jdt.ui.prefs
 /ecobertura.feature/compile.ecobertura.feature.xml
+/ecobertura.core/javaCompiler...args
+/ecobertura.core/build.xml
+/ecobertura.feature/build.xml
+/ecobertura.ui/build.xml
+/ecobertura.ui/javaCompiler...args

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project default="feature_export" name="build">
-	<target name="feature_export">
-		<pde.exportFeatures destination="E:\daten\java\eCobertura" exportSource="true" exportType="zip" features="ecobertura.feature" filename="ecobertura.zip" qualifier="201003082134" useJARFormat="true"/>
-	</target>
-</project>

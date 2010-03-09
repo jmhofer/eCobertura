@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build eCobertura" default="runBuild">
+	
+	<property name="builder" location="." />
+	<property name="topLevelElementId" value="ecobertura" />
+	<property name="baseLocation" location="${eclipse.home}" />
+	<property name="base" location="${baseLocation}/.." />
+	<property name="buildDirectory" location="/temp/eclipse.build" />
+	<property name="significantVersionDigits" value="3" />	
+	<property name="individualSourceBundles" value="true" />
+	
+	<property name="scala.home" location="." />
+	<property name="scala-library.jar" value="../ecobertura.core/lib-compile/scala-library.jar" />
+	<property name="scala-compiler.jar" value="./lib/scala-compiler.jar" />
+	
+	<taskdef resource="scala/tools/ant/antlib.xml">
+		<classpath>
+			<pathelement location="${scala-compiler.jar}" />
+			<pathelement location="${scala-library.jar}" />
+		</classpath>
+    </taskdef>
+	
+	<tstamp>
+		<format property="forceContextQualifier" pattern="yyyyMMddHHmm" />
+	</tstamp>
+	
+	<import file="${eclipse.pdebuild.scripts}/build.xml" />
+	
+	<target name="copyProjects">
+		<delete dir="${buildDirectory}" />
+		<mkdir dir="${buildDirectory}" />
+		
+		<record name="${buildDirectory}/${topLevelElementId}-build.log" loglevel="verbose" />
+		<echoproperties />
+		
+		<mkdir dir="${buildDirectory}/features/${topLevelElementId}" />
+		<copy todir="${buildDirectory}/features/${topLevelElementId}">
+			<fileset dir="../ecobertura.feature" />
+		</copy>
+		<mkdir dir="${buildDirectory}/plugins" />
+		<copy todir="${buildDirectory}/plugins">
+			<fileset dir="..">
+				<include name="ecobertura.ui/**" />
+				<include name="ecobertura.core/**" />
+				<exclude name="*/bin/**" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="runBuild" depends="copyProjects, main" />
+</project>

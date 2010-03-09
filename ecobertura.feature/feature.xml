@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ecobertura.feature"
+      id="ecobertura"
       label="eCobertura"
       version="0.9.0.qualifier"
       provider-name="jmhofer"
