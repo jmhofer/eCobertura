@@ -77,8 +77,11 @@
 
 		<scalac srcdir="${source.folder1}" destdir="${target.folder}"
 		        classpathref="@dot.classpath">
-			<include name="**/*.scala"   />
+			<include name="**/*.scala" />
 	    </scalac>
+		<delete dir="${target.folder}">
+			<include name="**/*.scala" />
+		</delete>
 	</target>
 	
 	<!-- ===================================================================== -->
