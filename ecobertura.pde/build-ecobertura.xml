@@ -46,6 +46,15 @@
 			</fileset>
 		</copy>
 	</target>
-	
-	<target name="runBuild" depends="copyProjects, main" />
+
+	<target name="copyReadmes" depends="copyProjects">
+		<copy todir="${buildDirectory}/features/${topLevelElementId}/sourceTemplateBundle">
+			<fileset dir=".." includes="COPYING, COPYRIGHT, README, SCALA-LICENCE" />
+		</copy>
+		<copy todir="${buildDirectory}/features/${topLevelElementId}/sourceTemplatePlugin">
+			<fileset dir=".." includes="COPYING, COPYRIGHT, README, SCALA-LICENCE" />
+		</copy>
+	</target>
+
+	<target name="runBuild" depends="copyProjects, copyReadmes, main" />
 </project>
