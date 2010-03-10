@@ -8,6 +8,7 @@
 	<property name="buildDirectory" location="/temp/eclipse.build" />
 	<property name="significantVersionDigits" value="3" />	
 	<property name="individualSourceBundles" value="true" />
+	<property name="outputUpdateJars" value="true" />
 	
 	<property name="scala.home" location="." />
 	<property name="scala-library.jar" value="../ecobertura.core/lib/scala-library.jar" />
