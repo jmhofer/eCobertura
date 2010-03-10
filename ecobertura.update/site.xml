@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <description name="eCobertura">
+      The eCobertura plug-in measures code coverage via Cobertura.
+   </description>
    <feature url="features/ecobertura.feature_0.9.0.qualifier.jar" id="ecobertura.feature" version="0.9.0.qualifier"/>
 </site>

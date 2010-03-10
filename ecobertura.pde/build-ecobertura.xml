@@ -8,7 +8,10 @@
 	<property name="buildDirectory" location="/temp/eclipse.build" />
 	<property name="significantVersionDigits" value="3" />	
 	<property name="individualSourceBundles" value="true" />
+	
+	<!-- no update site yet...
 	<property name="outputUpdateJars" value="true" />
+	-->
 	
 	<property name="scala.home" location="." />
 	<property name="scala-library.jar" value="../ecobertura.core/lib/scala-library.jar" />
@@ -57,5 +60,17 @@
 		</copy>
 	</target>
 
-	<target name="runBuild" depends="copyProjects, copyReadmes, main" />
+	<target name="copyResults">
+		<property file="${buildDirectory}/finalFeaturesVersions.properties" />
+		<delete dir="../bin" />
+		<mkdir dir="../bin" />
+		<copy todir="../bin">
+			<fileset dir="${buildDirectory}/${buildType}.${buildId}"
+				includes="${topLevelElementId}-${buildId}.zip" />
+		</copy>
+		<move file="../bin/${topLevelElementId}-${buildId}.zip" 
+			tofile="../bin/${topLevelElementId}_${ecobertura}.zip"/>
+	</target>
+	
+	<target name="runBuild" depends="copyProjects, copyReadmes, main, copyResults" />
 </project>
