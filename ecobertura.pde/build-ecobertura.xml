@@ -11,6 +11,7 @@
 	
 	<!-- update site generation -->
 	<property name="p2.gathering" value="true" />
+	<property name="p2.category.prefix" value="jmhofer" />
 	<property name="p2.category.definition" value="file:${buildDirectory}/category.xml" />
 	<property name="p2.compress" value="true" />
 	
@@ -40,7 +41,7 @@
 		
         <!-- copy site.xml -->
         <copy todir="${buildDirectory}">
-            <fileset dir="." includes="category.xml" />
+            <fileset dir="." includes="*.xml" />
         </copy>
         
 		<mkdir dir="${buildDirectory}/features/${topLevelElementId}" />

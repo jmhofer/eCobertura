@@ -2,7 +2,7 @@
 <feature
       id="ecobertura"
       label="eCobertura"
-      version="0.9.0.qualifier"
+      version="0.9.1.qualifier"
       provider-name="jmhofer"
       plugin="ecobertura.ui">
 
@@ -708,12 +708,11 @@ Public License instead of this License.  But first, please read
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.jdt.launching"/>
       <import plugin="org.eclipse.jdt.core" version="3.5.1" match="greaterOrEqual"/>
-      <import plugin="scala.library"/>
+      <import plugin="org.junit4"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.jdt.ui"/>
-      <import plugin="org.junit4"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.core.expressions"/>
       <import plugin="org.eclipse.ui.ide"/>
@@ -733,6 +732,16 @@ Public License instead of this License.  But first, please read
          version="0.0.0"
          unpack="false"/>
 
-    <plugin id="ecobertura.ui.source" version="0.0.0" />
-    <plugin id="ecobertura.core.source" version="0.0.0" />
+   <plugin
+         id="ecobertura.ui.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="ecobertura.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
