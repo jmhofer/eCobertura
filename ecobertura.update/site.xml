@@ -3,5 +3,10 @@
    <description name="eCobertura">
       The eCobertura plug-in measures code coverage via Cobertura.
    </description>
-   <feature url="features/ecobertura.feature_0.9.0.qualifier.jar" id="ecobertura.feature" version="0.9.0.qualifier"/>
+   <feature url="features/ecobertura_0.9.0.qualifier.jar" id="ecobertura" version="0.9.0.qualifier"/>
+   <category-def name="eCobertura" label="eCobertura">
+      <description>
+         The eCobertura feature measures code coverage via Cobertura.
+      </description>
+   </category-def>
 </site>

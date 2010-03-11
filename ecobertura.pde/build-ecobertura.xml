@@ -9,9 +9,10 @@
 	<property name="significantVersionDigits" value="3" />	
 	<property name="individualSourceBundles" value="true" />
 	
-	<!-- no update site yet...
-	<property name="outputUpdateJars" value="true" />
-	-->
+	<!-- update site generation -->
+	<property name="p2.gathering" value="true" />
+	<property name="p2.category.definition" value="file:${buildDirectory}/category.xml" />
+	<property name="p2.compress" value="true" />
 	
 	<property name="scala.home" location="." />
 	<property name="scala-library.jar" value="../ecobertura.core/lib/scala-library.jar" />
@@ -37,6 +38,11 @@
 		<record name="${buildDirectory}/${topLevelElementId}-build.log" loglevel="verbose" />
 		<echoproperties />
 		
+        <!-- copy site.xml -->
+        <copy todir="${buildDirectory}">
+            <fileset dir="." includes="category.xml" />
+        </copy>
+        
 		<mkdir dir="${buildDirectory}/features/${topLevelElementId}" />
 		<copy todir="${buildDirectory}/features/${topLevelElementId}">
 			<fileset dir="../ecobertura.feature" />
@@ -62,13 +68,14 @@
 
 	<target name="copyResults">
 		<property file="${buildDirectory}/finalFeaturesVersions.properties" />
+		<property name="zipFileName" value="${topLevelElementId}-${buildId}-group.group.group.zip" />
 		<delete dir="../bin" />
 		<mkdir dir="../bin" />
 		<copy todir="../bin">
 			<fileset dir="${buildDirectory}/${buildType}.${buildId}"
-				includes="${topLevelElementId}-${buildId}.zip" />
+				includes="${zipFileName}" />
 		</copy>
-		<move file="../bin/${topLevelElementId}-${buildId}.zip" 
+		<move file="../bin/${zipFileName}" 
 			tofile="../bin/${topLevelElementId}_${ecobertura}.zip"/>
 	</target>
 	
