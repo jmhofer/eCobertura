@@ -26,6 +26,14 @@
             name="JUnit Launch Delegate"
             type="org.eclipse.jdt.junit.launchconfig">
       </launchDelegate>
+      <launchDelegate
+            delegate="ecobertura.core.launching.JavaApplicationLaunchDelegate"
+            delegateDescription="The Cobertura Java Launcher instruments code in order to measure coverage."
+            id="ecobertura.core.javaApplicationLauncher"
+            modes="ecobertura.core.coverageLaunchMode"
+            name="Scala Launch Delegate"
+            type="scala.application">
+      </launchDelegate>
    </extension>
    <extension
          point="org.eclipse.jdt.launching.classpathProviders">

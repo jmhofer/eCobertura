@@ -144,6 +144,16 @@
             <enablement></enablement></contextualLaunch>
       </shortcut>
       <shortcut
+            class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:scala.application"
+            icon="icons/full/etool16/scala_launch.gif"
+            id="ecobertura.ui.launching.javaApplicationLaunchShortcut"
+            label="Scala Application"
+            modes="ecobertura.core.coverageLaunchMode">
+         <contextualLaunch>
+            <enablement></enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
             class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.jdt.junit.junitShortcut"
             icon="icons/full/etool16/junit_launch.gif"
             id="ecobertura.ui.launching.junitLaunchShortcut"
@@ -165,6 +175,11 @@
             class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
             id="ecobertura.ui.launching.config.JUnitConfigurationTabGroup"
             type="org.eclipse.jdt.junit.launchconfig">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
+            id="ecobertura.ui.launching.config.ScalaApplicationConfigurationTabGroup"
+            type="scala.application">
       </launchConfigurationTabGroup>
    </extension>
    <extension
