@@ -144,6 +144,17 @@
             <enablement></enablement>
          </contextualLaunch>
       </shortcut>
+      <shortcut
+            class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.jdt.junit.junitShortcut"
+            icon="icons/full/etool16/junit_launch.gif"
+            id="ecobertura.ui.launching.junitLaunchShortcut"
+            label="JUnit Test"
+            modes="ecobertura.core.coverageLaunchMode">
+         <contextualLaunch>
+            <enablement>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">

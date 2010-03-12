@@ -8,11 +8,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
- org.eclipse.jdt.ui,
  org.junit4,
  org.eclipse.debug.ui,
  ecobertura.core,
  org.eclipse.jdt.core,
+ org.eclipse.jdt.launching,
+ org.eclipse.jdt.ui,
  org.eclipse.core.expressions,
  org.eclipse.ui.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

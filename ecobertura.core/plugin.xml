@@ -19,7 +19,7 @@
             type="org.eclipse.jdt.launching.localJavaApplication">
       </launchDelegate>
       <launchDelegate
-            delegate="ecobertura.core.LaunchConfigurationDelegate1"
+            delegate="ecobertura.core.launching.JavaApplicationLaunchDelegate"
             delegateDescription="The Cobertura JUnit Launcher instruments code in order to measure coverage."
             id="ecobertura.core.junitLauncher"
             modes="ecobertura.core.coverageLaunchMode"
