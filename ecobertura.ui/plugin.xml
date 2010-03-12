@@ -141,8 +141,7 @@
             label="Java Application"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement></enablement>
-         </contextualLaunch>
+            <enablement></enablement></contextualLaunch>
       </shortcut>
       <shortcut
             class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.jdt.junit.junitShortcut"
@@ -151,8 +150,7 @@
             label="JUnit Test"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement>
-            </enablement>
+            <enablement></enablement>
          </contextualLaunch>
       </shortcut>
    </extension>
@@ -162,6 +160,11 @@
             class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
             id="ecobertura.ui.launching.config.JavaApplicationConfigurationTabGroup"
             type="org.eclipse.jdt.launching.localJavaApplication">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
+            id="ecobertura.ui.launching.config.JUnitConfigurationTabGroup"
+            type="org.eclipse.jdt.junit.launchconfig">
       </launchConfigurationTabGroup>
    </extension>
    <extension
