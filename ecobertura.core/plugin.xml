@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.debug.core.launchModes">
       <launchMode
-            label="%launchMode.label"
+            label="Coverage"
             mode="ecobertura.core.coverageLaunchMode">
       </launchMode>
    </extension>
@@ -15,8 +15,16 @@
             delegateDescription="The Cobertura Java Launcher instruments code in order to measure coverage."
             id="ecobertura.core.javaApplicationLauncher"
             modes="ecobertura.core.coverageLaunchMode"
-            name="%javaLaunchDelegate.name"
+            name="Java Launch Delegate"
             type="org.eclipse.jdt.launching.localJavaApplication">
+      </launchDelegate>
+      <launchDelegate
+            delegate="ecobertura.core.LaunchConfigurationDelegate1"
+            delegateDescription="The Cobertura JUnit Launcher instruments code in order to measure coverage."
+            id="ecobertura.core.junitLauncher"
+            modes="ecobertura.core.coverageLaunchMode"
+            name="JUnit Launch Delegate"
+            type="org.eclipse.jdt.junit.launchconfig">
       </launchDelegate>
    </extension>
    <extension

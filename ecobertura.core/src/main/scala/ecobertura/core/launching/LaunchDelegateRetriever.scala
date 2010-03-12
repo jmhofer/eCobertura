@@ -36,10 +36,10 @@ object LaunchDelegateRetriever {
 }
 
 class LaunchDelegateRetriever(config: IConfigurationElement) {
-	val logger = Logger getLogger "ecobertura.core.launching" //$NON-NLS-1$
+	val logger = Logger.getLogger("ecobertura.core.launching") //$NON-NLS-1$
 	
 	def getDelegate = {
-		val launchTypeName = config getAttribute "type" //$NON-NLS-1$
+		val launchTypeName = config.getAttribute("type") //$NON-NLS-1$
 		val launchType = getLaunchConfigurationType(launchTypeName)
 		
 		getLaunchDelegateFor(launchType)
@@ -50,16 +50,16 @@ class LaunchDelegateRetriever(config: IConfigurationElement) {
 				launchTypeName)
 		if (launchType == null) {
 			throw new CoreException(new Status(IStatus.ERROR, CorePlugin.pluginId, 
-					String format ("unknown launch configuration type %s", launchTypeName))) //$NON-NLS-1$
+					String.format("unknown launch configuration type %s", launchTypeName))) //$NON-NLS-1$
 		}
 		launchType
 	}
 	
 	private def getLaunchDelegateFor(launchType: ILaunchConfigurationType) = {
-		val delegatesForType = launchType getDelegates HashSet(ILaunchManager.RUN_MODE)
+		val delegatesForType = launchType.getDelegates(HashSet(ILaunchManager.RUN_MODE))
 		if (delegatesForType.isEmpty) {
 			throw new CoreException(new Status(IStatus.ERROR, CorePlugin.pluginId,
-					String format ("no delegate for %s found", launchType.getName)))
+					String.format("no delegate for %s found", launchType.getName)))
 		}
 		convertToType2Delegate(delegatesForType.head.getDelegate)
 	}
@@ -85,7 +85,7 @@ class LaunchDelegateRetriever(config: IConfigurationElement) {
 			
 			override def launch(configuration: ILaunchConfiguration, mode: String, launch: ILaunch,
 					monitor: IProgressMonitor) = {
-				delegate launch (configuration, mode, launch, monitor)
+				delegate.launch(configuration, mode, launch, monitor)
 			}
 		}
 	}
