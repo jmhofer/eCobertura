@@ -141,7 +141,14 @@
             label="Java Application"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement></enablement></contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.jdt.debug.ui.localJavaShortcut"
+                        property="ecobertura.ui.launching.isCoveredLaunchPossible">
+                  </test>
+               </with></enablement></contextualLaunch>
       </shortcut>
       <shortcut
             class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.shortcut.scala"
@@ -151,6 +158,13 @@
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
             <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.shortcut.scala"
+                        property="ecobertura.ui.launching.isCoveredLaunchPossible">
+                  </test>
+               </with>
             </enablement>
          </contextualLaunch>
       </shortcut>
@@ -161,7 +175,14 @@
             label="JUnit Test"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement></enablement>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.jdt.junit.junitShortcut"
+                        property="ecobertura.ui.launching.isCoveredLaunchPossible">
+                  </test>
+               </with></enablement>
          </contextualLaunch>
       </shortcut>
       <shortcut
@@ -171,7 +192,14 @@
             label="TestNG Test"
             modes="ecobertura.core.coverageLaunchMode">
          <contextualLaunch>
-            <enablement></enablement>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.testng.eclipse.shortcut"
+                        property="ecobertura.ui.launching.isCoveredLaunchPossible">
+                  </test>
+               </with></enablement>
          </contextualLaunch>
       </shortcut>
    </extension>
@@ -308,6 +336,16 @@
       <type
             name="ecobertura.ui.annotation.coverageAnnotation.notCovered">
       </type>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="ecobertura.ui.launching.IsCoveredLaunchAvailableForCurrentSelectionTester"
+            id="ecobertura.ui.launching.coveredLaunchPossibleTester"
+            namespace="ecobertura.ui.launching"
+            properties="isCoveredLaunchPossible"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>
