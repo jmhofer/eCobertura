@@ -28,8 +28,16 @@
       </launchDelegate>
       <launchDelegate
             delegate="ecobertura.core.launching.JavaApplicationLaunchDelegate"
-            delegateDescription="The Cobertura Java Launcher instruments code in order to measure coverage."
-            id="ecobertura.core.javaApplicationLauncher"
+            delegateDescription="The Cobertura TestNG Launcher instruments code in order to measure coverage."
+            id="ecobertura.core.testngLauncher"
+            modes="ecobertura.core.coverageLaunchMode"
+            name="TestNG Launch Delegate"
+            type="org.testng.eclipse.launchconfig">
+      </launchDelegate>
+      <launchDelegate
+            delegate="ecobertura.core.launching.JavaApplicationLaunchDelegate"
+            delegateDescription="The Cobertura Scala Launcher instruments code in order to measure coverage."
+            id="ecobertura.core.scalaApplicationLauncher"
             modes="ecobertura.core.coverageLaunchMode"
             name="Scala Launch Delegate"
             type="scala.application">
