@@ -44,6 +44,7 @@ object CoberturaWrapper {
 }
 
 trait ICoberturaWrapper {
+	def resetProjectData
 	def instrumentClassFile(classFileToInstrument: File)
 	def saveProjectDataToDefaultFile
 	def projectDataFromDefaultFile: ProjectData
@@ -56,12 +57,13 @@ class CoberturaWrapper extends ICoberturaWrapper {
 	
 	private val COBERTURA_ADD_INSTRUMENTATION_TO_SINGLE_CLASS = "addInstrumentationToSingleClass"; //$NON-NLS-1$
 	private val coberturaMain = new Main
-	private val coberturaProjectData = new ProjectData
+	private var coberturaProjectData : ProjectData = new ProjectData
 	
 	initializeCoberturaProjectData
 	
 	private def initializeCoberturaProjectData = {
 		logger.fine("initializing Cobertura project data...")
+		coberturaProjectData = new ProjectData
 		try {
 			setPrivateProjectData
 		} catch {
@@ -81,6 +83,11 @@ class CoberturaWrapper extends ICoberturaWrapper {
 	override def projectDataFromFile(filename: String) : ProjectData = {
 		val coberturaFile = new File(filename)
 		CoverageDataFileHandler.loadCoverageData(coberturaFile)
+	}
+	
+	override def resetProjectData= {
+		defaultCoberturaFile.delete
+		initializeCoberturaProjectData
 	}
 	
 	override def projectDataFromDefaultFile : ProjectData =

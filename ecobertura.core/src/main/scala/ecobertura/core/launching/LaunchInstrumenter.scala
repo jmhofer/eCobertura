@@ -43,6 +43,7 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 	import LaunchInstrumenter._
 	
 	private val configWC = configuration.getWorkingCopy
+	CoberturaWrapper.get.resetProjectData
 	instrumentClasspath
 	CoberturaWrapper.get.saveProjectDataToDefaultFile
 	addCoberturaToClasspath
