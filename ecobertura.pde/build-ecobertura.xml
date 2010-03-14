@@ -41,9 +41,11 @@
 	</target>
 	
 	<target name="retrieveExternalDependencies">
+		<mkdir dir="../ecobertura.core/lib" />
 		<ivy:resolve transitive="true" conf="runtime" />
 		<ivy:retrieve pattern="../ecobertura.core/lib/[artifact].[ext]" />
 		
+		<mkdir dir="lib" />
 		<ivy:resolve transitive="true" conf="compile" />
 		<ivy:retrieve pattern="lib/[artifact].[ext]" />
 	</target>
