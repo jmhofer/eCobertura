@@ -1,0 +1,17 @@
+<ivy-module version="2.0">
+    <info organisation="jmhofer" module="ecobertura"/>
+    <configurations>
+    	<conf name="compile" description="everything needed during compile time" />
+    	<conf name="runtime" description="everything needed during runtime" />
+    </configurations>
+    <dependencies>
+		<dependency org="org.scala-lang" name="scala-compiler" rev="2.8.0.Beta1" conf="compile->default">
+			<exclude name="scala-library" />
+		</dependency>
+		
+		<dependency org="org.scala-lang" name="scala-library" rev="2.8.0.Beta1" conf="runtime->default" />
+		<dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4+" conf="runtime->default">
+			<exclude org="org.apache.ant" />
+		</dependency>
+    </dependencies>
+</ivy-module>

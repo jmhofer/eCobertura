@@ -72,9 +72,9 @@ Export-Package: ecobertura.core,
  scala.xml.pull,
  scala.xml.transform
 Bundle-ClassPath: .,
- lib/asm-3.0.jar,
- lib/asm-tree-3.0.jar,
- lib/jakarta-oro-2.0.8.jar,
- lib/log4j-1.2.9.jar,
- lib/cobertura-1.9.4.1.jar,
- lib/scala-library.jar
+ lib/scala-library.jar,
+ lib/asm-tree.jar,
+ lib/asm.jar,
+ lib/cobertura.jar,
+ lib/log4j.jar,
+ lib/oro.jar

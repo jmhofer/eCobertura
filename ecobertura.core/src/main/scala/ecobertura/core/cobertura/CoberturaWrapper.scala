@@ -37,7 +37,7 @@ object CoberturaWrapper {
 	val logger = Logger.getLogger("ecobertura.core.cobertura")
 	
 	val DEFAULT_COBERTURA_FILENAME = "cobertura.ser" //$NON-NLS-1$
-	val COBERTURA_JAR_NAME = "cobertura-1.9.4.1.jar" //$NON-NLS-1$
+	val COBERTURA_JAR_NAME = "cobertura.jar" //$NON-NLS-1$
 
 	private lazy val instance = new CoberturaWrapper
 	def get = instance

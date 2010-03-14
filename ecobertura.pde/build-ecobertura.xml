@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<project name="Build eCobertura" default="runBuild">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Build eCobertura" default="runBuild">
 	
 	<property name="builder" location="." />
 	<property name="topLevelElementId" value="ecobertura" />
@@ -24,7 +24,7 @@
 			<pathelement location="${scala-compiler.jar}" />
 			<pathelement location="${scala-library.jar}" />
 		</classpath>
-    </taskdef>
+	</taskdef>
 	
 	<tstamp>
 		<format property="forceContextQualifier" pattern="yyyyMMddHHmm" />
@@ -32,13 +32,23 @@
 	
 	<import file="${eclipse.pdebuild.scripts}/build.xml" />
 	
-	<target name="copyProjects">
+	<target name="prepare">
 		<delete dir="${buildDirectory}" />
 		<mkdir dir="${buildDirectory}" />
 		
 		<record name="${buildDirectory}/${topLevelElementId}-build.log" loglevel="verbose" />
 		<echoproperties />
+	</target>
+	
+	<target name="retrieveExternalDependencies">
+		<ivy:resolve transitive="true" conf="runtime" />
+		<ivy:retrieve pattern="../ecobertura.core/lib/[artifact].[ext]" />
 		
+		<ivy:resolve transitive="true" conf="compile" />
+		<ivy:retrieve pattern="lib/[artifact].[ext]" />
+	</target>
+	
+	<target name="copyProjects">
         <!-- copy site.xml -->
         <copy todir="${buildDirectory}">
             <fileset dir="." includes="*.xml" />
@@ -80,5 +90,12 @@
 			tofile="../bin/${topLevelElementId}_${ecobertura}.zip"/>
 	</target>
 	
-	<target name="runBuild" depends="copyProjects, copyReadmes, main, copyResults" />
+	<target name="runBuild" depends="
+		prepare,
+		retrieveExternalDependencies, 
+		copyProjects, 
+		copyReadmes, 
+		main, 
+		copyResults" />
+	
 </project>
