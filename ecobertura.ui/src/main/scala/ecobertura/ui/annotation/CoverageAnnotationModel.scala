@@ -67,7 +67,7 @@ class CoverageAnnotationModel(editor: ITextEditor, document: IDocument)
 	
 	private def initializeAnnotations(editor: ITextEditor, document: IDocument) = {
 		if (!editor.isDirty) { 
-			CoverageSessionModel.get.coverageSession match {
+			CoverageSessionModel.get.currentCoverageSession match {
 				case Some(session) => {
 					logger.fine("CoverageSession active") /* session active */
 					val coveredLines = LineCoverageFinder.forSession(session).findInEditor(editor)

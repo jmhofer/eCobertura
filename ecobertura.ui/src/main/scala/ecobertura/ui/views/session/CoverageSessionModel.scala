@@ -20,10 +20,12 @@
 package ecobertura.ui.views.session
 
 import java.util.logging.Logger
-import ecobertura.core.data._
 
 import org.eclipse.jface.viewers.Viewer
 import org.eclipse.jface.viewers.ITreeContentProvider
+
+import ecobertura.core.data._
+import ecobertura.ui.UIPlugin
 
 object CoverageSessionModel {
 	private val logger = Logger.getLogger("ecobertura.ui.views.session") //$NON-NLS-1$
@@ -36,26 +38,31 @@ object CoverageSessionModel {
 class CoverageSessionModel extends CoverageSessionResetPublisher with ITreeContentProvider {
 	import CoverageSessionModel.logger
 	
-	private var internalCoverageSession: Option[CoverageSession] = None
-	
-	def clear = {
-		internalCoverageSession = None
+	private var coverageSessionHistory = List[CoverageSession]()
+		
+	def clearHistory = {
+		coverageSessionHistory = List()
 		buildFromSession
 		fireSessionReset
 	}
 	
-	def setCoverageSession(coverageSession: CoverageSession) = {
-		internalCoverageSession = Some(coverageSession)
+	def addCoverageSession(coverageSession: CoverageSession) = {
+		coverageSessionHistory = (coverageSession :: coverageSessionHistory) take 
+				UIPlugin.instance.preferences.coverageSessionHistorySize
+		logger.fine("history: " + coverageSessionHistory.mkString(", "))
 		buildFromSession
 		fireSessionReset
 	}
 	
-	def coverageSession = internalCoverageSession
+	def currentCoverageSession = coverageSessionHistory match {
+		case head :: _ => Some(head)
+		case _ => None
+	}
 		
 	def buildFromSession = {
 		logger.fine("Building from coverage session...")
 		CoverageSessionRoot.removeAllChildren
-		coverageSession match {
+		currentCoverageSession match {
 			case Some(session) => {
 				val covAllPackages = new CoverageSessionAllPackages(session)
 				CoverageSessionRoot.addChild(covAllPackages)

@@ -32,7 +32,7 @@ class OpenCoverageSessionHandler extends AbstractHandler {
 	override def execute(event: ExecutionEvent) = {
 		val sessionFilename = retrieveCoverageSessionFilename(event)
 		val projectData = CoberturaWrapper.get.projectDataFromFile(sessionFilename)
-		CoverageSessionModel.get.setCoverageSession(
+		CoverageSessionModel.get.addCoverageSession(
 				CoverageSession.fromCoberturaProjectData(projectData))
 		
 		null // handlers must return null

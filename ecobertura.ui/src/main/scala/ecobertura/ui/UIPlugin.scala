@@ -32,7 +32,6 @@ import ecobertura.ui.editors.EditorsAnnotator
  * Controls the plug-in life cycle of the eCobertura UI.
  */
 object UIPlugin {
-	// FIXME annoying multiple loggers
 	private val internalPluginId = "ecobertura.ui" //$NON-NLS-1$
 	private val logger = Logger.getLogger(internalPluginId)
 
@@ -58,12 +57,14 @@ class UIPlugin extends AbstractUIPlugin {
 	
 	private var editorTracker: EditorsAnnotator = null
 	private var resultsListener: CoverageResultsUIListener = null
+	private var pluginPreferences: PluginPreferences = null
 	
 	override def start(context: BundleContext) = {
 		super.start(context)
+		pluginPreferences = new PluginPreferences(getPreferenceStore)
 		internalInstance = this
 		EclipseLogger.logFor(getLog)
-		// FIXME: logger shouldn't log everything multiple times (this is a multiple classloaders problem, probably)
+		// FIXME logger shouldn't log everything multiple times (this is a multiple classloaders problem, probably)
 		logger.info("Cobertura plugin started.") //$NON-NLS-1$
 		
 		resultsListener = CoverageResultsUIListener.register
@@ -77,4 +78,6 @@ class UIPlugin extends AbstractUIPlugin {
 		super.stop(context)
 		logger.info("Cobertura plugin stopped.") //$NON-NLS-1$
 	}
+	
+	def preferences = pluginPreferences
 }

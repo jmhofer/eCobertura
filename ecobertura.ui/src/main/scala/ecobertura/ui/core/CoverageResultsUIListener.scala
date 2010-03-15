@@ -54,6 +54,6 @@ class CoverageResultsUIListener extends CoverageResultsListener {
 				logger.fine(classData.toString)
 			}
 		}
-		Display.getDefault.asyncExec(CoverageSessionModel.get.setCoverageSession(coverageSession))
+		Display.getDefault.asyncExec(CoverageSessionModel.get.addCoverageSession(coverageSession))
 	}
 }
