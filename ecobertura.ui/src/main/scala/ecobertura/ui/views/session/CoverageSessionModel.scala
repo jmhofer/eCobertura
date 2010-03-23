@@ -38,7 +38,7 @@ object CoverageSessionModel {
 class CoverageSessionModel extends CoverageSessionResetPublisher with ITreeContentProvider {
 	import CoverageSessionModel.logger
 	
-	private var coverageSessionHistory = List[CoverageSession]()
+	var coverageSessionHistory = List[CoverageSession]()
 		
 	def clearHistory = {
 		coverageSessionHistory = List()
