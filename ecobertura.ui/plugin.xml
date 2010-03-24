@@ -252,6 +252,18 @@
             id="ecobertura.ui.views.session.commands.openCoveredClass"
             name="Open Covered Class">
       </command>
+      <command
+            categoryId="ecobertura.ui.views.session.commands.category"
+            defaultHandler="ecobertura.ui.views.session.commands.SelectRecentCoverageSessionHandler"
+            description="Selects one of the recently opened coverage sessions"
+            id="ecobertura.ui.views.session.commands.selectRecentCoverageSession"
+            name="Select a recent coverage session">
+         <commandParameter
+               id="ecobertura.ui.views.session.commands.selectRecentCoverageSession.session"
+               name="session"
+               optional="true">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">

@@ -57,20 +57,18 @@ object CoverageSessionRoot
 }
 
 class CoverageSessionAllPackages(session: CoverageSession) 
-//		linesCovered: Int, linesTotal: Int, branchesCovered: Int, branchesTotal: Int) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
-	override val name = "All Packages"
-	override val icon =  
-		PlatformUI.getWorkbench.getSharedImages.getImage(
-				org.eclipse.ui.ISharedImages.IMG_OBJ_PROJECT)
+	
+	override val name = String.format("All Packages (%s)", session.displayName)
+	override val icon = PlatformUI.getWorkbench.getSharedImages.getImage(
+			org.eclipse.ui.ISharedImages.IMG_OBJ_PROJECT)
 				
 	override val coverageData = session
 }
 
 class CoverageSessionPackage(packageCoverage: PackageCoverage) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
-	override val icon =
-		JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_PACKAGE)
+	override val icon = JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_PACKAGE)
 	override val name = packageCoverage.name	
 		
 	override val coverageData = packageCoverage
@@ -78,8 +76,7 @@ class CoverageSessionPackage(packageCoverage: PackageCoverage)
 
 class CoverageSessionClass(classCoverage: ClassCoverage) 
 		extends CoverageSessionNode with CoverageSessionTreeNode {
-	override val icon =  
-		JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_CLASS)
+	override val icon = JavaUI.getSharedImages.getImage(ISharedImages.IMG_OBJS_CLASS)
 	override val name = classCoverage.name	
 	override val coverageData = classCoverage
 }

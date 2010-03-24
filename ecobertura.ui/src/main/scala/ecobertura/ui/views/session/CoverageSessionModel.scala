@@ -38,27 +38,38 @@ object CoverageSessionModel {
 class CoverageSessionModel extends CoverageSessionResetPublisher with ITreeContentProvider {
 	import CoverageSessionModel.logger
 	
-	var coverageSessionHistory = List[CoverageSession]()
-		
+	private var internalCoverageSessionHistory = List[CoverageSession]()
+	private var selectedCoverageSession: Option[CoverageSession] = None
+	
 	def clearHistory = {
-		coverageSessionHistory = List()
+		internalCoverageSessionHistory = List()
 		buildFromSession
 		fireSessionReset
 	}
 	
 	def addCoverageSession(coverageSession: CoverageSession) = {
-		coverageSessionHistory = (coverageSession :: coverageSessionHistory) take 
+		internalCoverageSessionHistory = (coverageSession :: internalCoverageSessionHistory) take 
 				UIPlugin.instance.preferences.coverageSessionHistorySize
-		logger.fine("history: " + coverageSessionHistory.mkString(", "))
+		selectedCoverageSession = Some(coverageSession)
+		logger.fine("history: " + internalCoverageSessionHistory.mkString(", "))
 		buildFromSession
 		fireSessionReset
 	}
 	
-	def currentCoverageSession = coverageSessionHistory match {
-		case head :: _ => Some(head)
-		case _ => None
+	def selectCoverageSession(displayNameOfSelectedSession: String) = {
+		internalCoverageSessionHistory.find(_.displayName == displayNameOfSelectedSession) match {
+			case Some(coverageSession) => {
+				selectedCoverageSession = Some(coverageSession)
+				buildFromSession
+				fireSessionReset
+			}
+			case None => /* nothing to do */
+		}
 	}
-		
+	
+	def currentCoverageSession = selectedCoverageSession
+	def coverageSessionHistory = internalCoverageSessionHistory
+	
 	def buildFromSession = {
 		logger.fine("Building from coverage session...")
 		CoverageSessionRoot.removeAllChildren

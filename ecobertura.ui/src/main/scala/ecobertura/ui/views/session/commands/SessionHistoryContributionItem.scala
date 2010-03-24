@@ -19,36 +19,38 @@
  */
 package ecobertura.ui.views.session.commands
 
+import java.util
 import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.menus._
 import org.eclipse.ui.actions.CompoundContributionItem
+
+import ecobertura.core.data.CoverageSession
 import ecobertura.ui.views.session.CoverageSessionModel
+import scala.collection.JavaConversions._
 
 class SessionHistoryContributionItem extends CompoundContributionItem {
 	override def getContributionItems =
 		(for {
 			coverageSession <- CoverageSessionModel.get.coverageSessionHistory
-		} yield createCommandContributionItem(coverageSession.toString)).toArray
+		} yield createCommandContributionItem(coverageSession)).toArray
 	
-	private def createCommandContributionItem(name: String) = {
+	private def createCommandContributionItem(coverageSession: CoverageSession) = {
 		val cciParam = new CommandContributionItemParameter(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow(), null,
-			"ecobertura.ui.views.session.commands.openCoverageSession", 
-//				"ecobertura.ui.views.session.commands.historyCommand",
-// TODO add our new command...
+			"ecobertura.ui.views.session.commands.selectRecentCoverageSession", 
 			CommandContributionItem.STYLE_PUSH)
 		
-		// TODO add a useful name to coverage sessions
-		cciParam.label = name
-			
+		cciParam.label = coverageSession.displayName
+		cciParam.parameters = createSessionParameter(coverageSession.displayName)
+		
 		new CommandContributionItem(cciParam)
 	}
+	
+	private def createSessionParameter(sessionName: String) = {
+		val params = new util.HashMap[String, String]()
+		params.put(
+				"ecobertura.ui.views.session.commands.selectRecentCoverageSession.session", 
+				sessionName)
+		params
+	}
 }
-
-//    Map parms = new HashMap();
-//    parms.put("groupBy", "Severity");
-//    list[0] = new CommandContributionItem(null,
-//            "org.eclipse.ui.views.problems.grouping",
-//            parms, null, null, null, "Severity", null,
-//            null, CommandContributionItem.STYLE_PUSH);
-//}

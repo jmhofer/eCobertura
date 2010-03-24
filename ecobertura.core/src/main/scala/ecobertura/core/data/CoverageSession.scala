@@ -18,6 +18,7 @@
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ecobertura.core.data
+import java.util.Date
 
 import java.util.TreeSet
 import net.sourceforge.cobertura.coveragedata._
@@ -51,6 +52,8 @@ object EmptyCoverageData extends CoverageData {
 trait CoverageSession extends CoverageData {
 	def packages: List[PackageCoverage]
 	def packageMap: Map[String, PackageCoverage]
+	def createdOn: Date
+	def displayName: String
 	override def toString = String.format("CoverageSession%s", super.toString)
 }
 
@@ -70,4 +73,7 @@ class CoberturaSessionImpl(projectData: ProjectData) extends CoverageSession {
 	override val linesTotal = projectData.getNumberOfValidLines
 	override val branchesCovered = projectData.getNumberOfCoveredBranches
 	override val branchesTotal = projectData.getNumberOfValidBranches
+	
+	override val createdOn = new Date
+	override val displayName = String.format("%1$tF %<tT", createdOn)
 }
