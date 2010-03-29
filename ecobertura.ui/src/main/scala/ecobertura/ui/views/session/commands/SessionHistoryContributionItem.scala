@@ -38,7 +38,7 @@ class SessionHistoryContributionItem extends CompoundContributionItem {
 		val cciParam = new CommandContributionItemParameter(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow(), null,
 			"ecobertura.ui.views.session.commands.selectRecentCoverageSession", 
-			CommandContributionItem.STYLE_PUSH)
+			CommandContributionItem.STYLE_RADIO)
 		
 		cciParam.label = coverageSession.displayName
 		cciParam.parameters = createSessionParameter(coverageSession.displayName)
@@ -51,6 +51,7 @@ class SessionHistoryContributionItem extends CompoundContributionItem {
 		params.put(
 				"ecobertura.ui.views.session.commands.selectRecentCoverageSession.session", 
 				sessionName)
+		params.put("org.eclipse.ui.commands.radioStateParameter", sessionName)
 		params
 	}
 }

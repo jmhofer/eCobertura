@@ -18,22 +18,21 @@
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ecobertura.ui.views.session
-import org.eclipse.jface.action.Separator
+import java.util.logging._
 
-import org.eclipse.jface.action.MenuManager
-
-import java.util.logging.Logger
-
-import org.eclipse.swt.widgets._
-import org.eclipse.swt.SWT;
-
+import org.eclipse.jface.action._
 import org.eclipse.jface.layout.TreeColumnLayout
 import org.eclipse.jface.viewers._
 
-import org.eclipse.ui._
-import org.eclipse.ui.part._
-import org.eclipse.ui.handlers.IHandlerService
+import org.eclipse.swt.widgets._
+import org.eclipse.swt.SWT
 
+import org.eclipse.ui._
+import org.eclipse.ui.commands.ICommandService
+import org.eclipse.ui.part._
+import org.eclipse.ui.handlers._
+
+import ecobertura.core.data.CoverageSession
 import ecobertura.ui.util.Predef._
 import ecobertura.ui.views.session.labels._
 
@@ -87,9 +86,11 @@ class CoverageSessionView extends ViewPart {
 			}
 		}
 		
-		CoverageSessionModel.get.addSessionResetListener(() => {
+		CoverageSessionModel.get.addSessionResetListener(coverageSession => {
 			logger.fine("Viewer has received sessionReset event")
 			viewer.setInput(CoverageSessionRoot)
+
+			updateRadioStateOfRecentCoverageSessionMenu(coverageSession)
 		})
 
 		// Create the help context id for the viewer's control
@@ -102,6 +103,15 @@ class CoverageSessionView extends ViewPart {
 			treeColumnLayout.setColumnData(column.getColumn, new ColumnWeightData(weight))
 			
 			column
+		}
+
+		def updateRadioStateOfRecentCoverageSessionMenu(coverageSession: Option[CoverageSession]) = {
+			val commandService = getSite.getService(classOf[ICommandService]).asInstanceOf[ICommandService]
+			val command = commandService.getCommand("ecobertura.ui.views.session.commands.selectRecentCoverageSession")
+			HandlerUtil.updateRadioState(command, coverageSession match {
+				case Some(session) => session.displayName
+				case None => "undefined"
+			})
 		}
 	}
 

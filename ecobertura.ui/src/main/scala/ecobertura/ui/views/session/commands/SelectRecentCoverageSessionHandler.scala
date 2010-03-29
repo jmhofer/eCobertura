@@ -23,6 +23,7 @@ import org.eclipse.core.commands._
 import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.FileDialog
 import org.eclipse.ui.handlers.HandlerUtil
+import org.eclipse.ui.handlers.RadioState
 
 import ecobertura.core.cobertura.CoberturaWrapper
 import ecobertura.core.data.CoverageSession
@@ -30,7 +31,13 @@ import ecobertura.ui.views.session.CoverageSessionModel
 
 class SelectRecentCoverageSessionHandler extends AbstractHandler {
 	override def execute(event: ExecutionEvent) = {
-		selectCoverageSession(event)
+		if (!HandlerUtil.matchesRadioState(event)) {
+			selectCoverageSession(event)
+
+		    val currentState = event.getParameter(RadioState.PARAMETER_ID)
+		    HandlerUtil.updateRadioState(event.getCommand, currentState)
+		}
+		
 		null // handlers must return null
 	}
 	

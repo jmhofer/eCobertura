@@ -263,6 +263,15 @@
                name="session"
                optional="true">
          </commandParameter>
+         <state
+               class="org.eclipse.ui.handlers.RadioState:undefined"
+               id="org.eclipse.ui.commands.radioState">
+         </state>
+         <commandParameter
+               id="org.eclipse.ui.commands.radioStateParameter"
+               name="State"
+               optional="false">
+         </commandParameter>
       </command>
    </extension>
    <extension
