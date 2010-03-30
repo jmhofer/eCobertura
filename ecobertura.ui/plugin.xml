@@ -325,10 +325,15 @@
                style="push"
                tooltip="Opens a coverage session &quot;cobertura.ser&quot;.">
          </command>
-         <dynamic
-               class="ecobertura.ui.views.session.commands.SessionHistoryContributionItem"
-               id="ecobertura.ui.dynamic.SessionHistory">
-         </dynamic>
+         <menu
+               label="Recent Sessions..."
+               mnemonic="R"
+               tooltip="Select one of the recent coverage sessions.">
+            <dynamic
+                  class="ecobertura.ui.views.session.commands.SessionHistoryContributionItem"
+                  id="ecobertura.ui.dynamic.SessionHistory">
+            </dynamic>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="popup:ecoburtura.ui.views.session.popup?after=additions">

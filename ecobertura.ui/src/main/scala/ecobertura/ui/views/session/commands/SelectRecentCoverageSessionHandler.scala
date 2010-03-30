@@ -18,8 +18,7 @@
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ecobertura.ui.views.session.commands
-
-import org.eclipse.core.commands._
+import org.eclipse.core.commands._
 import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.FileDialog
 import org.eclipse.ui.handlers.HandlerUtil
