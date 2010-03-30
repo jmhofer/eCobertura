@@ -377,5 +377,13 @@
             type="java.lang.Object">
       </propertyTester>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ecobertura.ui.preferences.PreferencePage"
+            id="ecobertura.ui.preferences.PreferencePage"
+            name="ECobertura Preferences">
+      </page>
+   </extension>
 
 </plugin>

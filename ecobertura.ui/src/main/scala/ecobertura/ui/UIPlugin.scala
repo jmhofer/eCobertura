@@ -27,6 +27,7 @@ import org.osgi.framework.BundleContext
 import ecobertura.core.log.EclipseLogger
 import ecobertura.ui.core._
 import ecobertura.ui.editors.EditorsAnnotator
+import ecobertura.ui.preferences.PluginPreferences
 
 /**
  * Controls the plug-in life cycle of the eCobertura UI.

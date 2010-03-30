@@ -17,10 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.ui
+package ecobertura.ui.preferences
 
 import org.eclipse.jface.preference.IPreferenceStore
 
+object PluginPreferences {
+	val sessionHistorySize = "coverageSession.history.size"
+}
 class PluginPreferences(preferencesStore: IPreferenceStore) {
-	def coverageSessionHistorySize = preferencesStore.getInt("coverageSession.history.size") 
+	import PluginPreferences._
+	
+	def coverageSessionHistorySize = preferencesStore.getInt(sessionHistorySize) 
 }
