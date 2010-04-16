@@ -28,10 +28,21 @@ object PluginState {
 
 class PluginState(stateLocation: IPath) {
 	val instrumentationDataDirectory = new File(stateLocation.toFile, "cobertura")
+	val instrumentedClassesDirectory = new File(stateLocation.toFile, "bin")
+	
 	instrumentationDataDirectory.mkdirs
+	instrumentedClassesDirectory.mkdirs
 	
 	def cleanUp = {
-		instrumentationDataDirectory.listFiles.map(_.delete)
-		instrumentationDataDirectory.delete
+		deleteRecursively(instrumentationDataDirectory)
+		deleteRecursively(instrumentedClassesDirectory)
+	}
+	
+	private def deleteRecursively(file: File) : Unit = {
+		if (file.isFile) file.delete
+		else {
+			file.listFiles.foreach (deleteRecursively(_))
+			file.delete
+		}
 	}
 }
