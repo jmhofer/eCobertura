@@ -23,10 +23,12 @@ import java.util.Arrays
 import java.util.logging.Logger
 
 import org.eclipse.core.runtime.IPath
+import org.eclipse.core.runtime.Path
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.eclipse.jdt.launching._
 
-import _root_.ecobertura.core.cobertura.CoberturaWrapper;
+import _root_.ecobertura.core.CorePlugin
+import _root_.ecobertura.core.cobertura.CoberturaWrapper
 
 object CoverageClasspathProvider {
 	val ID = "ecobertura.core.launching.coverageClasspathProvider" //$NON-NLS-1$
@@ -56,13 +58,35 @@ class CoverageClasspathProvider extends IRuntimeClasspathProvider {
 			JavaRuntime.newArchiveRuntimeClasspathEntry(pathToCoberturaJar)
 		}
 		
-		logger fine "resolving classpath..."
+		logger.fine("resolving classpath...")
 		val resolvedEntries = wrappedProvider.get.resolveClasspath(entries, configuration)
+		logger.fine("resolved entries: " + resolvedEntries.mkString)
+		
+		val resolvedEntriesWithCoveredClasses = substituteProjectClassesByCoveredClasses(resolvedEntries)
 		val resolvedEntriesWithCobertura = Arrays.copyOf(
-				resolvedEntries, resolvedEntries.length + 1)
+				resolvedEntriesWithCoveredClasses, resolvedEntriesWithCoveredClasses.size + 1)
 		resolvedEntriesWithCobertura(resolvedEntries.size) = coberturaEntry
-		logger.fine("resolved entries: " + resolvedEntries)
+		
+		logger.fine("resolved entries with cobertura: " + resolvedEntriesWithCobertura.mkString)
 		
 		resolvedEntriesWithCobertura
+	}
+	
+	private def substituteProjectClassesByCoveredClasses(resolvedEntries: Array[IRuntimeClasspathEntry]) = {
+		for {
+			i <- 0 until resolvedEntries.size
+			entry = resolvedEntries(i)
+			if entry.getClasspathProperty == IRuntimeClasspathEntry.USER_CLASSES &&
+				entry.getType == IRuntimeClasspathEntry.PROJECT
+		} resolvedEntries(i) = adaptedProjectClassesEntry(entry)
+			
+		resolvedEntries
+	}
+	
+	private def adaptedProjectClassesEntry(projectClasses: IRuntimeClasspathEntry) = {
+		logger.fine("adapting %s".format(projectClasses.getLocation))
+		val newPath = new Path(CorePlugin.instance.pluginState.instrumentedClassesDirectory.getAbsolutePath)
+		logger.fine("new path: %s".format(newPath.toString))
+		JavaRuntime.newArchiveRuntimeClasspathEntry(newPath)
 	}
 }

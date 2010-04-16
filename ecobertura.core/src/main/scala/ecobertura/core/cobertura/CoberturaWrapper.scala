@@ -85,7 +85,7 @@ class CoberturaWrapper extends ICoberturaWrapper {
 		CoverageDataFileHandler.loadCoverageData(coberturaFile)
 	}
 	
-	override def resetProjectData= {
+	override def resetProjectData = {
 		defaultCoberturaFile.delete
 		initializeCoberturaProjectData
 	}
