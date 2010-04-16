@@ -10,7 +10,7 @@ INSTALL
 
 Point Eclipse to the Eclipse update site for eCobertura at
    
-    http://ecobertura.johoop.de/update/
+    http://ecobertura.johoop.de/update/ (requires Eclipse 3.5+)
 
 
 BUILDING
