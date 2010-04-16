@@ -79,6 +79,7 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 			if (containsUserClassesFromProject(classpathEntry)) {
 				val userClasspath = classpathEntry.getLocation
 				logger.fine(String format ("instrumenting classes within %s", userClasspath))
+				CorePlugin.instance.pluginState.copyClassesFrom(new File(userClasspath))
 				instrumentFilesWithin(new File(userClasspath))
 			} else logger.fine(String.format("skipping %s", classpathEntry.getLocation))
 		})
