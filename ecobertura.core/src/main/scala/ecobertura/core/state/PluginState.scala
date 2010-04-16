@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.core.state
+package ecobertura.core.state
+import java.io._
 
-import java.io.File
 import org.eclipse.core.runtime.IPath
 
 object PluginState {
@@ -43,6 +43,32 @@ class PluginState(stateLocation: IPath) {
 		else {
 			file.listFiles.foreach (deleteRecursively(_))
 			file.delete
+		}
+	}
+	
+	def copyClassesFrom(source: File) = {
+		deleteRecursively(instrumentedClassesDirectory)
+		copyRecursively(source, instrumentedClassesDirectory)
+	}
+	
+	private def copyRecursively(source: File, destination: File) : Unit = {
+		if (source.isFile) copyFile(source, destination)
+		else {
+			if (!destination.exists) destination.mkdirs
+			source.list.foreach { file =>
+				copyRecursively(new File(source, file), new File(destination, file))
+			}
+		}
+	}
+	
+	private def copyFile(source: File, destination: File) = {
+		val sourceStream = new FileInputStream(source)
+		val destinationStream = new FileOutputStream(destination)
+		val buffer = new Array[Byte](4096)
+		var bytesRead = sourceStream.read(buffer)
+		while (bytesRead >= 0) {
+			destinationStream.write(buffer, 0, bytesRead)
+			bytesRead = sourceStream.read(buffer)
 		}
 	}
 }
