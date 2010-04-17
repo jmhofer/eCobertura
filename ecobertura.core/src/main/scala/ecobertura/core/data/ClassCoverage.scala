@@ -34,7 +34,7 @@ trait ClassCoverage extends CoverageData {
 	def sourceFileName: String
 	def lines: List[LineCoverage]
 	
-	override def toString = String.format("ClassCoverage(%s)%s", name, super.toString)
+	override def toString = "ClassCoverage(%s, %s)%s".format(name, sourceFileName, super.toString)
 }
 
 class CoberturaClassData(classData: ClassData) extends ClassCoverage {

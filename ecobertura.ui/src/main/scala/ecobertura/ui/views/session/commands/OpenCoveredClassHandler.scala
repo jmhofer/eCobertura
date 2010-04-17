@@ -42,12 +42,12 @@ class OpenCoveredClassHandler extends AbstractHandler {
 		view.selection match {
 			case structuredSelection: IStructuredSelection =>
 				handleStructuredSelection(structuredSelection.getFirstElement)
-			case _ => /* nothing to do */
+			case _ => logger.fine("not a structured selection") /* nothing to do */
 		}
 		
 		def handleStructuredSelection(selectedObject: Any) = selectedObject match {
 			case covClass: CoverageSessionClass => handleClassSelection(covClass)
-			case _ => /* nothing to do */
+			case _ => logger.fine("not a CoverageSessionClass") /* nothing to do */
 		}
 
 		def handleClassSelection(covClass: CoverageSessionClass) = { 

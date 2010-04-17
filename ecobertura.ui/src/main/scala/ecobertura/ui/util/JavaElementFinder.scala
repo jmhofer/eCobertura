@@ -19,7 +19,7 @@
  */
 package ecobertura.ui.util
 
-import java.util.logging.Logger
+import java.util.logging._
 import org.eclipse.jdt.core.IJavaElement
 import org.eclipse.jdt.core.search._
 
@@ -35,27 +35,52 @@ object JavaElementFinder {
 
 class JavaElementFinder(covClass: CoverageSessionClass) {
 	import JavaElementFinder._
+
+	val qualifiedClassNameToFind = 
+		if (covClass.coverageData.packageName.isEmpty) covClass.coverageData.name
+		else "%s.%s".format(covClass.coverageData.packageName, covClass.coverageData.name)
+	logger.fine("looking for %s".format(qualifiedClassNameToFind))
 	
     val searchPattern = SearchPattern.createPattern(
-    		covClass.coverageData.packageName + "." + covClass.coverageData.name, 
+    		qualifiedClassNameToFind, 
     		IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, 
-    		SearchPattern.R_EXACT_MATCH);
+    		SearchPattern.R_EXACT_MATCH)
 	
 	def find(callback: IJavaElement => Unit) = {
-		searchEngine.search(searchPattern, 
-				Array[SearchParticipant](SearchEngine.getDefaultSearchParticipant()), 
-				searchScope, new SearchHandler(callback), null);
+		try {
+			searchEngine.search(searchPattern, 
+					Array[SearchParticipant](SearchEngine.getDefaultSearchParticipant), 
+					searchScope, new SearchHandler(callback), null)
+			logger.fine("searching...")
+		} catch {
+			case e: ClassCastException => findBySourceFile(callback)
+			case otherException => logger.log(Level.FINE, "some other exception occured", otherException)
+		}
 	}
 	
 	class SearchHandler(callback: IJavaElement => Unit) extends SearchRequestor {
+		private var matchFound = false
+		
 		override def acceptSearchMatch(searchMatch: SearchMatch) = {
 			searchMatch.getElement match {
 				case javaElement: IJavaElement => {
-					logger.fine(String.format("Match found: %s", javaElement))
+					logger.fine("Match found: %s".format(javaElement))
+					matchFound = true
 					callback(javaElement)
 				}
-				case _ => /* nothing to do */
+				case other => logger.fine("something else found: %s".format(other.toString)) /* nothing to do */
 			}
 		}
+		
+		override def endReporting = {
+			if (!matchFound) {
+				logger.fine("no match found")
+				findBySourceFile(callback)
+			}
+		}
+	}
+	
+	private def findBySourceFile(callback: IJavaElement => Unit) = {
+		SourceFileFinder.fromSourceFileName(covClass.coverageData.sourceFileName)	
 	}
 }
