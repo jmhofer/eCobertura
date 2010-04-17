@@ -2,7 +2,7 @@
 <feature
       id="ecobertura"
       label="eCobertura"
-      version="0.9.3.qualifier"
+      version="0.9.4.qualifier"
       provider-name="jmhofer"
       plugin="ecobertura.ui">
 
