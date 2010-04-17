@@ -18,11 +18,13 @@
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ecobertura.ui.views.session.commands
+import org.eclipse.ui.part.FileEditorInput
 
 import java.util.logging.Logger
 import org.eclipse.jface.viewers.IStructuredSelection
 import org.eclipse.jface.viewers.ISelection
 import org.eclipse.core.commands._
+import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.handlers.HandlerUtil
 
 import ecobertura.core.data.CoverageSession
@@ -42,18 +44,21 @@ class OpenCoveredClassHandler extends AbstractHandler {
 		view.selection match {
 			case structuredSelection: IStructuredSelection =>
 				handleStructuredSelection(structuredSelection.getFirstElement)
-			case _ => /* nothing to do */
+			case _ => logger.fine("not a structured selection") /* nothing to do */
 		}
 		
 		def handleStructuredSelection(selectedObject: Any) = selectedObject match {
 			case covClass: CoverageSessionClass => handleClassSelection(covClass)
-			case _ => /* nothing to do */
+			case _ => logger.fine("not a CoverageSessionClass") /* nothing to do */
 		}
 
-		def handleClassSelection(covClass: CoverageSessionClass) = { 
-			JavaElementFinder.fromCoverageSessionClass(covClass).find(
-					JavaEditorOpener.openAndReveal)
-			logger.fine(covClass.coverageData.lines.mkString(", "))
+		def handleClassSelection(covClass: CoverageSessionClass) = {
+			SourceFileFinder.fromSourceFileName(covClass.coverageData.sourceFileName).find(
+					file => {
+						val defaultEditor = PlatformUI.getWorkbench.getEditorRegistry.getDefaultEditor(file.getName);
+						page.openEditor(new FileEditorInput(file), defaultEditor.getId());
+					}
+			)
 		}
 		null
 	}

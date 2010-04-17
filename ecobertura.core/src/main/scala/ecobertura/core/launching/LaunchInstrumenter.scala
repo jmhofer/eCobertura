@@ -46,7 +46,7 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 	CoberturaWrapper.get.resetProjectData
 	instrumentClasspath
 	CoberturaWrapper.get.saveProjectDataToDefaultFile
-	addCoberturaToClasspath
+	addCoberturaAndCoveredClassesToClasspath
 	addDatafileSystemProperty
 	
 	private def instrumentClasspath = {
@@ -79,12 +79,14 @@ class LaunchInstrumenter(configuration: ILaunchConfiguration) {
 			if (containsUserClassesFromProject(classpathEntry)) {
 				val userClasspath = classpathEntry.getLocation
 				logger.fine(String format ("instrumenting classes within %s", userClasspath))
-				instrumentFilesWithin(new File(userClasspath))
+				CorePlugin.instance.pluginState.copyClassesFrom(new File(userClasspath))
+				instrumentFilesWithin(CorePlugin.instance.pluginState.instrumentedClassesDirectory)
+				
 			} else logger.fine(String.format("skipping %s", classpathEntry.getLocation))
 		})
 	}
 
-	private def addCoberturaToClasspath = {
+	private def addCoberturaAndCoveredClassesToClasspath = {
 		configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, 
 				CoverageClasspathProvider.ID)
 		CoverageClasspathProvider.wrap(JavaRuntime.getClasspathProvider(configuration))
