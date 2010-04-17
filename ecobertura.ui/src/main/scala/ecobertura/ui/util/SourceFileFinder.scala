@@ -41,18 +41,20 @@ class SourceFileFinder(sourceFileName: String) {
 	logger.fine("trying to find %s".format(sourceFileName))
 	val workspaceRoot = ResourcesPlugin.getWorkspace.getRoot
 	val fileSearchPattern = Pattern.compile(Pattern.quote(sourceFileName))
-	
 	val scope = TextSearchScope.newSearchScope(Array[IResource](workspaceRoot),
 			fileSearchPattern, false)
-			
-	searchEngine.search(scope, new SearchHandler, everythingPattern, null)
-			
-	class SearchHandler extends TextSearchRequestor {
+
+	def find(callback: IFile => Unit) = {
+		searchEngine.search(scope, new SearchHandler(callback), everythingPattern, null)
+	}
+	
+	class SearchHandler(callback: IFile => Unit) extends TextSearchRequestor {
 		private var matchFound = false
 		
 		override def acceptFile(file: IFile) = {
 			logger.fine("file found: %s".format(file.toString))
 			matchFound = true
+			callback(file)
 			false
 		}
 		
