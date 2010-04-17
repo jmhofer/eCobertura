@@ -6,8 +6,10 @@
       provider-name="jmhofer"
       plugin="ecobertura.ui">
 
-   <description url="http://github.com/jmhofer/eCobertura">
-      eCobertura is a free Eclipse plug-in for Cobertura (a Java code coverage reporting tool based on jcoverage 1.0.5).  See the eCobertura web page for more details.
+   <description url="http://ecobertura.johoop.de">
+      eCobertura is a free Eclipse plug-in for Cobertura (a Java code
+coverage reporting tool based on jcoverage 1.0.5).  See the eCobertura
+web page for more details.
    </description>
 
    <copyright>
