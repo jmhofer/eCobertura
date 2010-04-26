@@ -19,12 +19,16 @@
  */
 package ecobertura.ui.launching.config
 
-import org.eclipse.swt.widgets.Composite
+import org.eclipse.swt.SWT
+import org.eclipse.swt.layout._
+import org.eclipse.swt.widgets._
+import org.eclipse.jface.viewers._
+
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
 
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
-  override def getName = "Filter Configuration"
+  override def getName = "Filters"
   
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
     // TODO
@@ -39,6 +43,74 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   }
   
   override def createControl(parent: Composite) = {
+    val panel = new Composite(parent, SWT.NONE)
+    setControl(panel)
+
+    prepareLayout(panel)
+    addDescriptionLabelTo(panel)
+    addIncludeExcludeClassesGroupTo(panel)
     // TODO
+  }
+  
+  private def prepareLayout(panel: Composite) = {
+    val layout = new GridLayout
+    layout.verticalSpacing = 15;
+    panel.setLayout(layout)
+  }
+  
+  private def addDescriptionLabelTo(panel: Composite) = {
+    val label = new Label(panel, SWT.WRAP)
+    label.setText("Specify include/exclude filters here concerning which classes should be " +
+            "instrumented.")
+  }
+  
+  private def addIncludeExcludeClassesGroupTo(panel: Composite) = {
+    val includeExcludeGroup = new Group(panel, SWT.NONE)
+    includeExcludeGroup.setText("Classes to Include/Exclude:")
+    includeExcludeGroup.setLayout(new FillLayout)
+    
+    val gridData = new GridData
+    gridData.grabExcessHorizontalSpace = true
+    gridData.horizontalAlignment = SWT.FILL
+    gridData.grabExcessVerticalSpace = true
+    gridData.verticalAlignment = SWT.FILL
+    includeExcludeGroup.setLayoutData(gridData)
+    
+    addTableTo(includeExcludeGroup)
+  }
+
+  private def addTableTo(parent: Composite) = {
+    val includeExcludeTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION)
+    val swtTable = includeExcludeTable.getTable
+    swtTable.setHeaderVisible(true)
+    swtTable.setLinesVisible(true)
+    
+    val tableLayout = new TableLayout
+    
+    val kindColumn = new TableViewerColumn(includeExcludeTable, SWT.LEFT)
+    kindColumn.getColumn.setText("Kind")
+    kindColumn.getColumn.setMoveable(false)
+    val kindColumnLayout = new ColumnWeightData(0, 100)
+    tableLayout.addColumnData(kindColumnLayout)
+    
+    val typePatternColumn = new TableViewerColumn(includeExcludeTable, SWT.LEFT)
+    typePatternColumn.getColumn.setText("Type Pattern")
+    typePatternColumn.getColumn.setMoveable(false)
+    val typePatternColumnLayout = new ColumnWeightData(100, 200)
+    tableLayout.addColumnData(typePatternColumnLayout)
+    
+    swtTable.setLayout(tableLayout)
+    
+    includeExcludeTable.setLabelProvider(new IncludeExcludeTableLabelProvider)
+    includeExcludeTable.setContentProvider(new ArrayContentProvider)
+    includeExcludeTable.setInput(Array[Array[String]](
+        Array[String]("include", "ecobertura.*"),
+        Array[String]("exclude", "ecobertura.ui.*")))
+  }
+  
+  class IncludeExcludeTableLabelProvider extends LabelProvider with ITableLabelProvider {
+    override def getColumnImage(element: Any, index: Int) = null
+    override def getColumnText(element: Any, index: Int) =
+      element.asInstanceOf[Array[String]](index)
   }
 }
