@@ -27,6 +27,8 @@ import org.eclipse.jface.viewers._
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
 
+import ecobertura.ui.util.table.TableColumnBuilder
+
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   override def getName = "Filters"
   
@@ -87,18 +89,16 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
     
     val tableLayout = new TableLayout
     
-    val kindColumn = new TableViewerColumn(includeExcludeTable, SWT.LEFT)
-    kindColumn.getColumn.setText("Kind")
-    kindColumn.getColumn.setMoveable(false)
-    val kindColumnLayout = new ColumnWeightData(0, 100)
-    tableLayout.addColumnData(kindColumnLayout)
-    
-    val typePatternColumn = new TableViewerColumn(includeExcludeTable, SWT.LEFT)
-    typePatternColumn.getColumn.setText("Type Pattern")
-    typePatternColumn.getColumn.setMoveable(false)
-    val typePatternColumnLayout = new ColumnWeightData(100, 200)
-    tableLayout.addColumnData(typePatternColumnLayout)
-    
+    TableColumnBuilder.forTableViewer(includeExcludeTable).aligned(SWT.LEFT)
+        .titled("Kind").notMoveable
+        .withLayout(tableLayout).withWeightAndMinimumSize(0, 100)
+        .build
+        
+    TableColumnBuilder.forTableViewer(includeExcludeTable).aligned(SWT.LEFT)
+        .titled("Type Pattern").notMoveable
+        .withLayout(tableLayout).withWeightAndMinimumSize(100, 200)
+        .build
+        
     swtTable.setLayout(tableLayout)
     
     includeExcludeTable.setLabelProvider(new IncludeExcludeTableLabelProvider)
