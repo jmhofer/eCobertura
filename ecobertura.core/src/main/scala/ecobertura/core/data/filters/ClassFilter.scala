@@ -17,12 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.ui.launching.config.filters
+package ecobertura.core.data.filters
 
-import org.eclipse.jface.viewers._
+sealed abstract class KindOfFilter {
+  def asLabel: String
+  override def toString = asLabel
+}
 
-class ClassFilterTableLabelProvider extends LabelProvider with ITableLabelProvider {
-  override def getColumnImage(element: Any, index: Int) = null
-  override def getColumnText(element: Any, index: Int) =
-    element.asInstanceOf[Array[String]](index)
+case object IncludeFilter extends KindOfFilter {
+  val asLabel = "include"
+}
+
+case object ExcludeFilter extends KindOfFilter {
+  val asLabel = "exclude"
+}
+
+case class ClassFilter(kind: KindOfFilter, pattern: String) {
+  override def toString = "ClassFilter(%s, %s)".format(kind.toString, pattern)
 }

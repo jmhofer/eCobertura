@@ -1,7 +1,7 @@
 /*
  * This file is part of eCobertura.
  * 
- * Copyright (c) 2009, 2010 Joachim Hofer
+ * Copyright (c) 2010 Joachim Hofer
  * All rights reserved.
  *
  * eCobertura is free software: you can redistribute it and/or modify
