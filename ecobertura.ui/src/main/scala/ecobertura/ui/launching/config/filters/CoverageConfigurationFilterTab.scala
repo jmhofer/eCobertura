@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.ui.launching.config
+package ecobertura.ui.launching.config.filters
 
 import org.eclipse.swt.SWT
 import org.eclipse.swt.layout._
@@ -81,36 +81,5 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
     addTableTo(includeExcludeGroup)
   }
 
-  private def addTableTo(parent: Composite) = {
-    val includeExcludeTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION)
-    val swtTable = includeExcludeTable.getTable
-    swtTable.setHeaderVisible(true)
-    swtTable.setLinesVisible(true)
-    
-    val tableLayout = new TableLayout
-    
-    TableColumnBuilder.forTableViewer(includeExcludeTable).aligned(SWT.LEFT)
-        .titled("Kind").notMoveable
-        .withLayout(tableLayout).withWeightAndMinimumSize(0, 100)
-        .build
-        
-    TableColumnBuilder.forTableViewer(includeExcludeTable).aligned(SWT.LEFT)
-        .titled("Type Pattern").notMoveable
-        .withLayout(tableLayout).withWeightAndMinimumSize(100, 200)
-        .build
-        
-    swtTable.setLayout(tableLayout)
-    
-    includeExcludeTable.setLabelProvider(new IncludeExcludeTableLabelProvider)
-    includeExcludeTable.setContentProvider(new ArrayContentProvider)
-    includeExcludeTable.setInput(Array[Array[String]](
-        Array[String]("include", "ecobertura.*"),
-        Array[String]("exclude", "ecobertura.ui.*")))
-  }
-  
-  class IncludeExcludeTableLabelProvider extends LabelProvider with ITableLabelProvider {
-    override def getColumnImage(element: Any, index: Int) = null
-    override def getColumnText(element: Any, index: Int) =
-      element.asInstanceOf[Array[String]](index)
-  }
+  private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build
 }

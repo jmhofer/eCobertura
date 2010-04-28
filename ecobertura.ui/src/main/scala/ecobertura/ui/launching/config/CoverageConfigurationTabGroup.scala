@@ -23,6 +23,8 @@ import org.eclipse.core.runtime._
 import org.eclipse.debug.core._
 import org.eclipse.debug.ui._
 
+import filters._
+
 class CoverageConfigurationTabGroup extends ILaunchConfigurationTabGroup with IExecutableExtension {
 	var tabGroupToExtend: Option[ILaunchConfigurationTabGroup] = None
 	var filterTab: ILaunchConfigurationTab = null
