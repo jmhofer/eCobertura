@@ -16,6 +16,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: ecobertura.core,
  ecobertura.core.cobertura,
  ecobertura.core.data,
+ ecobertura.core.data.filters,
  ecobertura.core.log,
  ecobertura.core.results;uses:="org.eclipse.debug.core,net.sourceforge.cobertura.coveragedata",
  ecobertura.core.trace,

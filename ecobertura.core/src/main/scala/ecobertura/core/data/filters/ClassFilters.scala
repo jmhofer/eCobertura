@@ -25,6 +25,7 @@ class ClassFilters extends Iterable[ClassFilter] {
   private val filters = ArrayBuffer[ClassFilter]()
   
   override def iterator = filters.iterator
+  def toArray = filters.toArray[Object]
   
   def addIncludeFilter(pattern: String) = filters += ClassFilter(IncludeFilter, pattern)
   def addExcludeFilter(pattern: String) = filters += ClassFilter(ExcludeFilter, pattern)

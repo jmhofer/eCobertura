@@ -19,17 +19,13 @@
  */
 package ecobertura.ui.launching.config.filters
 
+import ecobertura.core.data.filters.ClassFilters
+
 import org.eclipse.jface.viewers._
 
-import ecobertura.core.data.filters._
-
-class ClassFilterTableLabelProvider extends LabelProvider with ITableLabelProvider {
-  override def getColumnImage(element: Any, index: Int) = null
-  override def getColumnText(element: Any, index: Int) = {
-    val classFilter = element.asInstanceOf[ClassFilter]
-    index match {
-      case 0 => classFilter.kind.asLabel
-      case 1 => classFilter.pattern
-    }
-  }
+class ClassFilterTableContentProvider extends IStructuredContentProvider {
+  override def getElements(inputElement: Any) = inputElement.asInstanceOf[ClassFilters].toArray
+  
+  override def inputChanged(viewer: Viewer, oldInput: Any, newInput: Any) = {}
+  override def dispose = {}
 }

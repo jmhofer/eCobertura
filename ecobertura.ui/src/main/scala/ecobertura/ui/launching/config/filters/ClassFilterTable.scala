@@ -23,6 +23,7 @@ import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets._
 import org.eclipse.jface.viewers._
 
+import ecobertura.core.data.filters._
 import ecobertura.ui.util.table.TableColumnBuilder
 
 object ClassFilterTable {
@@ -66,9 +67,11 @@ class ClassFilterTable(parent: Composite) {
   
   private def configureTableModel(classFilterTable: TableViewer) = {
     classFilterTable.setLabelProvider(new ClassFilterTableLabelProvider)
-    classFilterTable.setContentProvider(new ArrayContentProvider)
-    classFilterTable.setInput(Array[Array[String]](
-        Array[String]("include", "ecobertura.*"),
-        Array[String]("exclude", "ecobertura.ui.*")))
+    classFilterTable.setContentProvider(new ClassFilterTableContentProvider)
+
+    val classFilters = new ClassFilters
+    classFilters.addIncludeFilter("ecobertura.*")
+    classFilters.addExcludeFilter("ecobertura.ui.*")
+    classFilterTable.setInput(classFilters)
   }
 }
