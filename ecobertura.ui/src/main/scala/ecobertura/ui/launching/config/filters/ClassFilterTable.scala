@@ -32,10 +32,19 @@ object ClassFilterTable {
 class ClassFilterTable(parent: Composite) {
   def build = {
     val classFilterTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION)
+
+    configureTable(classFilterTable)
+    addColumns(classFilterTable)
+    configureTableModel(classFilterTable)
+  }
+  
+  private def configureTable(classFilterTable: TableViewer) = {
     val swtTable = classFilterTable.getTable
-    swtTable.setHeaderVisible(true)
-    swtTable.setLinesVisible(true)
-    
+    classFilterTable.getTable.setHeaderVisible(true)
+    classFilterTable.getTable.setLinesVisible(true)
+  }
+  
+  private def addColumns(classFilterTable: TableViewer) = {
     val tableLayout = new TableLayout
     
     TableColumnBuilder.forTableViewer(classFilterTable).aligned(SWT.LEFT)
@@ -48,8 +57,10 @@ class ClassFilterTable(parent: Composite) {
         .withLayout(tableLayout).withWeightAndMinimumSize(100, 200)
         .build
         
-    swtTable.setLayout(tableLayout)
-    
+    classFilterTable.getTable.setLayout(tableLayout)
+  }
+  
+  private def configureTableModel(classFilterTable: TableViewer) = {
     classFilterTable.setLabelProvider(new ClassFilterTableLabelProvider)
     classFilterTable.setContentProvider(new ArrayContentProvider)
     classFilterTable.setInput(Array[Array[String]](
