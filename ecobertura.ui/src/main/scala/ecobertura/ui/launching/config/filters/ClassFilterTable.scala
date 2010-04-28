@@ -51,11 +51,15 @@ class ClassFilterTable(parent: Composite) {
         .titled("Kind").notMoveable
         .withLayout(tableLayout).withWeightAndMinimumSize(0, 100)
         .build
-        
+        .setEditingSupport(
+            ClassFilterTableEditingSupport.forViewerAndColumn(classFilterTable, 0))
+     
     TableColumnBuilder.forTableViewer(classFilterTable).aligned(SWT.LEFT)
         .titled("Type Pattern").notMoveable
         .withLayout(tableLayout).withWeightAndMinimumSize(100, 200)
         .build
+        .setEditingSupport(
+            ClassFilterTableEditingSupport.forViewerAndColumn(classFilterTable, 1))
         
     classFilterTable.getTable.setLayout(tableLayout)
   }

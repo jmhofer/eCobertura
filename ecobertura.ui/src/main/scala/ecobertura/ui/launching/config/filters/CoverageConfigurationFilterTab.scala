@@ -22,12 +22,9 @@ package ecobertura.ui.launching.config.filters
 import org.eclipse.swt.SWT
 import org.eclipse.swt.layout._
 import org.eclipse.swt.widgets._
-import org.eclipse.jface.viewers._
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
-
-import ecobertura.ui.util.table.TableColumnBuilder
 
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   override def getName = "Filters"
