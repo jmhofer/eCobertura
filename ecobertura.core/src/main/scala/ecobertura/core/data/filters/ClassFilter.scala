@@ -21,15 +21,18 @@ package ecobertura.core.data.filters
 
 sealed abstract class KindOfFilter {
   def asLabel: String
+  def toIndex: Int
   override def toString = asLabel
 }
 
 case object IncludeFilter extends KindOfFilter {
   val asLabel = "include"
+  val toIndex = 0
 }
 
 case object ExcludeFilter extends KindOfFilter {
   val asLabel = "exclude"
+  val toIndex = 1
 }
 
 case class ClassFilter(kind: KindOfFilter, pattern: String) {

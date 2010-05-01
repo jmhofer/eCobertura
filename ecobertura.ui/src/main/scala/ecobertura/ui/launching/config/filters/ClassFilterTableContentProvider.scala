@@ -24,7 +24,7 @@ import ecobertura.core.data.filters.ClassFilters
 import org.eclipse.jface.viewers._
 
 class ClassFilterTableContentProvider extends IStructuredContentProvider {
-  override def getElements(inputElement: Any) = inputElement.asInstanceOf[ClassFilters].toArray
+  override def getElements(inputElement: Any) = inputElement.asInstanceOf[ClassFilters].toObjectArray
   
   override def inputChanged(viewer: Viewer, oldInput: Any, newInput: Any) = {}
   override def dispose = {}
