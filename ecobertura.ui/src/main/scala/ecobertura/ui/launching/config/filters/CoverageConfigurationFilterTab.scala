@@ -82,16 +82,44 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
     tableHolder.setLayout(new FillLayout)
     addTableTo(tableHolder)
 
-    val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
-    addIncludeButton.setText("Add Include Filter")
-    
     FormDataBuilder.forFormElement(tableHolder)
         .topAtPercent(0, 5).leftAtPercent(0, 5).bottomAtPercent(100, 5)
         .build
 
-    FormDataBuilder.forFormElement(addIncludeButton)
+    val upButton = new Button(includeExcludeGroup, SWT.PUSH)
+    upButton.setText("Up")
+    
+    FormDataBuilder.forFormElement(upButton)
         .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
         .build
+
+    val downButton = new Button(includeExcludeGroup, SWT.PUSH)
+    downButton.setText("Down")
+    
+    FormDataBuilder.forFormElement(downButton)
+        .bottomNeighborOf(upButton, 5).rightNeighborOf(tableHolder, 5)
+        .rightAtPercent(100, 5).build
+
+    val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
+    addIncludeButton.setText("Add Include Filter")
+    
+    FormDataBuilder.forFormElement(addIncludeButton)
+        .bottomNeighborOf(downButton, 15).rightNeighborOf(tableHolder, 5)
+        .rightAtPercent(100, 5).build
+
+    val addExcludeButton = new Button(includeExcludeGroup, SWT.PUSH)
+    addExcludeButton.setText("Add Exclude Filter")
+
+    FormDataBuilder.forFormElement(addExcludeButton)
+        .bottomNeighborOf(addIncludeButton, 5).rightNeighborOf(tableHolder, 5)
+        .rightAtPercent(100, 5).build
+    
+    val removeButton = new Button(includeExcludeGroup, SWT.PUSH)
+    removeButton.setText("Remove Filter")
+
+    FormDataBuilder.forFormElement(removeButton)
+        .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
+        .rightAtPercent(100, 5).build
   }
 
   private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build
