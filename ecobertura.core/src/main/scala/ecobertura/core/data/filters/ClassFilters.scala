@@ -27,6 +27,6 @@ class ClassFilters extends Iterable[ClassFilter] {
   override def iterator = filters.iterator
   def toObjectArray = filters.toArray[Object]   
   
-  def addIncludeFilter(pattern: String) = filters += new ClassFilter(IncludeFilter, pattern)
-  def addExcludeFilter(pattern: String) = filters += new ClassFilter(ExcludeFilter, pattern)
+  def addIncludeFilter(pattern: String) = filters += ClassFilter(IncludeFilter, pattern)
+  def addExcludeFilter(pattern: String) = filters += ClassFilter(ExcludeFilter, pattern)
 }

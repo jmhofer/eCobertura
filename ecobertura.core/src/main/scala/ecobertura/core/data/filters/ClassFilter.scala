@@ -24,6 +24,10 @@ object KindOfFilter {
     case 0 => IncludeFilter
     case 1 => ExcludeFilter
   }
+  def fromString(kindString: String) = kindString match {
+    case "include" => IncludeFilter
+    case "exclude" => ExcludeFilter
+  }
 }
 
 sealed abstract class KindOfFilter {
@@ -42,6 +46,15 @@ case object ExcludeFilter extends KindOfFilter {
   val toIndex = 1
 }
 
-class ClassFilter(var kind: KindOfFilter, var pattern: String) {
+object ClassFilter {
+  val ClassFilterPattern = """ClassFilter\(([^,]*), ([^\)]*)\)""".r
+  
+  def apply(classFilterString: String): ClassFilter = classFilterString match {
+    case ClassFilterPattern(kindString, patternString) =>
+        new ClassFilter(KindOfFilter.fromString(kindString), patternString)
+  }
+}
+
+case class ClassFilter(var kind: KindOfFilter, var pattern: String) {
   override def toString = "ClassFilter(%s, %s)".format(kind.toString, pattern)
 }
