@@ -75,38 +75,18 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
       ClassFilterTable.forParent(parent).build
   
   private def initializeButtons = {
-    val upButton = initializeUpButton
-    val downButton = initializeDownButton(upButton)
-    val addIncludeButton = initializeAddIncludeButton(downButton)
+    val addIncludeButton = initializeAddIncludeButton
     val addExcludeButton = initializeAddExcludeButton(addIncludeButton)
     val removeButton = initializeRemoveButton(addExcludeButton)
   }
-  
-  private def initializeUpButton = {
-    val upButton = new Button(includeExcludeGroup, SWT.PUSH)
-    upButton.setText("Up")
-    FormDataBuilder.forFormElement(upButton)
-        .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
-        .build
-    upButton
-  }
 
-  private def initializeDownButton(upButton: Control) = {
-    val downButton = new Button(includeExcludeGroup, SWT.PUSH)
-    downButton.setText("Down")
-    FormDataBuilder.forFormElement(downButton)
-        .bottomNeighborOf(upButton, 5).rightNeighborOf(tableHolder, 5)
-        .rightAtPercent(100, 5).build
-    downButton
- }
-
-  private def initializeAddIncludeButton(downButton: Control) = {
+  private def initializeAddIncludeButton = {
     val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
     addIncludeButton.setText("Add Include Filter")
     FormDataBuilder.forFormElement(addIncludeButton)
-        .bottomNeighborOf(downButton, 15).rightNeighborOf(tableHolder, 5)
-        .rightAtPercent(100, 5).build
-    addIncludeButton.addSelectionListener {
+        .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
+        .build
+    addIncludeButton.addSelectionListener { 
       addAndEditClassFilterPattern(new ClassFilter(IncludeFilter, "*"))
     }
     addIncludeButton
@@ -118,10 +98,15 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(addExcludeButton)
         .bottomNeighborOf(addIncludeButton, 5).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
-    addExcludeButton.addSelectionListener {
+    addExcludeButton.addSelectionListener { 
       addAndEditClassFilterPattern(new ClassFilter(ExcludeFilter, "*"))
     }
     addExcludeButton
+  }
+
+  private def addAndEditClassFilterPattern(classFilter: ClassFilter) = { 
+    includeExcludeTable.add(classFilter)
+    includeExcludeTable.editElement(classFilter, 1)
   }
 
   private def initializeRemoveButton(addExcludeButton: Control) = {
@@ -131,14 +116,9 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
         .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
     removeButton.addSelectionListener {
-      val swtTable = includeExcludeTable.getTable 
-      swtTable.remove(swtTable.getSelectionIndex)
+        val swtTable = includeExcludeTable.getTable
+        swtTable.remove(swtTable.getSelectionIndex)
     }
     removeButton
-  }
-  
-  private def addAndEditClassFilterPattern(classFilter: ClassFilter) = { 
-    includeExcludeTable.add(classFilter)
-    includeExcludeTable.editElement(classFilter, 1)
   }
 }
