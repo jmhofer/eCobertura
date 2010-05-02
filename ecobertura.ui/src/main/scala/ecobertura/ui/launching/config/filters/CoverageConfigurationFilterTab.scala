@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets._
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
 
+import ecobertura.ui.util.layout.FormDataBuilder
+ 
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   override def getName = "Filters"
   
@@ -76,16 +78,15 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
 
     includeExcludeGroup.setLayout(new FormLayout)
 
-    val formData = new FormData
-    formData.top = new FormAttachment(0, 5)
-    formData.left = new FormAttachment(0, 5)
-    formData.bottom = new FormAttachment(100, -5)
-    formData.right = new FormAttachment(100, -5)
-    
     val tableHolder = new Composite(includeExcludeGroup, SWT.NONE)
     tableHolder.setLayout(new FillLayout)
     addTableTo(tableHolder)
-    tableHolder.setLayoutData(formData)
+
+    FormDataBuilder.forFormElement(tableHolder)
+        .topAtPercent(0, 5).leftAtPercent(0, 5).bottomAtPercent(100, 5).rightAtPercent(100, 5)
+        .build
+    
+    // val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
   }
 
   private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build
