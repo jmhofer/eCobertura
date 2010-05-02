@@ -26,8 +26,6 @@ import org.eclipse.swt.widgets._
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
 
-import ecobertura.ui.util.layout.FormDataBuilder
- 
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   override def getName = "Filters"
   
@@ -65,62 +63,6 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
             "instrumented.")
   }
   
-  private def addIncludeExcludeClassesGroupTo(panel: Composite) = {
-    val includeExcludeGroup = new Group(panel, SWT.NONE)
-    includeExcludeGroup.setText("Classes to Include/Exclude:")
-    
-    val gridData = new GridData
-    gridData.grabExcessHorizontalSpace = true
-    gridData.horizontalAlignment = SWT.FILL
-    gridData.grabExcessVerticalSpace = true
-    gridData.verticalAlignment = SWT.FILL
-    includeExcludeGroup.setLayoutData(gridData)
-
-    includeExcludeGroup.setLayout(new FormLayout)
-
-    val tableHolder = new Composite(includeExcludeGroup, SWT.NONE)
-    tableHolder.setLayout(new FillLayout)
-    addTableTo(tableHolder)
-
-    FormDataBuilder.forFormElement(tableHolder)
-        .topAtPercent(0, 5).leftAtPercent(0, 5).bottomAtPercent(100, 5)
-        .build
-
-    val upButton = new Button(includeExcludeGroup, SWT.PUSH)
-    upButton.setText("Up")
-    
-    FormDataBuilder.forFormElement(upButton)
-        .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
-        .build
-
-    val downButton = new Button(includeExcludeGroup, SWT.PUSH)
-    downButton.setText("Down")
-    
-    FormDataBuilder.forFormElement(downButton)
-        .bottomNeighborOf(upButton, 5).rightNeighborOf(tableHolder, 5)
-        .rightAtPercent(100, 5).build
-
-    val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
-    addIncludeButton.setText("Add Include Filter")
-    
-    FormDataBuilder.forFormElement(addIncludeButton)
-        .bottomNeighborOf(downButton, 15).rightNeighborOf(tableHolder, 5)
-        .rightAtPercent(100, 5).build
-
-    val addExcludeButton = new Button(includeExcludeGroup, SWT.PUSH)
-    addExcludeButton.setText("Add Exclude Filter")
-
-    FormDataBuilder.forFormElement(addExcludeButton)
-        .bottomNeighborOf(addIncludeButton, 5).rightNeighborOf(tableHolder, 5)
-        .rightAtPercent(100, 5).build
-    
-    val removeButton = new Button(includeExcludeGroup, SWT.PUSH)
-    removeButton.setText("Remove Filter")
-
-    FormDataBuilder.forFormElement(removeButton)
-        .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
-        .rightAtPercent(100, 5).build
-  }
-
-  private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build
+  private def addIncludeExcludeClassesGroupTo(panel: Composite) =
+      IncludeExcludeClassesGroupBuilder.forParent(panel).build
 }
