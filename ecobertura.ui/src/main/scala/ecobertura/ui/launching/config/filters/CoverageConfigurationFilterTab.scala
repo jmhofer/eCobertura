@@ -66,7 +66,6 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   private def addIncludeExcludeClassesGroupTo(panel: Composite) = {
     val includeExcludeGroup = new Group(panel, SWT.NONE)
     includeExcludeGroup.setText("Classes to Include/Exclude:")
-    includeExcludeGroup.setLayout(new FillLayout)
     
     val gridData = new GridData
     gridData.grabExcessHorizontalSpace = true
@@ -74,8 +73,19 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
     gridData.grabExcessVerticalSpace = true
     gridData.verticalAlignment = SWT.FILL
     includeExcludeGroup.setLayoutData(gridData)
+
+    includeExcludeGroup.setLayout(new FormLayout)
+
+    val formData = new FormData
+    formData.top = new FormAttachment(0, 5)
+    formData.left = new FormAttachment(0, 5)
+    formData.bottom = new FormAttachment(100, -5)
+    formData.right = new FormAttachment(100, -5)
     
-    addTableTo(includeExcludeGroup)
+    val tableHolder = new Composite(includeExcludeGroup, SWT.NONE)
+    tableHolder.setLayout(new FillLayout)
+    addTableTo(tableHolder)
+    tableHolder.setLayoutData(formData)
   }
 
   private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build
