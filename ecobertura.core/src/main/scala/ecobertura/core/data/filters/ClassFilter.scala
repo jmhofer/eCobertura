@@ -56,5 +56,6 @@ object ClassFilter {
 }
 
 case class ClassFilter(var kind: KindOfFilter, var pattern: String) {
-  override def toString = "ClassFilter(%s, %s)".format(kind.toString, pattern)
+  def toAttributeString = "ClassFilter(%s, %s)".format(kind.toString, pattern)
+  override def toString = toAttributeString
 }

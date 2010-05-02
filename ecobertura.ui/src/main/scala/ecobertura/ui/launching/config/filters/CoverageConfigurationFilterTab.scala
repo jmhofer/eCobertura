@@ -21,24 +21,39 @@ package ecobertura.ui.launching.config.filters
 
 import org.eclipse.swt.SWT
 import org.eclipse.swt.layout._
-import org.eclipse.swt.widgets._
+import org.eclipse.swt.widgets.{Composite, Label}
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
+
+import ecobertura.core.data.filters._
 
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   override def getName = "Filters"
   
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
+    //import scala.collection.JavaConversions._
     // TODO
   }
   
   override def setDefaults(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    // TODO
+    import scala.collection.JavaConversions._
+    val javaList: java.util.List[String] = new java.util.ArrayList[String]
+    javaList.add(ClassFilter(IncludeFilter, "*").toAttributeString)
+    workingCopyOfLaunchConfiguration.setAttribute("classFilters", javaList)
+    workingCopyOfLaunchConfiguration.doSave
   }
   
   override def initializeFrom(launchConfiguration: ILaunchConfiguration) = {
-    // TODO
+    import scala.collection.JavaConversions._
+    val classFilterList = launchConfiguration.getAttribute("classFilters", 
+        new java.util.ArrayList[String])
+        
+    classFilterList foreach { value: Any => {
+        println(ClassFilter(value.toString))
+        // TODO
+      }
+    }
   }
   
   override def createControl(parent: Composite) = {
