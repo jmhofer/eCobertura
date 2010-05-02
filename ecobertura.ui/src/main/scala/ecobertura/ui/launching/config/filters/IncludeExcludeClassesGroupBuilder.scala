@@ -24,7 +24,9 @@ import org.eclipse.swt.widgets._
 import org.eclipse.swt.layout._
 import org.eclipse.jface.viewers.TableViewer
 
+import ecobertura.core.data.filters._
 import ecobertura.ui.util.layout.FormDataBuilder
+import ecobertura.ui.util.Predef._
 
 object IncludeExcludeClassesGroupBuilder {
   def forParent(parent: Composite) = new IncludeExcludeClassesGroupBuilder(parent)
@@ -104,6 +106,9 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(addIncludeButton)
         .bottomNeighborOf(downButton, 15).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
+    addIncludeButton.addSelectionListener {
+      addAndEditClassFilterPattern(new ClassFilter(IncludeFilter, "*"))
+    }
     addIncludeButton
   }
 
@@ -113,6 +118,9 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(addExcludeButton)
         .bottomNeighborOf(addIncludeButton, 5).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
+    addExcludeButton.addSelectionListener {
+      addAndEditClassFilterPattern(new ClassFilter(ExcludeFilter, "*"))
+    }
     addExcludeButton
   }
 
@@ -123,5 +131,10 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
         .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
     removeButton
+  }
+  
+  private def addAndEditClassFilterPattern(classFilter: ClassFilter) = { 
+    includeExcludeTable.add(classFilter)
+    includeExcludeTable.editElement(classFilter, 1)
   }
 }
