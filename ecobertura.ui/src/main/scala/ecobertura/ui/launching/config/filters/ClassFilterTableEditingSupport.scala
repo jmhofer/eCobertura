@@ -21,7 +21,7 @@ package ecobertura.ui.launching.config.filters
 
 import org.eclipse.jface.viewers._
 
-import ecobertura.core.data.filters.ClassFilter
+import ecobertura.core.data.filters._
 
 object ClassFilterTableEditingSupport {
   def forViewerAndColumn(viewer: ColumnViewer, column: Int) = 
@@ -46,7 +46,11 @@ class ClassFilterTableEditingSupport(viewer: ColumnViewer, column: Int)
   }
 
   override def setValue(element: Any, value: Any) = {
-    // TODO
+    val filterToUpdate = element.asInstanceOf[ClassFilter]
+    column match {
+      case 0 => filterToUpdate.kind = KindOfFilter.fromIndex(value.asInstanceOf[Int])
+      case 1 => filterToUpdate.pattern = value.asInstanceOf[String]
+    }
     getViewer.update(element, null)
   }
   

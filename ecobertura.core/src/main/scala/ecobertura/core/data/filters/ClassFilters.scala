@@ -25,17 +25,11 @@ class ClassFilters extends Iterable[ClassFilter] {
   private val filters = ArrayBuffer[ClassFilter]()
   
   override def iterator = filters.iterator
-  def toObjectArray = filters.clone.toArray[Object]   
+  def toObjectArray = filters.toArray[Object]   
   
-  def addIncludeFilter(pattern: String) = filters += ClassFilter(IncludeFilter, pattern)
-  def addExcludeFilter(pattern: String) = filters += ClassFilter(ExcludeFilter, pattern)
+  def addIncludeFilter(pattern: String) = filters += new ClassFilter(IncludeFilter, pattern)
+  def addExcludeFilter(pattern: String) = filters += new ClassFilter(ExcludeFilter, pattern)
   def removeFilterInRow(rowIndex: Int) = filters.remove(rowIndex)
 
-  def setFilterKindInRow(kind: KindOfFilter, rowIndex: Int) = 
-    filters(rowIndex) = ClassFilter(kind, filters(rowIndex).pattern)
-    
-  def setPatternInRow(pattern: String, rowIndex: Int) = 
-    filters(rowIndex) = ClassFilter(filters(rowIndex).kind, pattern)
-    
   def getFilterInRow(rowIndex: Int) = filters(rowIndex)
 }

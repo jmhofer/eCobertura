@@ -19,6 +19,13 @@
  */
 package ecobertura.core.data.filters
 
+object KindOfFilter {
+  def fromIndex(index: Int) = index match {
+    case 0 => IncludeFilter
+    case 1 => ExcludeFilter
+  }
+}
+
 sealed abstract class KindOfFilter {
   def asLabel: String
   def toIndex: Int
@@ -35,6 +42,6 @@ case object ExcludeFilter extends KindOfFilter {
   val toIndex = 1
 }
 
-case class ClassFilter(kind: KindOfFilter, pattern: String) {
+class ClassFilter(var kind: KindOfFilter, var pattern: String) {
   override def toString = "ClassFilter(%s, %s)".format(kind.toString, pattern)
 }
