@@ -30,6 +30,4 @@ class ClassFilters extends Iterable[ClassFilter] {
   def addIncludeFilter(pattern: String) = filters += new ClassFilter(IncludeFilter, pattern)
   def addExcludeFilter(pattern: String) = filters += new ClassFilter(ExcludeFilter, pattern)
   def removeFilterInRow(rowIndex: Int) = filters.remove(rowIndex)
-
-  def getFilterInRow(rowIndex: Int) = filters(rowIndex)
 }

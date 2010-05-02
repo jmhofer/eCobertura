@@ -37,6 +37,8 @@ class ClassFilterTable(parent: Composite) {
     configureTable(classFilterTable)
     addColumns(classFilterTable)
     configureTableModel(classFilterTable)
+    
+    classFilterTable
   }
   
   private def configureTable(classFilterTable: TableViewer) = {

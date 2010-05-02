@@ -48,7 +48,8 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
     prepareLayout(panel)
     addDescriptionLabelTo(panel)
     addIncludeExcludeClassesGroupTo(panel)
-    // TODO
+
+    // TODO add line ignore regexes
   }
   
   private def prepareLayout(panel: Composite) = {

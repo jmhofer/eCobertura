@@ -64,14 +64,12 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
   private def initializeIncludeExcludeTable = {
     tableHolder = new Composite(includeExcludeGroup, SWT.NONE)
     tableHolder.setLayout(new FillLayout)
-    addTableTo(tableHolder)
+    ClassFilterTable.forParent(parent).build
     FormDataBuilder.forFormElement(tableHolder)
         .topAtPercent(0, 5).leftAtPercent(0, 5).bottomAtPercent(100, 5)
         .build
   }
  
-  private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build
-  
   private def initializeUpButton = {
     upButton = new Button(includeExcludeGroup, SWT.PUSH)
     upButton.setText("Up")
