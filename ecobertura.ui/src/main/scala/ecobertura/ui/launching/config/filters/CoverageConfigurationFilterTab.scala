@@ -82,11 +82,16 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
     tableHolder.setLayout(new FillLayout)
     addTableTo(tableHolder)
 
-    FormDataBuilder.forFormElement(tableHolder)
-        .topAtPercent(0, 5).leftAtPercent(0, 5).bottomAtPercent(100, 5).rightAtPercent(100, 5)
-        .build
+    val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
+    addIncludeButton.setText("Add Include Filter")
     
-    // val addIncludeButton = new Button(includeExcludeGroup, SWT.PUSH)
+    FormDataBuilder.forFormElement(tableHolder)
+        .topAtPercent(0, 5).leftAtPercent(0, 5).bottomAtPercent(100, 5)
+        .build
+
+    FormDataBuilder.forFormElement(addIncludeButton)
+        .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
+        .build
   }
 
   private def addTableTo(parent: Composite) = ClassFilterTable.forParent(parent).build

@@ -23,10 +23,10 @@ import org.eclipse.swt.layout._
 import org.eclipse.swt.widgets._
 
 object FormDataBuilder {
-  def forFormElement(formElement: Composite) = new FormDataBuilder(formElement)
+  def forFormElement(formElement: Control) = new FormDataBuilder(formElement)
 }
 
-class FormDataBuilder(formElement: Composite) {
+class FormDataBuilder(formElement: Control) {
   private val formData = new FormData
   
   def leftAtPercent(percent: Int, margin: Int) = { 
@@ -49,22 +49,22 @@ class FormDataBuilder(formElement: Composite) {
       this
   }
 
-  def leftNeighborOf(neighbor: Composite, margin: Int) = { 
+  def leftNeighborOf(neighbor: Control, margin: Int) = { 
       formData.right = new FormAttachment(neighbor, -margin)
       this
   }
 
-  def rightNeighborOf(neighbor: Composite, margin: Int) = { 
+  def rightNeighborOf(neighbor: Control, margin: Int) = { 
       formData.left = new FormAttachment(neighbor, margin)
       this
   }
 
-  def topNeighborOf(neighbor: Composite, margin: Int) = {
+  def topNeighborOf(neighbor: Control, margin: Int) = {
       formData.bottom = new FormAttachment(neighbor, -margin)
       this
   }
 
-  def bottomNeighborOf(neighbor: Composite, margin: Int) = {
+  def bottomNeighborOf(neighbor: Control, margin: Int) = {
       formData.top = new FormAttachment(neighbor, margin)
       this
   }
