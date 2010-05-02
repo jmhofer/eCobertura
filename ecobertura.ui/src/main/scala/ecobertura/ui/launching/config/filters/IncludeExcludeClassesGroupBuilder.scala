@@ -22,7 +22,7 @@ package ecobertura.ui.launching.config.filters
 import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets._
 import org.eclipse.swt.layout._
-import org.eclipse.jface.viewers.TableViewer
+import org.eclipse.jface.viewers._
 
 import ecobertura.core.data.filters._
 import ecobertura.ui.util.layout.FormDataBuilder
@@ -130,6 +130,10 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(removeButton)
         .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
+    removeButton.addSelectionListener {
+      val swtTable = includeExcludeTable.getTable 
+      swtTable.remove(swtTable.getSelectionIndex)
+    }
     removeButton
   }
   
