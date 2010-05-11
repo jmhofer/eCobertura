@@ -20,7 +20,7 @@
 package ecobertura.ui.launching.config.filters
 
 import org.eclipse.swt.SWT
-import org.eclipse.swt.widgets._
+import org.eclipse.swt.widgets.{List => _, _}
 import org.eclipse.jface.viewers._
 
 import ecobertura.core.data.filters._
@@ -71,9 +71,10 @@ class ClassFilterTable(parent: Composite) {
     classFilterTable.setLabelProvider(new ClassFilterTableLabelProvider)
     classFilterTable.setContentProvider(new ClassFilterTableContentProvider)
 
-    val classFilters = new ClassFilters
-    classFilters.addIncludeFilter("ecobertura.*")
-    classFilters.addExcludeFilter("ecobertura.ui.*")
+    val classFilters = Array(
+        ClassFilter(IncludeFilter, "ecobertura.*"), 
+        ClassFilter(ExcludeFilter, "ecobertura.ui.*"))
+        
     classFilterTable.setInput(classFilters)
   }
 }

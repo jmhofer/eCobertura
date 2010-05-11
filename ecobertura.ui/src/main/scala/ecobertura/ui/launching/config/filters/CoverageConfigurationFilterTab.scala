@@ -28,20 +28,20 @@ import org.eclipse.debug.core._
 
 import ecobertura.core.data.filters._
 
+// TODO call setDirty and updateConfigurationDialog when changes are being made...
+
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   override def getName = "Filters"
-  
+
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
     //import scala.collection.JavaConversions._
     // TODO
   }
   
   override def setDefaults(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    import scala.collection.JavaConversions._
-    val javaList: java.util.List[String] = new java.util.ArrayList[String]
-    javaList.add(ClassFilter(IncludeFilter, "*").toAttributeString)
-    workingCopyOfLaunchConfiguration.setAttribute("classFilters", javaList)
-    workingCopyOfLaunchConfiguration.doSave
+    val initialFilters = List[ClassFilter](ClassFilter(IncludeFilter, "*"))
+    LaunchConfigurationFilters.addFiltersToLaunchConfiguration(
+        initialFilters, workingCopyOfLaunchConfiguration)
   }
   
   override def initializeFrom(launchConfiguration: ILaunchConfiguration) = {

@@ -19,43 +19,51 @@
  */
 package ecobertura.core.data.filters
 
-object KindOfFilter {
-  def fromIndex(index: Int) = index match {
-    case 0 => IncludeFilter
-    case 1 => ExcludeFilter
-  }
-  def fromString(kindString: String) = kindString match {
-    case "include" => IncludeFilter
-    case "exclude" => ExcludeFilter
-  }
-}
-
-sealed abstract class KindOfFilter {
-  def asLabel: String
-  def toIndex: Int
-  override def toString = asLabel
-}
-
-case object IncludeFilter extends KindOfFilter {
-  val asLabel = "include"
-  val toIndex = 0
-}
-
-case object ExcludeFilter extends KindOfFilter {
-  val asLabel = "exclude"
-  val toIndex = 1
-}
-
 object ClassFilter {
   val ClassFilterPattern = """ClassFilter\(([^,]*), ([^\)]*)\)""".r
   
   def apply(classFilterString: String): ClassFilter = classFilterString match {
     case ClassFilterPattern(kindString, patternString) =>
-        new ClassFilter(KindOfFilter.fromString(kindString), patternString)
+        ClassFilter(KindOfFilter.fromString(kindString), patternString)
+    case _ => throw new IllegalArgumentException("invalid filter attribute string: " + 
+        classFilterString)
   }
 }
 
+object KindOfFilter {
+  def fromIndex(index: Int) = index match {
+    case 0 => IncludeFilter
+    case 1 => ExcludeFilter
+    case _ => throw new IllegalArgumentException("invalid filter kind index: " + index)
+  }
+
+  def fromString(kindString: String) = kindString match {
+    case "include" => IncludeFilter
+    case "exclude" => ExcludeFilter
+    case _ => throw new IllegalArgumentException("invalid filter kind: " + kindString)
+  }
+}
+
+sealed abstract class KindOfFilter {
+  def toIndex: Int
+  def asLabel: String
+}
+
+case object IncludeFilter extends KindOfFilter {
+  override def toIndex = 0
+  override def asLabel = "include"
+}
+
+case object ExcludeFilter extends KindOfFilter {
+  override def toIndex = 1
+  override def asLabel = "exclude"
+}
+
+/**
+ * This is mutable so that it can be used with the Eclipse JFace table model.
+ */
 case class ClassFilter(var kind: KindOfFilter, var pattern: String) {
-  def toAttributeString = "ClassFilter(%s, %s)".format(kind.toString, pattern)
+  def toAttributeString = "ClassFilter(%s, %s)".format(kind.asLabel, pattern)
   override def toString = toAttributeString
 }
+

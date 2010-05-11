@@ -87,7 +87,7 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
         .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
         .build
     addIncludeButton.addSelectionListener { 
-      addAndEditClassFilterPattern(new ClassFilter(IncludeFilter, "*"))
+      addAndEditClassFilterPattern(ClassFilter(IncludeFilter, "*"))
     }
     addIncludeButton
   }
@@ -99,7 +99,7 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
         .bottomNeighborOf(addIncludeButton, 5).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
     addExcludeButton.addSelectionListener { 
-      addAndEditClassFilterPattern(new ClassFilter(ExcludeFilter, "*"))
+      addAndEditClassFilterPattern(ClassFilter(ExcludeFilter, "*"))
     }
     addExcludeButton
   }
