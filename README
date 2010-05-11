@@ -1,15 +1,16 @@
 ABOUT
 
 eCobertura is a free Eclipse plug-in for Cobertura (a Java code coverage 
-reporting tool).  See the eCobertura web page for more details.  
-http://github.com/jmhofer/eCobertura
+reporting tool). See the eCobertura web page for more details:
+
+    http://ecobertura.johoop.de
 
 
 INSTALL
 
 Point Eclipse to the Eclipse update site for eCobertura at
    
-    http://ecobertura.johoop.de/update/
+    http://ecobertura.johoop.de/update/ (requires Eclipse 3.5+)
 
 
 BUILDING
