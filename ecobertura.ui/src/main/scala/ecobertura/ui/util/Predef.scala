@@ -30,8 +30,8 @@ object Predef {
     override def run = func
   }
 
-  implicit def selectionListener(func: => Unit): SelectionListener = new SelectionAdapter {
-    override def widgetSelected(event: SelectionEvent) = func
+  implicit def selectionListener(func: SelectionEvent => Unit): SelectionListener = new SelectionAdapter {
+    override def widgetSelected(event: SelectionEvent) = func(event)
   }
 
   implicit def selectionChangedListener(func: SelectionChangedEvent => Unit) = new ISelectionChangedListener {

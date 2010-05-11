@@ -24,19 +24,26 @@ import org.eclipse.jface.viewers._
 import ecobertura.core.data.filters._
 
 object ClassFilterTableEditingSupport {
-  def forViewerAndColumn(viewer: ColumnViewer, column: Int) = 
+  def forViewerAndColumn(viewer: TableViewer, column: Int) = 
     new ClassFilterTableEditingSupport(viewer, column)
 }
 
-class ClassFilterTableEditingSupport(viewer: ColumnViewer, column: Int) 
+class ClassFilterTableEditingSupport(viewer: TableViewer, column: Int) 
     extends EditingSupport(viewer) {
 
+  private var listener: Option[FilterChangeListener] = None
+  
   val swtTable = viewer.asInstanceOf[TableViewer].getTable
   val cellEditor = column match {
     case 0 => new ComboBoxCellEditor(swtTable, Array("include", "exclude"))
     case 1 => new TextCellEditor(swtTable)
   }
   
+  def withChangeListener(listener: FilterChangeListener) = {
+    this.listener = Some(listener)
+    this
+  }
+ 
   override def getValue(element: Any) : Object = {
     val classFilter = element.asInstanceOf[ClassFilter]
     column match {
@@ -52,6 +59,10 @@ class ClassFilterTableEditingSupport(viewer: ColumnViewer, column: Int)
       case 1 => filterToUpdate.pattern = value.asInstanceOf[String]
     }
     getViewer.update(element, null)
+    listener match {
+      case Some(listener) => listener.filtersChanged(viewer)
+      case None => /* nothing to do */
+    }
   }
   
   override def canEdit(element: Any) = true

@@ -31,7 +31,14 @@ object ClassFilterTable {
 }
 
 class ClassFilterTable(parent: Composite) {
-  def build = {
+  private var listener: FilterChangeListener = null
+  
+  def withChangeListener(listener: FilterChangeListener) = {
+    this.listener = listener
+    this
+  }
+  
+  def build() = {
     val classFilterTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION)
 
     configureTable(classFilterTable)
@@ -54,15 +61,15 @@ class ClassFilterTable(parent: Composite) {
         .titled("Kind").notMoveable
         .withLayout(tableLayout).withWeightAndMinimumSize(0, 100)
         .build
-        .setEditingSupport(
-            ClassFilterTableEditingSupport.forViewerAndColumn(classFilterTable, 0))
+        .setEditingSupport(ClassFilterTableEditingSupport.forViewerAndColumn(classFilterTable, 0))
      
     TableColumnBuilder.forTableViewer(classFilterTable).aligned(SWT.LEFT)
         .titled("Type Pattern").notMoveable
         .withLayout(tableLayout).withWeightAndMinimumSize(100, 200)
         .build
-        .setEditingSupport(
-            ClassFilterTableEditingSupport.forViewerAndColumn(classFilterTable, 1))
+        .setEditingSupport(ClassFilterTableEditingSupport
+            .forViewerAndColumn(classFilterTable, 1)
+            .withChangeListener(listener))
         
     classFilterTable.getTable.setLayout(tableLayout)
   }

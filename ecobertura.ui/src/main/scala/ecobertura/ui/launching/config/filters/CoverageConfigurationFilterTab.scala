@@ -22,6 +22,7 @@ package ecobertura.ui.launching.config.filters
 import org.eclipse.swt.SWT
 import org.eclipse.swt.layout._
 import org.eclipse.swt.widgets.{Composite, Label}
+import org.eclipse.jface.viewers.TableViewer
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
@@ -30,11 +31,12 @@ import ecobertura.core.data.filters._
 
 // TODO call setDirty and updateConfigurationDialog when changes are being made...
 
-class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
+class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab 
+    with FilterChangeListener {
+  
   override def getName = "Filters"
 
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    //import scala.collection.JavaConversions._
     // TODO
   }
   
@@ -80,5 +82,11 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab {
   }
   
   private def addIncludeExcludeClassesGroupTo(panel: Composite) =
-      IncludeExcludeClassesGroupBuilder.forParent(panel).build
+      IncludeExcludeClassesGroupBuilder.forParent(panel).withChangeListener(this).build()
+      
+  override def filtersChanged(viewer: TableViewer) = {
+    println("filters changed")
+    setDirty(true)
+    updateLaunchConfigurationDialog()
+  }
 }
