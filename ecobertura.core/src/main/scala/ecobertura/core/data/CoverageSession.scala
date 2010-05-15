@@ -25,55 +25,53 @@ import net.sourceforge.cobertura.coveragedata._
 
 import scala.collection.JavaConversions._
 
-object CoverageSession {
-	def fromCoberturaProjectData(projectData: ProjectData): CoverageSession = {
-		new CoberturaSessionImpl(projectData)
-	}
+trait CoverageSession extends CoverageData {
+  def packages: List[PackageCoverage]
+  def packageMap: Map[String, PackageCoverage]
+  def createdOn: Date
+  def displayName: String
+  override def toString = String.format("CoverageSession%s", super.toString)
 }
 
 trait CoverageData {
-	def linesCovered: Int
-	def linesTotal: Int
-	def branchesCovered: Int
-	def branchesTotal: Int
-	override def toString =
-		String.format("(%d, %d, %d, %d)", int2Integer(linesCovered), 
-				int2Integer(linesTotal), int2Integer(branchesCovered), int2Integer(branchesTotal))
+  def linesCovered: Int
+  def linesTotal: Int
+  def branchesCovered: Int
+  def branchesTotal: Int
+  override def toString = "(%d, %d, %d, %d)".format(
+      linesCovered, linesTotal, branchesCovered, branchesTotal)
+}
+
+object CoverageSession {
+  def fromCoberturaProjectData(projectData: ProjectData): CoverageSession =
+      new CoberturaSessionImpl(projectData)
+
+  private class CoberturaSessionImpl(projectData: ProjectData) extends CoverageSession {
+    override val packages = {
+      val packageSet = projectData.getPackages.asInstanceOf[TreeSet[PackageData]]
+      
+      packageSet.map(PackageCoverage.fromCoberturaPackageData(_)).toList
+    }
+    
+    private var internalPackageMap = Map[String, PackageCoverage]()
+    for (packageCov <- packages) internalPackageMap += packageCov.name -> packageCov
+    
+    override val packageMap = internalPackageMap
+    
+    override val linesCovered = projectData.getNumberOfCoveredLines
+    override val linesTotal = projectData.getNumberOfValidLines
+    override val branchesCovered = projectData.getNumberOfCoveredBranches
+    override val branchesTotal = projectData.getNumberOfValidBranches
+    
+    override val createdOn = new Date
+    override val displayName = "%1$tF %<tT".format(createdOn)
+  }
 }
 
 object EmptyCoverageData extends CoverageData {
-	override def linesCovered = 0
-	override def linesTotal = 0
-	override def branchesCovered = 0
-	override def branchesTotal = 0
-	override def toString = String.format("EmptyCoverageSession%s", super.toString)
-}
-
-trait CoverageSession extends CoverageData {
-	def packages: List[PackageCoverage]
-	def packageMap: Map[String, PackageCoverage]
-	def createdOn: Date
-	def displayName: String
-	override def toString = String.format("CoverageSession%s", super.toString)
-}
-
-class CoberturaSessionImpl(projectData: ProjectData) extends CoverageSession {
-	override val packages = {
-		val packageSet = projectData.getPackages.asInstanceOf[TreeSet[PackageData]]
-		
-		packageSet.map(PackageCoverage.fromCoberturaPackageData(_)).toList
-	}
-
-	private var internalPackageMap = Map[String, PackageCoverage]()
-	for (packageCov <- packages) internalPackageMap += packageCov.name -> packageCov
-	
-	override val packageMap = internalPackageMap
-	
-	override val linesCovered = projectData.getNumberOfCoveredLines
-	override val linesTotal = projectData.getNumberOfValidLines
-	override val branchesCovered = projectData.getNumberOfCoveredBranches
-	override val branchesTotal = projectData.getNumberOfValidBranches
-	
-	override val createdOn = new Date
-	override val displayName = String.format("%1$tF %<tT", createdOn)
+  override def linesCovered = 0
+  override def linesTotal = 0
+  override def branchesCovered = 0
+  override def branchesTotal = 0
+  override def toString = "EmptyCoverageSession%s".format(super.toString)
 }
