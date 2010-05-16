@@ -30,7 +30,7 @@ object ClassFilterTable {
   def forParentAndFilters(parent: Composite) = new ClassFilterTable(parent)
 }
 
-class ClassFilterTable(parent: Composite) {
+class ClassFilterTable private (parent: Composite) {
   private var listener: FilterChangeListener = _
   
   def withChangeListener(listener: FilterChangeListener) = {

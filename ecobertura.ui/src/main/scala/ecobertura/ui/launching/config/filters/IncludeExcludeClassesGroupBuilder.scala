@@ -33,7 +33,7 @@ object IncludeExcludeClassesGroupBuilder {
   def forParent(parent: Composite) = new IncludeExcludeClassesGroupBuilder(parent)
 }
 
-class IncludeExcludeClassesGroupBuilder(parent: Composite) {
+class IncludeExcludeClassesGroupBuilder private (parent: Composite) {
 
   private var includeExcludeGroup: Group = _
   private var includeExcludeTable: TableViewer = _
@@ -95,7 +95,7 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(addIncludeButton)
         .topAtPercent(0, 5).rightNeighborOf(tableHolder, 5).rightAtPercent(100, 5)
         .build
-    addIncludeButton.addSelectionListener((event: SelectionEvent) => { 
+    addIncludeButton.addSelectionListener((_: SelectionEvent) => { 
       addAndEditClassFilterPattern(ClassFilter(IncludeFilter, "*"))
     })
     addIncludeButton
@@ -107,7 +107,8 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(addExcludeButton)
         .bottomNeighborOf(addIncludeButton, 5).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
-    addExcludeButton.addSelectionListener((event: SelectionEvent) => { 
+        
+    addExcludeButton.addSelectionListener((_: SelectionEvent) => { 
       addAndEditClassFilterPattern(ClassFilter(ExcludeFilter, "*"))
     })
     addExcludeButton
@@ -128,11 +129,15 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(removeButton)
         .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
+        
     removeButton.addSelectionListener((event: SelectionEvent) => {
-      println(includeExcludeTable.getSelection) // FIXME remove me
-      // FIXME
-      val swtTable = includeExcludeTable.getTable
-      swtTable.remove(swtTable.getSelectionIndex)
+      val selectedFilter = includeExcludeTable.getSelection.asInstanceOf[IStructuredSelection]
+          .getFirstElement.asInstanceOf[ClassFilter] 
+      println("removing " + selectedFilter) // FIXME remove me
+      val classFilters = includeExcludeTable.getInput.asInstanceOf[ClassFilters]
+      classFilters.remove(selectedFilter)
+        
+      includeExcludeTable.refresh()
       listener.filtersChanged(includeExcludeTable)
     })
     removeButton
