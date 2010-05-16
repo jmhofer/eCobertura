@@ -26,6 +26,10 @@ import java.util.{ArrayList, List => JavaList}
 
 import org.eclipse.debug.core._
 
+/**
+ * Helps creating ClassFilters from launch configurations 
+ * or simply lists of class filters.
+ */
 object ClassFilters {
   def apply(launchConfiguration: ILaunchConfiguration) : ClassFilters = {
     val classFilterList = launchConfiguration.getAttribute("classFilters", 
@@ -43,6 +47,10 @@ object ClassFilters {
   }
 }
 
+/**
+ * Stores include/exclude class filters. Used as data model for the
+ * launch configuration's "filters" tab.
+ */
 class ClassFilters {
   private var classFilters = ListBuffer[ClassFilter]()
   
@@ -59,4 +67,26 @@ class ClassFilters {
   }
   
   override def toString = "ClassFilters(%s)".format(classFilters.toString)
+  
+  def isClassIncluded(reversedRelativePath: List[String]) : Boolean = 
+    isClassIncluded(qualifiedClassNameFromReversedPath(reversedRelativePath), classFilters.toList)
+  
+  private def qualifiedClassNameFromReversedPath(reversedRelativePath: List[String]) = {
+    reversedRelativePath.reverse.tail.mkString(".")
+  }
+
+  private def isClassIncluded(className: String, classFilters: List[ClassFilter]) : Boolean = {
+    println("isClassIncluded(%s, %s)".format(className, classFilters)) // FIXME remove me
+    classFilters match {
+      case Nil => true
+      case classFilter :: tail => {
+        // check if it fits...
+        
+        // if it doesn't, return false
+        
+        // if it fits...
+        isClassIncluded(className, tail)
+      }
+    }
+  }
 }

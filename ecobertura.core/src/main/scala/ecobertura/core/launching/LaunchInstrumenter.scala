@@ -27,8 +27,9 @@ import org.eclipse.debug.core.ILaunchConfiguration
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy
 import org.eclipse.jdt.launching._
 
-import _root_.ecobertura.core.CorePlugin;
-import _root_.ecobertura.core.cobertura.CoberturaWrapper;
+import ecobertura.core.CorePlugin
+import ecobertura.core.cobertura.CoberturaWrapper
+import ecobertura.core.data.filters.ClassFilters
 
 object LaunchInstrumenter {
   val COBERTURA_DATAFILE_PROPERTY = "net.sourceforge.cobertura.datafile"
@@ -42,6 +43,7 @@ object LaunchInstrumenter {
 class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
   import LaunchInstrumenter._
 
+  private val classFilters = ClassFilters(configuration)
   private val configWC = configuration.getWorkingCopy
   CoberturaWrapper.get.resetProjectData
   instrumentClasspath
@@ -65,21 +67,24 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
         entry.getType == IRuntimeClasspathEntry.PROJECT
       }
 
-      def instrumentFilesWithin(file: File) : Unit = {
+      def instrumentFilesWithin(file: File, relativePath: List[String]) : Unit = {
         def instrumentClassFile(file: File) = {
           logger.fine("instrumenting %s".format(file.getPath()))
           CoberturaWrapper.get.instrumentClassFile(file)
         }
 
-        if (file.isDirectory) file.listFiles foreach (instrumentFilesWithin(_))
-        else instrumentClassFile(file)
+        if (file.isDirectory) {
+          val newRelativePath = file.getName :: relativePath
+          file.listFiles foreach (instrumentFilesWithin(_, newRelativePath))
+        }
+        else if (classFilters.isClassIncluded(relativePath)) instrumentClassFile(file)
       }
 
       if (containsUserClassesFromProject(classpathEntry)) {
         val userClasspath = classpathEntry.getLocation
         logger.fine("instrumenting classes within %s".format(userClasspath))
         CorePlugin.instance.pluginState.copyClassesFrom(new File(userClasspath))
-        instrumentFilesWithin(CorePlugin.instance.pluginState.instrumentedClassesDirectory)
+        instrumentFilesWithin(CorePlugin.instance.pluginState.instrumentedClassesDirectory, Nil)
 
       } else logger.fine("skipping %s".format(classpathEntry.getLocation))
     })
