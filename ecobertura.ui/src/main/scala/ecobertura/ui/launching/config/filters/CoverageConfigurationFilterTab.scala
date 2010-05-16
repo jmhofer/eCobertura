@@ -39,25 +39,21 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab
   private var classFilterTableViewer: TableViewer = _
 
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    println("perform apply") // FIXME remove me
     classFilters.addToLaunchConfiguration(workingCopyOfLaunchConfiguration)
   }
   
   private def classFilters = classFilterTableViewer.getInput.asInstanceOf[ClassFilters]
   
   override def setDefaults(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    println("set defaults") // FIXME remove me
     ClassFilters(ClassFilter(IncludeFilter, "*")).addToLaunchConfiguration(
         workingCopyOfLaunchConfiguration)
   }
   
   override def initializeFrom(launchConfiguration: ILaunchConfiguration) = {
-    println("init from") // FIXME remove me
     classFilterTableViewer.setInput(ClassFilters(launchConfiguration))
   }
   
   override def createControl(parent: Composite) = {
-    println("create control") // FIXME remove me
     val panel = new Composite(parent, SWT.NONE)
     setControl(panel)
 
@@ -85,12 +81,8 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab
           .withChangeListener(this).build()
       
   override def filtersChanged(viewer: TableViewer) = {
-    println("filters changed") // FIXME remove me
-    println("classFilters = " + classFilters)
-    
     setDirty(true)
     setErrorMessage(null)
     updateLaunchConfigurationDialog()
-    println("set to dirty") // FIXME remove me
   }
 }

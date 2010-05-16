@@ -20,6 +20,7 @@
 package ecobertura.ui.launching.config.filters
 
 import org.eclipse.jface.viewers._
+import org.eclipse.swt.SWT
 
 import ecobertura.core.data.filters._
 
@@ -35,7 +36,7 @@ class ClassFilterTableEditingSupport(viewer: TableViewer, column: Int)
   
   val swtTable = viewer.asInstanceOf[TableViewer].getTable
   val cellEditor = column match {
-    case 0 => new ComboBoxCellEditor(swtTable, Array("include", "exclude"))
+    case 0 => new ComboBoxCellEditor(swtTable, Array("include", "exclude"), SWT.READ_ONLY)
     case 1 => new TextCellEditor(swtTable)
   }
   

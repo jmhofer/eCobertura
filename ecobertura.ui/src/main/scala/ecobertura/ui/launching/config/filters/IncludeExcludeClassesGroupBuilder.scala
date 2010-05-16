@@ -117,7 +117,6 @@ class IncludeExcludeClassesGroupBuilder private (parent: Composite) {
   private def addAndEditClassFilterPattern(classFilter: ClassFilter) = {
     val classFilters = includeExcludeTable.getInput.asInstanceOf[ClassFilters]
     classFilters.add(classFilter)
-    println(classFilters) // FIXME remove me
     includeExcludeTable.refresh()
     includeExcludeTable.editElement(classFilter, 1)
     listener.filtersChanged(includeExcludeTable)
@@ -133,7 +132,6 @@ class IncludeExcludeClassesGroupBuilder private (parent: Composite) {
     removeButton.addSelectionListener((event: SelectionEvent) => {
       val selectedFilter = includeExcludeTable.getSelection.asInstanceOf[IStructuredSelection]
           .getFirstElement.asInstanceOf[ClassFilter] 
-      println("removing " + selectedFilter) // FIXME remove me
       val classFilters = includeExcludeTable.getInput.asInstanceOf[ClassFilters]
       classFilters.remove(selectedFilter)
         
