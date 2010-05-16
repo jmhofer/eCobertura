@@ -1,7 +1,7 @@
 /*
  * This file is part of eCobertura.
  * 
- * Copyright (c) 2009, 2010 Joachim Hofer
+ * Copyright (c) 2010 Joachim Hofer
  * All rights reserved.
  *
  * eCobertura is free software: you can redistribute it and/or modify
@@ -17,10 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.ui.util
+package ecobertura.ui.launching.config.filters
 
-object Format {
-	def asPercentage(numerator: Int, denominator: Int) =
-		if (denominator == 0) "-"
-		else "%3.2f %%".format(numerator.toDouble / denominator * 100.0) 
+import ecobertura.core.data.filters._
+
+import org.eclipse.jface.viewers._
+
+class ClassFilterTableContentProvider extends IStructuredContentProvider {
+  override def getElements(inputElement: Any) : Array[AnyRef] = 
+    inputElement.asInstanceOf[ClassFilters].toArray.asInstanceOf[Array[AnyRef]]
+  
+  override def inputChanged(viewer: Viewer, oldInput: Any, newInput: Any) = {}
+  override def dispose = {}
 }

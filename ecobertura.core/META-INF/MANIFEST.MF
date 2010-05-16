@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: eCobertura Core
 Bundle-SymbolicName: ecobertura.core;singleton:=true
-Bundle-Version: 0.9.4.qualifier
+Bundle-Version: 0.9.5.qualifier
 Bundle-Activator: ecobertura.core.CorePlugin
 Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Vendor: jmhofer
@@ -16,6 +16,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: ecobertura.core,
  ecobertura.core.cobertura,
  ecobertura.core.data,
+ ecobertura.core.data.filters,
  ecobertura.core.log,
  ecobertura.core.results;uses:="org.eclipse.debug.core,net.sourceforge.cobertura.coveragedata",
  ecobertura.core.trace,

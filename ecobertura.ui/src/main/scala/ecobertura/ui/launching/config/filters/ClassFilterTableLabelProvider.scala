@@ -1,7 +1,7 @@
 /*
  * This file is part of eCobertura.
  * 
- * Copyright (c) 2009, 2010 Joachim Hofer
+ * Copyright (c) 2010 Joachim Hofer
  * All rights reserved.
  *
  * eCobertura is free software: you can redistribute it and/or modify
@@ -17,10 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ecobertura.ui.util
+package ecobertura.ui.launching.config.filters
 
-object Format {
-	def asPercentage(numerator: Int, denominator: Int) =
-		if (denominator == 0) "-"
-		else "%3.2f %%".format(numerator.toDouble / denominator * 100.0) 
+import org.eclipse.jface.viewers._
+
+import ecobertura.core.data.filters._
+
+class ClassFilterTableLabelProvider extends LabelProvider with ITableLabelProvider {
+  override def getColumnImage(element: Any, index: Int) = null
+  override def getColumnText(element: Any, index: Int) = {
+    val classFilter = element.asInstanceOf[ClassFilter]
+    index match {
+      case 0 => classFilter.kind.asLabel
+      case 1 => classFilter.pattern
+    }
+  }
 }

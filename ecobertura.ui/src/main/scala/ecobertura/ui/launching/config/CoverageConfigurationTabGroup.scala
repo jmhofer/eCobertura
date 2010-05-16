@@ -23,8 +23,11 @@ import org.eclipse.core.runtime._
 import org.eclipse.debug.core._
 import org.eclipse.debug.ui._
 
+import filters._
+
 class CoverageConfigurationTabGroup extends ILaunchConfigurationTabGroup with IExecutableExtension {
 	var tabGroupToExtend: Option[ILaunchConfigurationTabGroup] = None
+	var filterTab: ILaunchConfigurationTab = null
 	
 	override def setInitializationData(config: IConfigurationElement, propertyName: String, data: Any) = {
 		val tabGroup = ConfigurationTabGroupRetriever.fromConfig(config)
@@ -34,32 +37,51 @@ class CoverageConfigurationTabGroup extends ILaunchConfigurationTabGroup with IE
 	
 	override def createTabs(dialog: ILaunchConfigurationDialog, mode: String) = 
 			tabGroupToExtend match {
-		case Some(tabGroup) => tabGroup.createTabs(dialog, ILaunchManager.RUN_MODE)
+		case Some(tabGroup) => {
+		  tabGroup.createTabs(dialog, ILaunchManager.RUN_MODE)
+		  filterTab = new CoverageConfigurationFilterTab
+		}
 		case _ => /* nothing to do */
 	}
 	
 	override def getTabs = tabGroupToExtend match {
-		case Some(tabGroup) => tabGroup.getTabs
+		case Some(tabGroup) => {
+		  val standardTabs = tabGroup.getTabs.toList
+		  val standardTabsAndFilterTab = standardTabs.head :: filterTab :: standardTabs.tail
+		  standardTabsAndFilterTab.toArray
+		}
 		case _ => Array[ILaunchConfigurationTab]()
 	}
 	
 	override def initializeFrom(config: ILaunchConfiguration) = tabGroupToExtend match {
-		case Some(tabGroup) => tabGroup.initializeFrom(config)
+		case Some(tabGroup) => {
+		  tabGroup.initializeFrom(config)
+		  filterTab.initializeFrom(config)
+		}
 		case _ => /* nothing to do */
 	}
 	
 	override def setDefaults(configWC: ILaunchConfigurationWorkingCopy) = tabGroupToExtend match {
-		case Some(tabGroup) => tabGroup.setDefaults(configWC)
+		case Some(tabGroup) => {
+		  tabGroup.setDefaults(configWC)
+		  filterTab.setDefaults(configWC)
+		}
 		case _ => /* nothing to do */
 	}
 
 	override def performApply(configWC: ILaunchConfigurationWorkingCopy) = tabGroupToExtend match {
-		case Some(tabGroup) => tabGroup.performApply(configWC)
+		case Some(tabGroup) => {
+		  tabGroup.performApply(configWC)
+		  filterTab.performApply(configWC)
+		}
 		case _ => /* nothing to do */
 	}
 	
 	override def dispose = tabGroupToExtend match {
-		case Some(tabGroup) => tabGroup.dispose
+		case Some(tabGroup) => {
+		  tabGroup.dispose
+		  filterTab.dispose
+		}
 		case _ => /* nothing to do */
 	}
 	

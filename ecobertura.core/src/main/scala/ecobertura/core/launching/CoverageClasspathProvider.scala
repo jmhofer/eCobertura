@@ -31,62 +31,62 @@ import _root_.ecobertura.core.CorePlugin
 import _root_.ecobertura.core.cobertura.CoberturaWrapper
 
 object CoverageClasspathProvider {
-	val ID = "ecobertura.core.launching.coverageClasspathProvider" //$NON-NLS-1$
-		
-	private val logger = Logger.getLogger("ecobertura.core.launching") //$NON-NLS-1$
-	private var wrappedProvider = new ThreadLocal[IRuntimeClasspathProvider]
-	
-	def wrap(wrappedProvider: IRuntimeClasspathProvider) = {
-		if (wrappedProvider != CoverageClasspathProvider.wrappedProvider) {
-			logger.fine("wrapping provider...")
-			CoverageClasspathProvider.wrappedProvider.set(wrappedProvider)
-		}
-	}
+  val ID = "ecobertura.core.launching.coverageClasspathProvider" //$NON-NLS-1$
+
+  private val logger = Logger.getLogger("ecobertura.core.launching") //$NON-NLS-1$
+  private var wrappedProvider = new ThreadLocal[IRuntimeClasspathProvider]
+
+  def wrap(wrappedProvider: IRuntimeClasspathProvider) = {
+    if (wrappedProvider != CoverageClasspathProvider.wrappedProvider) {
+      logger.fine("wrapping provider...")
+      CoverageClasspathProvider.wrappedProvider.set(wrappedProvider)
+    }
+  }
 }
 
 class CoverageClasspathProvider extends IRuntimeClasspathProvider {
-	import CoverageClasspathProvider._
-	
-	override def computeUnresolvedClasspath(configuration: ILaunchConfiguration) = 
-		wrappedProvider.get.computeUnresolvedClasspath(configuration)
-	
-	override def resolveClasspath(entries: Array[IRuntimeClasspathEntry], 
-			configuration: ILaunchConfiguration) = {
-		
-		def coberturaEntry = {
-			val pathToCoberturaJar = CoberturaWrapper.get.pathToJar
-			JavaRuntime.newArchiveRuntimeClasspathEntry(pathToCoberturaJar)
-		}
-		
-		logger.fine("resolving classpath...")
-		val resolvedEntries = wrappedProvider.get.resolveClasspath(entries, configuration)
-		logger.fine("resolved entries: " + resolvedEntries.mkString)
-		
-		val resolvedEntriesWithCoveredClasses = substituteProjectClassesByCoveredClasses(resolvedEntries)
-		val resolvedEntriesWithCobertura = Arrays.copyOf(
-				resolvedEntriesWithCoveredClasses, resolvedEntriesWithCoveredClasses.size + 1)
-		resolvedEntriesWithCobertura(resolvedEntries.size) = coberturaEntry
-		
-		logger.fine("resolved entries with cobertura: " + resolvedEntriesWithCobertura.mkString)
-		
-		resolvedEntriesWithCobertura
-	}
-	
-	private def substituteProjectClassesByCoveredClasses(resolvedEntries: Array[IRuntimeClasspathEntry]) = {
-		for {
-			i <- 0 until resolvedEntries.size
-			entry = resolvedEntries(i)
-			if entry.getClasspathProperty == IRuntimeClasspathEntry.USER_CLASSES &&
-				entry.getType == IRuntimeClasspathEntry.PROJECT
-		} resolvedEntries(i) = adaptedProjectClassesEntry(entry)
-			
-		resolvedEntries
-	}
-	
-	private def adaptedProjectClassesEntry(projectClasses: IRuntimeClasspathEntry) = {
-		logger.fine("adapting %s".format(projectClasses.getLocation))
-		val newPath = new Path(CorePlugin.instance.pluginState.instrumentedClassesDirectory.getAbsolutePath)
-		logger.fine("new path: %s".format(newPath.toString))
-		JavaRuntime.newArchiveRuntimeClasspathEntry(newPath)
-	}
+  import CoverageClasspathProvider._
+
+  override def computeUnresolvedClasspath(configuration: ILaunchConfiguration) = 
+    wrappedProvider.get.computeUnresolvedClasspath(configuration)
+
+  override def resolveClasspath(entries: Array[IRuntimeClasspathEntry], 
+      configuration: ILaunchConfiguration) = {
+
+    def coberturaEntry = {
+      val pathToCoberturaJar = CoberturaWrapper.get.pathToJar
+      JavaRuntime.newArchiveRuntimeClasspathEntry(pathToCoberturaJar)
+    }
+
+    logger.fine("resolving classpath...")
+    val resolvedEntries = wrappedProvider.get.resolveClasspath(entries, configuration)
+    logger.fine("resolved entries: " + resolvedEntries.mkString)
+
+    val resolvedEntriesWithCoveredClasses = substituteProjectClassesByCoveredClasses(resolvedEntries)
+    val resolvedEntriesWithCobertura = Arrays.copyOf(
+        resolvedEntriesWithCoveredClasses, resolvedEntriesWithCoveredClasses.size + 1)
+    resolvedEntriesWithCobertura(resolvedEntries.size) = coberturaEntry
+
+    logger.fine("resolved entries with cobertura: " + resolvedEntriesWithCobertura.mkString)
+
+    resolvedEntriesWithCobertura
+  }
+
+  private def substituteProjectClassesByCoveredClasses(resolvedEntries: Array[IRuntimeClasspathEntry]) = {
+    for {
+      i <- 0 until resolvedEntries.size
+      entry = resolvedEntries(i)
+      if entry.getClasspathProperty == IRuntimeClasspathEntry.USER_CLASSES &&
+      entry.getType == IRuntimeClasspathEntry.PROJECT
+    } resolvedEntries(i) = adaptedProjectClassesEntry(entry)
+
+    resolvedEntries
+  }
+
+  private def adaptedProjectClassesEntry(projectClasses: IRuntimeClasspathEntry) = {
+    logger.fine("adapting %s".format(projectClasses.getLocation))
+    val newPath = new Path(CorePlugin.instance.pluginState.instrumentedClassesDirectory.getAbsolutePath)
+    logger.fine("new path: %s".format(newPath.toString))
+    JavaRuntime.newArchiveRuntimeClasspathEntry(newPath)
+  }
 }

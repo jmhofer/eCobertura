@@ -23,24 +23,23 @@ import net.sourceforge.cobertura.coveragedata.LineData
 import net.sourceforge.cobertura.coveragedata.{CoverageData => CoberturaCoverageData}
 
 object LineCoverage {
-	def fromLineDataSet(lineDataList: List[CoberturaCoverageData]) =
-		for {
-			singleCoverageData <- lineDataList if singleCoverageData.isInstanceOf[LineData]
-		} yield fromSingleLineData(singleCoverageData.asInstanceOf[LineData])
-	
-	def fromSingleLineData(lineData: LineData): LineCoverage =
-		new LineCoverageImpl(lineData)
+  def fromLineDataSet(lineDataList: List[CoberturaCoverageData]) = 
+    for {
+      singleCoverageData <- lineDataList if singleCoverageData.isInstanceOf[LineData]
+    } yield fromSingleLineData(singleCoverageData.asInstanceOf[LineData])
+    
+  def fromSingleLineData(lineData: LineData): LineCoverage = new LineCoverageImpl(lineData)
+  
+  private class LineCoverageImpl(lineData: LineData) extends LineCoverage {
+    override def lineNumber = lineData.getLineNumber
+    override def hits = lineData.getHits
+  }
 }
 
 trait LineCoverage {
-	def lineNumber: Int
-	def hits: Long
-	def isCovered = hits > 0
-	
-	override def toString = String.format("LineCoverage(%d, %d)", int2Integer(lineNumber), long2Long(hits))
-}
-
-class LineCoverageImpl(lineData: LineData) extends LineCoverage {
-	override def lineNumber = lineData.getLineNumber
-	override def hits = lineData.getHits
+  def lineNumber: Int
+  def hits: Long
+  def isCovered = hits > 0
+  
+  override def toString = "LineCoverage(%d, %d)".format(lineNumber, hits)
 }
