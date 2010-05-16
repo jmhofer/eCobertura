@@ -705,6 +705,10 @@ Public License instead of this License.  But first, please read
 &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;.
    </license>
 
+   <url>
+      <update label="eCobertura Update Site" url="http://ecobertura.johoop.de"/>
+   </url>
+
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.debug.core"/>
@@ -718,6 +722,7 @@ Public License instead of this License.  But first, please read
       <import plugin="org.eclipse.jdt.ui"/>
       <import plugin="org.eclipse.core.expressions"/>
       <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.search"/>
    </requires>
 
    <plugin
