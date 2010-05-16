@@ -30,15 +30,16 @@ import ecobertura.ui.util.layout.FormDataBuilder
 import ecobertura.ui.util.Predef._
 
 object IncludeExcludeClassesGroupBuilder {
-  def forParent(parent: Composite) = new IncludeExcludeClassesGroupBuilder(parent)
+  def forParentAndFilters(parent: Composite, classFilters: ClassFilters) = 
+      new IncludeExcludeClassesGroupBuilder(parent, classFilters)
 }
 
-class IncludeExcludeClassesGroupBuilder(parent: Composite) {
+class IncludeExcludeClassesGroupBuilder(parent: Composite, classFilters: ClassFilters) {
 
-  private var includeExcludeGroup: Group = null
-  private var includeExcludeTable: TableViewer = null
-  private var tableHolder: Composite = null
-  private var listener: FilterChangeListener = null
+  private var includeExcludeGroup: Group = _
+  private var includeExcludeTable: TableViewer = _
+  private var tableHolder: Composite = _
+  private var listener: FilterChangeListener = _
   
   def withChangeListener(listener: FilterChangeListener) = {
     this.listener = listener
@@ -51,6 +52,8 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     tableHolder = initializeIncludeExcludeTableHolder(includeExcludeGroup)
     includeExcludeTable = initializeIncludeExcludeTable(tableHolder, listener)
     initializeButtons()
+    
+    includeExcludeTable
   }
 
   private def initializeIncludeExcludeGroup() = {
@@ -79,7 +82,8 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
   }
  
   private def initializeIncludeExcludeTable(parent: Composite, listener: FilterChangeListener) =
-      ClassFilterTable.forParent(parent).withChangeListener(listener).build()
+      ClassFilterTable.forParentAndFilters(parent, classFilters).withChangeListener(listener)
+          .build()
   
   private def initializeButtons() = {
     val addIncludeButton = initializeAddIncludeButton
@@ -111,8 +115,9 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     addExcludeButton
   }
 
-  private def addAndEditClassFilterPattern(classFilter: ClassFilter) = { 
-    includeExcludeTable.add(classFilter)
+  private def addAndEditClassFilterPattern(classFilter: ClassFilter) = {
+    classFilters.add(classFilter)
+    includeExcludeTable.refresh()
     includeExcludeTable.editElement(classFilter, 1)
     listener.filtersChanged(includeExcludeTable)
   }
@@ -123,10 +128,12 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite) {
     FormDataBuilder.forFormElement(removeButton)
         .bottomNeighborOf(addExcludeButton, 15).rightNeighborOf(tableHolder, 5)
         .rightAtPercent(100, 5).build
-    removeButton.addSelectionListener((event: SelectionEvent) => {  
-        val swtTable = includeExcludeTable.getTable
-        swtTable.remove(swtTable.getSelectionIndex)
-        listener.filtersChanged(includeExcludeTable)
+    removeButton.addSelectionListener((event: SelectionEvent) => {
+      println(includeExcludeTable.getSelection) // FIXME remove me
+      // FIXME
+      val swtTable = includeExcludeTable.getTable
+      swtTable.remove(swtTable.getSelectionIndex)
+      listener.filtersChanged(includeExcludeTable)
     })
     removeButton
   }

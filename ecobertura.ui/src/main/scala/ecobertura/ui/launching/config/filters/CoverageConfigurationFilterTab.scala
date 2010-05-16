@@ -19,46 +19,44 @@
  */
 package ecobertura.ui.launching.config.filters
 
+import scala.collection.mutable.ListBuffer
+
 import org.eclipse.swt.SWT
 import org.eclipse.swt.layout._
 import org.eclipse.swt.widgets.{Composite, Label}
-import org.eclipse.jface.viewers.TableViewer
+import org.eclipse.jface.viewers._
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.core._
 
 import ecobertura.core.data.filters._
 
-// TODO call setDirty and updateConfigurationDialog when changes are being made...
-
 class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab 
     with FilterChangeListener {
   
   override def getName = "Filters"
+    
+  private var classFilters = ClassFilters(ClassFilter(IncludeFilter, "*"))
+  private var classFilterTableViewer: TableViewer = _
 
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    // TODO
+    println("perform apply") // FIXME remove me
+    classFilters.addToLaunchConfiguration(workingCopyOfLaunchConfiguration)
   }
   
   override def setDefaults(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
-    val initialFilters = List[ClassFilter](ClassFilter(IncludeFilter, "*"))
-    LaunchConfigurationFilters.addFiltersToLaunchConfiguration(
-        initialFilters, workingCopyOfLaunchConfiguration)
+    println("set defaults") // FIXME remove me
+    classFilters.addToLaunchConfiguration(workingCopyOfLaunchConfiguration)
   }
   
   override def initializeFrom(launchConfiguration: ILaunchConfiguration) = {
-    import scala.collection.JavaConversions._
-    val classFilterList = launchConfiguration.getAttribute("classFilters", 
-        new java.util.ArrayList[String])
-        
-    classFilterList foreach { value: Any => {
-        println(ClassFilter(value.toString))
-        // TODO
-      }
-    }
+    println("init from") // FIXME remove me
+    classFilters = ClassFilters(launchConfiguration)
+    classFilterTableViewer.setInput(classFilters)
   }
   
   override def createControl(parent: Composite) = {
+    println("create control") // FIXME remove me
     val panel = new Composite(parent, SWT.NONE)
     setControl(panel)
 
@@ -82,11 +80,18 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab
   }
   
   private def addIncludeExcludeClassesGroupTo(panel: Composite) =
-      IncludeExcludeClassesGroupBuilder.forParent(panel).withChangeListener(this).build()
+      classFilterTableViewer = IncludeExcludeClassesGroupBuilder
+          .forParentAndFilters(panel, classFilters)
+          .withChangeListener(this).build()
       
   override def filtersChanged(viewer: TableViewer) = {
-    println("filters changed")
+    println("filters changed") // FIXME remove me
+    classFilters = viewer.getInput.asInstanceOf[ClassFilters]
+    println("classFilters = " + classFilters)
+    
     setDirty(true)
+    setErrorMessage(null)
     updateLaunchConfigurationDialog()
+    println("set to dirty") // FIXME remove me
   }
 }

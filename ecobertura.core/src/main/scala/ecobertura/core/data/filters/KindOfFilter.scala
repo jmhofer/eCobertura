@@ -19,22 +19,31 @@
  */
 package ecobertura.core.data.filters
 
-object ClassFilter {
-  val ClassFilterPattern = """ClassFilter\(([^,]*), ([^\)]*)\)""".r
-  
-  def apply(classFilterString: String): ClassFilter = classFilterString match {
-    case ClassFilterPattern(kindString, patternString) =>
-        ClassFilter(KindOfFilter.fromString(kindString), patternString)
-    case _ => throw new IllegalArgumentException("invalid filter attribute string: " + 
-        classFilterString)
+object KindOfFilter {
+  def fromIndex(index: Int) = index match {
+    case 0 => IncludeFilter
+    case 1 => ExcludeFilter
+    case _ => throw new IllegalArgumentException("invalid filter kind index: " + index)
+  }
+
+  def fromString(kindString: String) = kindString match {
+    case "include" => IncludeFilter
+    case "exclude" => ExcludeFilter
+    case _ => throw new IllegalArgumentException("invalid filter kind: " + kindString)
   }
 }
 
-/**
- * This is mutable so that it can be used with the Eclipse JFace table model.
- */
-case class ClassFilter(var kind: KindOfFilter, var pattern: String) {
-  def toAttributeString = "ClassFilter(%s, %s)".format(kind.asLabel, pattern)
-  override def toString = toAttributeString
+sealed abstract class KindOfFilter {
+  def toIndex: Int
+  def asLabel: String
 }
 
+case object IncludeFilter extends KindOfFilter {
+  override def toIndex = 0
+  override def asLabel = "include"
+}
+
+case object ExcludeFilter extends KindOfFilter {
+  override def toIndex = 1
+  override def asLabel = "exclude"
+}

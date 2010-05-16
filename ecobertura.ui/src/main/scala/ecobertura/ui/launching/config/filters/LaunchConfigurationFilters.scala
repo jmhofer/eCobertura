@@ -32,21 +32,4 @@ import ecobertura.core.data.filters._
  * properties.
  */
 object LaunchConfigurationFilters {
-  def readFiltersFromLaunchConfiguration(launchConfiguration: ILaunchConfiguration) : 
-      List[ClassFilter] = {
-    
-    val classFilterList = launchConfiguration.getAttribute("classFilters", 
-        new ArrayList[String])
-        
-    classFilterList.asInstanceOf[List[String]].map(ClassFilter(_))
-  }
-  
-  def addFiltersToLaunchConfiguration(filters: Iterable[ClassFilter],
-      launchConfiguration: ILaunchConfigurationWorkingCopy) = {
-
-    val javaList: JavaList[String] = new ArrayList[String]
-    filters.foreach(filter => javaList.add(filter.toAttributeString))
-    launchConfiguration.setAttribute("classFilters", javaList)
-    launchConfiguration.doSave
-  }
 }
