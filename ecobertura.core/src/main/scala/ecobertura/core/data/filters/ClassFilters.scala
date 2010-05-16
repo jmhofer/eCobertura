@@ -72,21 +72,14 @@ class ClassFilters {
     isClassIncluded(qualifiedClassNameFromReversedPath(reversedRelativePath), classFilters.toList)
   
   private def qualifiedClassNameFromReversedPath(reversedRelativePath: List[String]) = {
-    reversedRelativePath.reverse.tail.mkString(".")
+    reversedRelativePath.reverse.mkString(".")
   }
 
   private def isClassIncluded(className: String, classFilters: List[ClassFilter]) : Boolean = {
-    println("isClassIncluded(%s, %s)".format(className, classFilters)) // FIXME remove me
     classFilters match {
       case Nil => true
-      case classFilter :: tail => {
-        // check if it fits...
-        
-        // if it doesn't, return false
-        
-        // if it fits...
-        isClassIncluded(className, tail)
-      }
+      case classFilter :: tail =>
+          if (classFilter.includes(className)) isClassIncluded(className, tail) else false 
     }
   }
 }

@@ -73,10 +73,9 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
           CoberturaWrapper.get.instrumentClassFile(file)
         }
 
-        if (file.isDirectory) {
-          val newRelativePath = file.getName :: relativePath
-          file.listFiles foreach (instrumentFilesWithin(_, newRelativePath))
-        }
+        if (file.isDirectory)
+          for (subFile <- file.listFiles)
+            instrumentFilesWithin(subFile, subFile.getName :: relativePath)
         else if (classFilters.isClassIncluded(relativePath)) instrumentClassFile(file)
       }
 
