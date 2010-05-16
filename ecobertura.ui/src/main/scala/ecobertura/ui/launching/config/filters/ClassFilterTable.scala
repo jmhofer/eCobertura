@@ -27,11 +27,10 @@ import ecobertura.core.data.filters._
 import ecobertura.ui.util.table.TableColumnBuilder
 
 object ClassFilterTable {
-  def forParentAndFilters(parent: Composite, classFilters: ClassFilters) = 
-      new ClassFilterTable(parent, classFilters)
+  def forParentAndFilters(parent: Composite) = new ClassFilterTable(parent)
 }
 
-class ClassFilterTable(parent: Composite, classFilters: ClassFilters) {
+class ClassFilterTable(parent: Composite) {
   private var listener: FilterChangeListener = _
   
   def withChangeListener(listener: FilterChangeListener) = {
@@ -78,7 +77,5 @@ class ClassFilterTable(parent: Composite, classFilters: ClassFilters) {
   private def configureTableModel(classFilterTable: TableViewer) = {
     classFilterTable.setLabelProvider(new ClassFilterTableLabelProvider)
     classFilterTable.setContentProvider(new ClassFilterTableContentProvider)
-
-    classFilterTable.setInput(classFilters)
   }
 }

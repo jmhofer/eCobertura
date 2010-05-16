@@ -36,7 +36,6 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab
   
   override def getName = "Filters"
     
-  private var classFilters = ClassFilters(ClassFilter(IncludeFilter, "*"))
   private var classFilterTableViewer: TableViewer = _
 
   override def performApply(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
@@ -44,15 +43,17 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab
     classFilters.addToLaunchConfiguration(workingCopyOfLaunchConfiguration)
   }
   
+  private def classFilters = classFilterTableViewer.getInput.asInstanceOf[ClassFilters]
+  
   override def setDefaults(workingCopyOfLaunchConfiguration: ILaunchConfigurationWorkingCopy) = {
     println("set defaults") // FIXME remove me
-    classFilters.addToLaunchConfiguration(workingCopyOfLaunchConfiguration)
+    ClassFilters(ClassFilter(IncludeFilter, "*")).addToLaunchConfiguration(
+        workingCopyOfLaunchConfiguration)
   }
   
   override def initializeFrom(launchConfiguration: ILaunchConfiguration) = {
     println("init from") // FIXME remove me
-    classFilters = ClassFilters(launchConfiguration)
-    classFilterTableViewer.setInput(classFilters)
+    classFilterTableViewer.setInput(ClassFilters(launchConfiguration))
   }
   
   override def createControl(parent: Composite) = {
@@ -80,13 +81,11 @@ class CoverageConfigurationFilterTab extends AbstractLaunchConfigurationTab
   }
   
   private def addIncludeExcludeClassesGroupTo(panel: Composite) =
-      classFilterTableViewer = IncludeExcludeClassesGroupBuilder
-          .forParentAndFilters(panel, classFilters)
+      classFilterTableViewer = IncludeExcludeClassesGroupBuilder.forParent(panel)
           .withChangeListener(this).build()
       
   override def filtersChanged(viewer: TableViewer) = {
     println("filters changed") // FIXME remove me
-    classFilters = viewer.getInput.asInstanceOf[ClassFilters]
     println("classFilters = " + classFilters)
     
     setDirty(true)

@@ -30,11 +30,10 @@ import ecobertura.ui.util.layout.FormDataBuilder
 import ecobertura.ui.util.Predef._
 
 object IncludeExcludeClassesGroupBuilder {
-  def forParentAndFilters(parent: Composite, classFilters: ClassFilters) = 
-      new IncludeExcludeClassesGroupBuilder(parent, classFilters)
+  def forParent(parent: Composite) = new IncludeExcludeClassesGroupBuilder(parent)
 }
 
-class IncludeExcludeClassesGroupBuilder(parent: Composite, classFilters: ClassFilters) {
+class IncludeExcludeClassesGroupBuilder(parent: Composite) {
 
   private var includeExcludeGroup: Group = _
   private var includeExcludeTable: TableViewer = _
@@ -82,8 +81,7 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite, classFilters: ClassFi
   }
  
   private def initializeIncludeExcludeTable(parent: Composite, listener: FilterChangeListener) =
-      ClassFilterTable.forParentAndFilters(parent, classFilters).withChangeListener(listener)
-          .build()
+      ClassFilterTable.forParentAndFilters(parent).withChangeListener(listener).build()
   
   private def initializeButtons() = {
     val addIncludeButton = initializeAddIncludeButton
@@ -116,7 +114,9 @@ class IncludeExcludeClassesGroupBuilder(parent: Composite, classFilters: ClassFi
   }
 
   private def addAndEditClassFilterPattern(classFilter: ClassFilter) = {
+    val classFilters = includeExcludeTable.getInput.asInstanceOf[ClassFilters]
     classFilters.add(classFilter)
+    println(classFilters) // FIXME remove me
     includeExcludeTable.refresh()
     includeExcludeTable.editElement(classFilter, 1)
     listener.filtersChanged(includeExcludeTable)
