@@ -76,8 +76,7 @@ class CoverageClasspathProvider extends IRuntimeClasspathProvider {
     for {
       i <- 0 until resolvedEntries.size
       entry = resolvedEntries(i)
-      if entry.getClasspathProperty == IRuntimeClasspathEntry.USER_CLASSES &&
-      entry.getType == IRuntimeClasspathEntry.PROJECT
+      if Classpaths.containsUserClassesFromProject(entry)
     } resolvedEntries(i) = adaptedProjectClassesEntry(entry)
 
     resolvedEntries

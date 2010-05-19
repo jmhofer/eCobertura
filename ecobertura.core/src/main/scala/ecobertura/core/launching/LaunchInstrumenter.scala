@@ -63,8 +63,9 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
 
     resolvedClasspathEntries foreach (classpathEntry => {
       def containsUserClassesFromProject(entry: IRuntimeClasspathEntry) = {
-        entry.getClasspathProperty == IRuntimeClasspathEntry.USER_CLASSES &&
-        entry.getType == IRuntimeClasspathEntry.PROJECT
+        logger.fine("examining classpath entry: type %d, property %d".format(
+            entry.getType, entry.getClasspathProperty))
+        Classpaths.containsUserClassesFromProject(entry)
       }
 
       def instrumentFilesWithin(file: File, relativePath: List[String]) : Unit = {
