@@ -42,6 +42,22 @@
             name="Scala Launch Delegate"
             type="scala.application">
       </launchDelegate>
+      <launchDelegate
+            delegate="ecobertura.core.launching.JavaApplicationLaunchDelegate"
+            delegateDescription="The Cobertura JUnit PDE Launcher instruments code in order to measure coverage."
+            id="ecobertura.core.junitPdeLauncher"
+            modes="ecobertura.core.coverageLaunchMode"
+            name="JUnit PDE Launch Delegate"
+            type="org.eclipse.pde.ui.JunitLaunchConfig">
+      </launchDelegate>
+      <launchDelegate
+            delegate="ecobertura.core.launching.JavaApplicationLaunchDelegate"
+            delegateDescription="The Cobertura Eclipse Workbench Launcher instruments code in order to measure coverage."
+            id="ecobertura.core.eclipseApplicationLauncher"
+            modes="ecobertura.core.coverageLaunchMode"
+            name="Eclipse Workbench Launch Delegate"
+            type="org.eclipse.pde.ui.RuntimeWorkbench">
+      </launchDelegate>
    </extension>
    <extension
          point="org.eclipse.jdt.launching.classpathProviders">
