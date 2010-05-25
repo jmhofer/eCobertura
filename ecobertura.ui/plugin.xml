@@ -29,12 +29,6 @@
       </perspectiveExtension>
    </extension>
    <extension
-         point="org.eclipse.help.contexts">
-      <contexts
-            file="contexts.xml">
-      </contexts>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
             annotationType="ecobertura.ui.annotation.coverageAnnotation.covered"
@@ -202,6 +196,42 @@
                </with></enablement>
          </contextualLaunch>
       </shortcut>
+      <shortcut
+            class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.pde.ui.junitWorkbenchShortcut"
+            icon="icons/full/etool16/junitplugin_launch.gif"
+            id="ecobertura.ui.launching.junitPdeLaunchShortcut"
+            label="JUnit PDE Test"
+            modes="ecobertura.core.coverageLaunchMode">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.pde.ui.junitWorkbenchShortcut"
+                        property="ecobertura.ui.launching.isCoveredLaunchPossible">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="ecobertura.ui.launching.JavaApplicationLaunchShortcut:org.eclipse.pde.ui.runtimeWorkbenchShortcut"
+            icon="icons/full/etool16/eclipse_launch.gif"
+            id="ecobertura.ui.launching.javaApplicationLaunchShortcut"
+            label="Eclipse Application"
+            modes="ecobertura.core.coverageLaunchMode">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.pde.ui.runtimeWorkbenchShortcut"
+                        property="ecobertura.ui.launching.isCoveredLaunchPossible">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -224,6 +254,16 @@
             class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
             id="ecobertura.ui.launching.config.ScalaApplicationConfigurationTabGroup"
             type="scala.application">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
+            id="ecobertura.ui.launching.config.JUnitPdeConfigurationTabGroup"
+            type="org.eclipse.pde.ui.JunitLaunchConfig">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="ecobertura.ui.launching.config.CoverageConfigurationTabGroup"
+            id="ecobertura.ui.launching.config.EclipseApplicationConfigurationTabGroup"
+            type="org.eclipse.pde.ui.RuntimeWorkbench">
       </launchConfigurationTabGroup>
    </extension>
    <extension
