@@ -51,9 +51,9 @@
 	</target>
 	
 	<target name="copyProjects">
-        <!-- copy site.xml -->
+        <!-- copy category.xml -->
         <copy todir="${buildDirectory}">
-            <fileset dir="." includes="*.xml" />
+            <fileset dir="." includes="category.xml" />
         </copy>
         
 		<mkdir dir="${buildDirectory}/features/${topLevelElementId}" />

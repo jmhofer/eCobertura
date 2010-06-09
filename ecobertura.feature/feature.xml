@@ -2,7 +2,7 @@
 <feature
       id="ecobertura"
       label="eCobertura"
-      version="0.9.5.qualifier"
+      version="0.9.6.qualifier"
       provider-name="jmhofer"
       plugin="ecobertura.ui">
 
@@ -723,6 +723,7 @@ Public License instead of this License.  But first, please read
       <import plugin="org.eclipse.core.expressions"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.search"/>
+      <import plugin="org.eclipse.help"/>
    </requires>
 
    <plugin
