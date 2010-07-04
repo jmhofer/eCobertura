@@ -62,6 +62,8 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
     }
 
     resolvedClasspathEntries foreach (classpathEntry => {
+      def isClassFile(file: File) = file.getName.endsWith(".class")
+      
       def containsUserClassesFromProject(entry: IRuntimeClasspathEntry) = {
         logger.fine("examining classpath entry: type %d, property %d".format(
             entry.getType, entry.getClasspathProperty))
@@ -77,7 +79,8 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
         if (file.isDirectory)
           for (subFile <- file.listFiles)
             instrumentFilesWithin(subFile, subFile.getName :: relativePath)
-        else if (classFilters.isClassIncluded(relativePath)) instrumentClassFile(file)
+        else if (isClassFile(file) && classFilters.isClassIncluded(relativePath)) 
+          instrumentClassFile(file)
       }
 
       if (containsUserClassesFromProject(classpathEntry)) {
