@@ -5,11 +5,11 @@
     	<conf name="runtime" description="everything needed during runtime" />
     </configurations>
     <dependencies>
-		<dependency org="org.scala-lang" name="scala-compiler" rev="2.8.0.RC3" conf="compile->default">
+		<dependency org="org.scala-lang" name="scala-compiler" rev="2.8.0.RC7" conf="compile->default">
 			<exclude name="scala-library" />
 		</dependency>
 		
-		<dependency org="org.scala-lang" name="scala-library" rev="2.8.0.RC3" conf="runtime->default" />
+		<dependency org="org.scala-lang" name="scala-library" rev="2.8.0.RC7" conf="runtime->default" />
 		<dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4+" conf="runtime->default">
 			<exclude org="org.apache.ant" />
 		</dependency>
