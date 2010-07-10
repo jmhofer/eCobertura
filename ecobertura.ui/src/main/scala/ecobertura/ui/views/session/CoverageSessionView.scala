@@ -51,7 +51,18 @@ class CoverageSessionView extends ViewPart {
   private var viewer: TreeViewer = null
   private var sessionResetListener: Option[Option[CoverageSession] => Unit] = None
   
-  class NameSorter extends ViewerSorter
+  class NameSorter extends ViewerSorter {
+    override def compare(viewer: Viewer, first: Any, second: Any) = {
+      println("compare")
+      (first, second) match {
+        case (firstNode: CoverageSessionTreeNode, secondNode: CoverageSessionTreeNode) => {
+          println("nodes")
+          firstNode.name.compareTo(secondNode.name)
+        }
+        case _ => first.toString.compareTo(second.toString)
+      }
+    }
+  }
 
   /**
    * This is a callback that will allow us to create the viewer and initialize it.

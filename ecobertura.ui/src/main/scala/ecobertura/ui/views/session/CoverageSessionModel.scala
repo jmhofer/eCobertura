@@ -96,16 +96,16 @@ class CoverageSessionModel extends CoverageSessionResetPublisher with ITreeConte
 		sessionPackage
 	}
 	
-	override def getElements(element: Any) : Array[Object] = getChildren(element)
+	override def getElements(element: Any) : Array[AnyRef] = getChildren(element)
 	override def inputChanged(viewer: Viewer, arg0: Any, arg1: Any) = { /* no changes allowed yet */ }
 	override def dispose = { /* nothing to dispose of right now */ }
 	
-	override def getChildren(parentElement: Any) : Array[Object] = parentElement match {
+	override def getChildren(parentElement: Any) : Array[AnyRef] = parentElement match {
 		case node: CoverageSessionTreeNode => node.children.toArray
 		case _ => Array()
 	}
 	
-	override def getParent(element: Any) : Object = element match {
+	override def getParent(element: Any) : AnyRef = element match {
 		case node: CoverageSessionTreeNode => node.parent.getOrElse(null)
 		case _ => null
 	}
