@@ -53,10 +53,8 @@ class CoverageSessionView extends ViewPart {
   
   class NameSorter extends ViewerSorter {
     override def compare(viewer: Viewer, first: Any, second: Any) = {
-      println("compare")
       (first, second) match {
         case (firstNode: CoverageSessionTreeNode, secondNode: CoverageSessionTreeNode) => {
-          println("nodes")
           firstNode.name.compareTo(secondNode.name)
         }
         case _ => first.toString.compareTo(second.toString)
