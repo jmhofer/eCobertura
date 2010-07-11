@@ -24,6 +24,7 @@ import org.eclipse.jface.action._
 import org.eclipse.jface.layout.TreeColumnLayout
 import org.eclipse.jface.viewers._
 
+import org.eclipse.swt.events.SelectionEvent
 import org.eclipse.swt.widgets._
 import org.eclipse.swt.SWT
 
@@ -51,21 +52,14 @@ class CoverageSessionView extends ViewPart {
   private var viewer: TreeViewer = null
   private var sessionResetListener: Option[Option[CoverageSession] => Unit] = None
   
-  class NameSorter extends ViewerSorter {
-    override def compare(viewer: Viewer, first: Any, second: Any) = {
-      (first, second) match {
-        case (firstNode: CoverageSessionTreeNode, secondNode: CoverageSessionTreeNode) => {
-          firstNode.name.compareTo(secondNode.name)
-        }
-        case _ => first.toString.compareTo(second.toString)
-      }
-    }
-  }
-
+  private val viewSorter = new CoverageViewSorter
+  
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
    */
   override def createPartControl(parent: Composite) = {
+    import ColumnType._
+    
     viewer = new TreeViewer(parent, SWT.SINGLE)
     val swtTreeTable = viewer.getTree
     swtTreeTable.setHeaderVisible(true)
@@ -76,16 +70,16 @@ class CoverageSessionView extends ViewPart {
     val treeColumnLayout = new TreeColumnLayout
     parent.setLayout(treeColumnLayout)
   
-    addTreeColumn("Name", SWT.LEFT, 9).setLabelProvider(new NameLabelProvider)
-    addTreeColumn("Lines", SWT.RIGHT, 1).setLabelProvider(new LinesCoveredLabelProvider)
-    addTreeColumn("Total", SWT.RIGHT, 1).setLabelProvider(new LinesTotalLabelProvider)
-    addTreeColumn("%", SWT.RIGHT, 1).setLabelProvider(new LinesPercentageLabelProvider)
-    addTreeColumn("Branches", SWT.RIGHT, 1).setLabelProvider(new BranchesCoveredLabelProvider)
-    addTreeColumn("Total", SWT.RIGHT, 1).setLabelProvider(new BranchesTotalLabelProvider)
-    addTreeColumn("%", SWT.RIGHT, 1).setLabelProvider(new BranchesPercentageLabelProvider)
+    addTreeColumn(Name, "Name", SWT.LEFT, 9).setLabelProvider(new NameLabelProvider)
+    addTreeColumn(CoveredLines, "Lines", SWT.RIGHT, 1).setLabelProvider(new LinesCoveredLabelProvider)
+    addTreeColumn(TotalLines, "Total", SWT.RIGHT, 1).setLabelProvider(new LinesTotalLabelProvider)
+    addTreeColumn(LinesPercentage, "%", SWT.RIGHT, 1).setLabelProvider(new LinesPercentageLabelProvider)
+    addTreeColumn(CoveredBranches, "Branches", SWT.RIGHT, 1).setLabelProvider(new BranchesCoveredLabelProvider)
+    addTreeColumn(TotalBranches, "Total", SWT.RIGHT, 1).setLabelProvider(new BranchesTotalLabelProvider)
+    addTreeColumn(BranchesPercentage, "%", SWT.RIGHT, 1).setLabelProvider(new BranchesPercentageLabelProvider)
   
     viewer.setContentProvider(CoverageSessionModel.get)
-    viewer.setSorter(new NameSorter)
+    viewer.setSorter(new CoverageViewSorter)
     viewer.setInput(CoverageSessionRoot)
   
     viewer.addDoubleClickListener { 
@@ -112,12 +106,25 @@ class CoverageSessionView extends ViewPart {
     // Create the help context id for the viewer's control
     // PlatformUI.getWorkbench.getHelpSystem.setHelp(viewer.getControl, "ecobertura.ui.viewer")
   
-    def addTreeColumn(name: String, alignment: Int, weight: Int) = {
+    def addTreeColumn(columnType: ColumnType, name: String, alignment: Int, weight: Int) = {
       val column = new TreeViewerColumn(viewer, alignment)
-      column.getColumn.setText(name)
-      column.getColumn.setAlignment(alignment)
-      treeColumnLayout.setColumnData(column.getColumn, new ColumnWeightData(weight))
-  
+      val swtColumn = column.getColumn
+      swtColumn.setText(name)
+      swtColumn.setAlignment(alignment)
+      treeColumnLayout.setColumnData(swtColumn, new ColumnWeightData(weight))
+      swtColumn.addSelectionListener((event: SelectionEvent) => {
+        viewSorter.columnType = columnType
+        val treeTable = viewer.getTree
+
+        val direction = if (treeTable.getSortColumn == swtColumn) 
+          if (treeTable.getSortDirection == SWT.UP) SWT.DOWN else SWT.UP
+          else SWT.DOWN
+          
+        treeTable.setSortDirection(direction);
+        treeTable.setSortColumn(swtColumn);
+        viewer.refresh();
+      })
+      
       column
     }
   
