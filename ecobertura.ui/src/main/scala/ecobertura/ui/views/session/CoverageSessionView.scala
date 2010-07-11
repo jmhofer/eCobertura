@@ -79,7 +79,7 @@ class CoverageSessionView extends ViewPart {
     addTreeColumn(BranchesPercentage, "%", SWT.RIGHT, 1).setLabelProvider(new BranchesPercentageLabelProvider)
   
     viewer.setContentProvider(CoverageSessionModel.get)
-    viewer.setSorter(new CoverageViewSorter)
+    viewer.setSorter(viewSorter)
     viewer.setInput(CoverageSessionRoot)
   
     viewer.addDoubleClickListener { 
@@ -113,7 +113,7 @@ class CoverageSessionView extends ViewPart {
       swtColumn.setAlignment(alignment)
       treeColumnLayout.setColumnData(swtColumn, new ColumnWeightData(weight))
       swtColumn.addSelectionListener((event: SelectionEvent) => {
-        viewSorter.columnType = columnType
+        viewSorter.setColumnType(columnType)
         val treeTable = viewer.getTree
 
         val direction = if (treeTable.getSortColumn == swtColumn) 
@@ -122,7 +122,7 @@ class CoverageSessionView extends ViewPart {
           
         treeTable.setSortDirection(direction);
         treeTable.setSortColumn(swtColumn);
-        viewer.refresh();
+        viewer.refresh()
       })
       
       column

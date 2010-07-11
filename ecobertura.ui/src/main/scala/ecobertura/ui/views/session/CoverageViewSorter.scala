@@ -21,19 +21,52 @@ package ecobertura.ui.views.session
 
 import org.eclipse.jface.viewers._
 
-// TODO handle sort oder and column type changes...
 class CoverageViewSorter extends ViewerSorter {
   import ColumnType._
   
-  var columnType = Name
+  object SortDirection extends Enumeration {
+    type SortDirection = Value
+    val Ascending, Descending = Value
+  }
+  import SortDirection._
+
+  private var columnType = Name
+  private var sortDirection = Descending
   
+  def setColumnType(columnType: ColumnType) = {
+    if (this.columnType == columnType) sortDirection = reversedSortDirection
+    else this.columnType = columnType
+  }
+  
+  private def reversedSortDirection = sortDirection match {
+      case Ascending => Descending
+      case Descending => Ascending
+  }
+
   override def compare(viewer: Viewer, first: Any, second: Any) = {
     (first, second) match {
       case (firstNode: CoverageSessionTreeNode, secondNode: CoverageSessionTreeNode) => {
-        firstNode.name.compareTo(secondNode.name)
+        compareTreeNodes(firstNode, secondNode)
       }
       case _ => first.toString.compareTo(second.toString)
     }
   }
+  
+  private def compareTreeNodes(
+      firstNode: CoverageSessionTreeNode, secondNode: CoverageSessionTreeNode) = {
+    val firstCoverage = firstNode.coverageData
+    val secondCoverage = secondNode.coverageData
+    
+    val comparisonValue = columnType match {
+      case Name => firstNode.name.compareTo(secondNode.name)
+      case CoveredLines => intWrapper(firstCoverage.linesCovered).compareTo(secondCoverage.linesCovered) 
+      case TotalLines => intWrapper(firstCoverage.linesTotal).compareTo(secondCoverage.linesTotal)
+      case LinesPercentage => intWrapper(firstCoverage.linesCovered).compareTo(secondCoverage.linesCovered)
+      case CoveredBranches => intWrapper(firstCoverage.branchesCovered).compareTo(secondCoverage.branchesCovered) 
+      case TotalBranches => intWrapper(firstCoverage.branchesTotal).compareTo(secondCoverage.branchesTotal)
+      case BranchesPercentage => intWrapper(firstCoverage.branchesCovered).compareTo(secondCoverage.branchesCovered)
+    }
+   
+    if (sortDirection == Descending) comparisonValue else -comparisonValue
+  }
 }
-
