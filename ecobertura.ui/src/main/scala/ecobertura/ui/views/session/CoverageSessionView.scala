@@ -54,9 +54,7 @@ class CoverageSessionView extends ViewPart {
   
   private val viewSorter = new CoverageViewSorter
   
-  /**
-   * This is a callback that will allow us to create the viewer and initialize it.
-   */
+  // This is a callback that will allow us to create the viewer and initialize it.
   override def createPartControl(parent: Composite) = {
     import ColumnType._
     
