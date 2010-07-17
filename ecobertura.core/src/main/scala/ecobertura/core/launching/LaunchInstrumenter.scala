@@ -105,7 +105,7 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
 
     val coberturaFile = new File(CorePlugin.instance.pluginState.instrumentationDataDirectory,
         CoberturaWrapper.DEFAULT_COBERTURA_FILENAME)
-    val coberturaVMArgument = String.format("-D%s=%s ", COBERTURA_DATAFILE_PROPERTY, 
+    val coberturaVMArgument = String.format("-D%s=\"%s\" ", COBERTURA_DATAFILE_PROPERTY, 
         coberturaFile.getAbsolutePath)
     val currentVMArguments = configWC.getAttribute(
         IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "")
