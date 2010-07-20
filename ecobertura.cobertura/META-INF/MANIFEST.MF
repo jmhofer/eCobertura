@@ -8,9 +8,9 @@ Bundle-ClassPath: oro.jar,
  asm-tree.jar,
  cobertura.jar,
  log4j.jar
-Export-Package: net.sourceforge.cobertura.check;version="0.9.4.1";uses:="org.apache.oro.text.regex",
+Export-Package: net.sourceforge.cobertura.check;version="0.9.4.1",
  net.sourceforge.cobertura.coveragedata;version="0.9.4.1",
- net.sourceforge.cobertura.instrument;version="0.9.4.1";uses:="org.objectweb.asm,net.sourceforge.cobertura.coveragedata",
+ net.sourceforge.cobertura.instrument;version="0.9.4.1",
  net.sourceforge.cobertura.merge;version="0.9.4.1",
  net.sourceforge.cobertura.util;version="0.9.4.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

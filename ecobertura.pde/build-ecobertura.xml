@@ -41,16 +41,15 @@
 	</target>
 	
 	<target name="retrieveExternalDependencies">
-		<mkdir dir="../ecobertura.core/lib" />
 		<ivy:resolve transitive="true" conf="runtime-scala" />
-		<ivy:retrieve pattern="../ecobertura.core/lib/[artifact].[ext]" />
+		<ivy:retrieve pattern="../ecobertura.scala/[artifact].[ext]" />
 		
-		<mkdir dir="lib" />
-		<ivy:resolve transitive="true" conf="compile" />
-		<ivy:retrieve pattern="lib/[artifact].[ext]" />
-
     <ivy:resolve transitive="true" conf="runtime-cobertura" />
     <ivy:retrieve pattern="../ecobertura.cobertura/[artifact].[ext]" />
+
+	  <mkdir dir="lib" />
+		<ivy:resolve transitive="true" conf="compile" />
+		<ivy:retrieve pattern="lib/[artifact].[ext]" />
 	</target>
 	
 	<target name="copyProjects">
@@ -68,6 +67,7 @@
 			<fileset dir="..">
         <include name="ecobertura.cobertura/**" />
 				<include name="ecobertura.core/**" />
+        <include name="ecobertura.scala/**" />
         <include name="ecobertura.ui/**" />
 				<exclude name="*/bin/**" />
 			</fileset>

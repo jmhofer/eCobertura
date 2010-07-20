@@ -127,7 +127,7 @@ object CoberturaWrapper {
     override def pathToJar : IPath = {
       try {
         val url = FileLocator.toFileURL(FileLocator.find(new URL(
-            String.format("platform:/plugin/%s/lib/%s", CorePlugin.pluginId, COBERTURA_JAR_NAME))))
+            String.format("platform:/plugin/ecobertura.cobertura/%s", COBERTURA_JAR_NAME))))
         new Path(url.getPath)
         
       } catch {

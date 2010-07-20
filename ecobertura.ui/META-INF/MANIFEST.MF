@@ -4,7 +4,10 @@ Bundle-Name: eCobertura UI
 Bundle-SymbolicName: ecobertura.ui;singleton:=true
 Bundle-Version: 0.9.8.qualifier
 Bundle-Activator: ecobertura.ui.UIPlugin
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: ecobertura.scala,
+ ecobertura.cobertura,
+ ecobertura.core,
+ org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
@@ -15,9 +18,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui,
  org.eclipse.core.expressions,
  org.eclipse.ui.ide,
- org.eclipse.search,
- ecobertura.core
+ org.eclipse.search
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: jmhofer
 Import-Package: org.eclipse.help
+Bundle-ClassPath: .
