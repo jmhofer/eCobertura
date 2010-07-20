@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Cobertura
+Bundle-SymbolicName: ecobertura.cobertura
+Bundle-Version: 0.9.8.qualifier
+Bundle-ClassPath: oro.jar,
+ asm.jar,
+ asm-tree.jar,
+ cobertura.jar,
+ log4j.jar
+Export-Package: net.sourceforge.cobertura.check;version="0.9.4.1";uses:="org.apache.oro.text.regex",
+ net.sourceforge.cobertura.coveragedata;version="0.9.4.1",
+ net.sourceforge.cobertura.instrument;version="0.9.4.1";uses:="org.objectweb.asm,net.sourceforge.cobertura.coveragedata",
+ net.sourceforge.cobertura.merge;version="0.9.4.1",
+ net.sourceforge.cobertura.util;version="0.9.4.1"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

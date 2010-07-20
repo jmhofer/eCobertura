@@ -2,15 +2,16 @@
     <info organisation="jmhofer" module="ecobertura"/>
     <configurations>
     	<conf name="compile" description="everything needed during compile time" />
-    	<conf name="runtime" description="everything needed during runtime" />
+    	<conf name="runtime-cobertura" description="cobertura libs required during runtime" />
+      <conf name="runtime-scala" description="scala libs required during runtime" />
     </configurations>
     <dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.8.0" conf="compile->default">
 			<exclude name="scala-library" />
 		</dependency>
 		
-		<dependency org="org.scala-lang" name="scala-library" rev="2.8.0" conf="runtime->default" />
-		<dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4+" conf="runtime->default">
+		<dependency org="org.scala-lang" name="scala-library" rev="2.8.0" conf="runtime-scala->default" />
+		<dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4+" conf="runtime-cobertura->default">
 			<exclude org="org.apache.ant" />
 		</dependency>
     </dependencies>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: eCobertura UI
 Bundle-SymbolicName: ecobertura.ui;singleton:=true
-Bundle-Version: 0.9.7.qualifier
+Bundle-Version: 0.9.8.qualifier
 Bundle-Activator: ecobertura.ui.UIPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -10,13 +10,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.junit4,
  org.eclipse.debug.ui,
- ecobertura.core,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching,
  org.eclipse.jdt.ui,
  org.eclipse.core.expressions,
  org.eclipse.ui.ide,
- org.eclipse.search
+ org.eclipse.search,
+ ecobertura.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: jmhofer

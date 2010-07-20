@@ -2,7 +2,7 @@
 <feature
       id="ecobertura"
       label="eCobertura"
-      version="0.9.7.qualifier"
+      version="0.9.8.qualifier"
       provider-name="jmhofer"
       plugin="ecobertura.ui">
 
@@ -741,15 +741,10 @@ Public License instead of this License.  But first, please read
          unpack="false"/>
 
    <plugin
-         id="ecobertura.ui.source"
+         id="ecobertura.cobertura"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="ecobertura.core.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

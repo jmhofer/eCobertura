@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: eCobertura Core
 Bundle-SymbolicName: ecobertura.core;singleton:=true
-Bundle-Version: 0.9.7.qualifier
+Bundle-Version: 0.9.8.qualifier
 Bundle-Activator: ecobertura.core.CorePlugin
 Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Vendor: jmhofer
@@ -20,7 +20,6 @@ Export-Package: ecobertura.core,
  ecobertura.core.log,
  ecobertura.core.results;uses:="org.eclipse.debug.core,net.sourceforge.cobertura.coveragedata",
  ecobertura.core.trace,
- net.sourceforge.cobertura.coveragedata,
  scala,
  scala.actors,
  scala.actors.remote,
@@ -73,9 +72,7 @@ Export-Package: ecobertura.core,
  scala.xml.pull,
  scala.xml.transform
 Bundle-ClassPath: .,
- lib/scala-library.jar,
- lib/asm-tree.jar,
- lib/asm.jar,
- lib/cobertura.jar,
- lib/log4j.jar,
- lib/oro.jar
+ lib/scala-library.jar
+Import-Package: net.sourceforge.cobertura.coveragedata;version="0.9.4.1",
+ net.sourceforge.cobertura.instrument;version="0.9.4.1",
+ net.sourceforge.cobertura.util;version="0.9.4.1"

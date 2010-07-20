@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ecobertura_0.9.7.qualifier.jar" id="ecobertura" version="0.9.7.qualifier">
+   <feature url="features/ecobertura_0.9.8.qualifier.jar" id="ecobertura" version="0.9.8.qualifier">
       <category name="eCobertura"/>
    </feature>
    <category-def name="eCobertura" label="eCobertura Code Coverage"/>
