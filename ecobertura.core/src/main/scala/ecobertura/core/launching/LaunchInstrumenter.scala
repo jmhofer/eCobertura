@@ -1,6 +1,6 @@
 /*
  * This file is part of eCobertura.
- * 
+ *
  * Copyright (c) 2009, 2010 Joachim Hofer
  * All rights reserved.
  *
@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *  
+ *
  * eCobertura is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with eCobertura.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,7 +36,7 @@ object LaunchInstrumenter {
 
   private val logger = Logger.getLogger("ecobertura.core.launching")
 
-  def instrumentClassesFor(configuration: ILaunchConfiguration) = 
+  def instrumentClassesFor(configuration: ILaunchConfiguration) =
       new LaunchInstrumenter(configuration)
 }
 
@@ -52,18 +52,16 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
   addDatafileSystemProperty
 
   private def instrumentClasspath = {
-    def resolvedClasspathEntries = {
-      val unresolvedClasspathEntries = 
-        JavaRuntime.computeUnresolvedRuntimeClasspath(configuration)
-      val resolvedClasspathEntries = 
-        JavaRuntime.resolveRuntimeClasspath(unresolvedClasspathEntries, configuration)
+    CorePlugin.instance.pluginState.cleanClasses()
 
-      resolvedClasspathEntries
-    }
+    val unresolvedClasspathEntries =
+        JavaRuntime.computeUnresolvedRuntimeClasspath(configuration)
+    val resolvedClasspathEntries =
+        JavaRuntime.resolveRuntimeClasspath(unresolvedClasspathEntries, configuration)
 
     resolvedClasspathEntries foreach (classpathEntry => {
       def isClassFile(file: File) = file.getName.endsWith(".class")
-      
+
       def containsUserClassesFromProject(entry: IRuntimeClasspathEntry) = {
         logger.fine("examining classpath entry: type %d, property %d".format(
             entry.getType, entry.getClasspathProperty))
@@ -79,7 +77,7 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
         if (file.isDirectory)
           for (subFile <- file.listFiles)
             instrumentFilesWithin(subFile, subFile.getName :: relativePath)
-        else if (isClassFile(file) && classFilters.isClassIncluded(relativePath)) 
+        else if (isClassFile(file) && classFilters.isClassIncluded(relativePath))
           instrumentClassFile(file)
       }
 
@@ -94,7 +92,7 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
   }
 
   private def addCoberturaAndCoveredClassesToClasspath = {
-    configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, 
+    configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER,
         CoverageClasspathProvider.ID)
         CoverageClasspathProvider.wrap(JavaRuntime.getClasspathProvider(configuration))
   }
@@ -105,13 +103,13 @@ class LaunchInstrumenter private (configuration: ILaunchConfiguration) {
 
     val coberturaFile = new File(CorePlugin.instance.pluginState.instrumentationDataDirectory,
         CoberturaWrapper.DEFAULT_COBERTURA_FILENAME)
-    val coberturaVMArgument = String.format("-D%s=\"%s\" ", COBERTURA_DATAFILE_PROPERTY, 
+    val coberturaVMArgument = String.format("-D%s=\"%s\" ", COBERTURA_DATAFILE_PROPERTY,
         coberturaFile.getAbsolutePath)
     val currentVMArguments = configWC.getAttribute(
         IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "")
 
     if (requiresCoberturaVMArgument(currentVMArguments, coberturaVMArgument))
-      configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
+      configWC.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
           String.format("%s %s ", currentVMArguments, coberturaVMArgument))
   }
 
