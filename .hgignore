@@ -1,0 +1,12 @@
+syntax: regexp
+^bin/.*
+^/ecobertura\.core/\.scala_dependencies
+^/ecobertura\.ui/\.scala_dependencies
+^/ecobertura\.core/\.settings/.*
+^/ecobertura\.ui/\.settings/.*
+^/ecobertura\.scala/\.settings/.*
+^/ecobertura\.core/build\.xml$
+^/ecobertura\.feature/build\.xml$
+^/ecobertura\.ui/build\.xml$
+^/ecobertura\.feature/compile\.ecobertura\.feature\.xml$
+^/ecobertura\.scala/scala-library.jar$
